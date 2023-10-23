@@ -1,12 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
     return (
         <header className='header'>
             <div className='contents'>
-                <div>
-                    <img className='logo' alt='logo' src='images/slime.png' width='80' height='80' />
-                </div>
+                <Link to="/">
+                    <div>
+                        <img className='logo' alt='logo' src='images/slime.png' width='80' height='80' />
+                    </div>
+                </Link>
 
                 <nav className='navigation'>
                     <ul>

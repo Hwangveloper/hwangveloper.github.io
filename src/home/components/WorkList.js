@@ -1,23 +1,11 @@
 import React from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {increase, decrease} from '../modules/actions';
+import { Link } from 'react-router-dom';
 
 const WorkList = () => {
 
-    const {count} = useSelector(state => state.home);
-    const dispatch = useDispatch();
-
-    const increaseCounter = () => {
-        dispatch(increase());
-    };
-
-    const decreaseCounter = () => {
-        dispatch(decrease());
-    };
-
     return (
         <div>
-            <h1>Work</h1>
+            <Link to="/detail"><h1>Work</h1></Link>
             <ul>
                 <li className="todo stack-small">
                     <div className="c-cb">

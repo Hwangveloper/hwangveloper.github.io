@@ -1,23 +1,27 @@
-import React from 'react';
+import React, { useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {increase, decrease} from '../modules/actions';
+import useGoogleSheet from '../../libs/googlesheet';
 
 const GameList = () => {
 
-    const {count} = useSelector(state => state.home);
+    const [data] = useGoogleSheet(process.env.REACT_APP_FIRST_SHEET_ID);
+    const languageList = ['SheetID','MainCategory', 'SubCategory', 'Count'];
     const dispatch = useDispatch();
 
-    const increaseCounter = () => {
-        dispatch(increase());
+    const initApi = () => {
     };
 
-    const decreaseCounter = () => {
-        dispatch(decrease());
-    };
+    useEffect(() => {
+        initApi();
+        console.log("component did mount with useEffect!");
+    }, []);
 
     return (
         <div>
             <h1>Game</h1>
+            <h2>{data.map((row) => {
+              return (<div>아이디: {row[languageList[0]]}, 설명: {row[languageList[1]]}</div>);
+          })}</h2>
             <ul>
                 <li className="todo stack-small">
                     <div className="c-cb">

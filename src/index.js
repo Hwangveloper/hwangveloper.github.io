@@ -6,14 +6,21 @@ import reportWebVitals from './reportWebVitals';
 
 import { Provider } from 'react-redux';
 import store from './store/index';
+//import { PersistGate } from 'redux-persist/integration/react';
+//import { persistStore } from 'redux-persist';
 
+//const persistor = persistStore(store);
+//<PersistGate persistor={persistor}>
+//</PersistGate>
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Provider>
+  <React.StrictMode>
+    <Provider store={store}>
+      
+        <App />
+      
+    </Provider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

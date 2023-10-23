@@ -1,20 +1,15 @@
-import { INCREASE, DECREASE } from './actions';
+import { GET_TODO_LIST } from './actions';
 
 const initialState = {
-    count: 0,
+    data: '',
 };
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
-        case INCREASE:
+        case GET_TODO_LIST:
             return {
                 ...state,
-                count: state.count + 1,
-            };
-        case DECREASE:
-            return {
-                ...state,
-                count: state.count - 1,
+                data: action.payload,
             };
         default:
             return state;
