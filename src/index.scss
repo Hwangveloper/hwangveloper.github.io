@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+  font-family: 'Pretendard Medium', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: 'Pretendard Medium', source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+:root {
+  --primary-green-color: #45CB6D;
+  --green-10-color: #DAF5E2;
+  --green-20-color: #A2E5B6;
+  --green-30-color: #69D58A;
+  --green-70-color: #36A257;
+  --green-80-color: #226637;
+  --green-90-color: #0E2916;
+  --secondary-blue-color: #5481E6;
+  --blue-20-color: #AAC0F2;
+  --gray-100-color: #FEFEFE;
+  --gray-200-color: #F5F6F7;
+  --gray-300-color: #E4E7EB;
+  --gray-400-color: #CBCFD4;
+  --gray-500-color: #909499;
+  --gray-600-color: #6D7175;
+  --gray-700-color: #494C4F;
+  --gray-800-color: #2E3033;
+  --gray-900-color: #17181A;
+  --white-color: #FFFFFF;
+  --black-color: #000000;
+  --error-color: #DC362E;
+
+  --header-height: 80px;
+  --footer-height: 80px;
+}

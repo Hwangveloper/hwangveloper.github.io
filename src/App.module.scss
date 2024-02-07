@@ -1,0 +1,10 @@
+@import "layout/styles/Header.scss";
+@import "layout/styles/Footer.scss";
+@import "layout/styles/Loading.scss";
+
+@import "worldOfWarcraft/styles/WorldOfWarcraft.scss";
+
+.body-layout {
+    min-height: calc(100vh - var(--header-height) - var(--footer-height));
+    box-sizing: border-box;
+}
