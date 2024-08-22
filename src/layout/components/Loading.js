@@ -14,7 +14,7 @@ const Loading = (props) => {
             <div className={cx("network-loading-icon")}>
                 <BeatLoader color="#15D474" loading={props.loading} size={15} />
             </div>
-        </div> : ''
+        </div> : <></>
     )
 };
 

@@ -1,3 +1,5 @@
+@import "fonts/font.scss";
+
 body {
   margin: 0;
   font-family: 'Pretendard Medium', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -35,6 +37,43 @@ code {
   --black-color: #000000;
   --error-color: #DC362E;
 
+  --repeat-color: #fa9741;
+  --daily-color: #69D58A;
+  --weekly-color: #5481E6;
+  --eventually-color: #DC362E;
+
+  --death-knight-color: #c41f3b;
+  --demon-hunter-color: #a330c9;
+  --druid-color: #ff7d0a;
+  --evoker-color: #33937f;
+  --hunter-color: #abd473;
+  --mage-color: #69ccf0;
+  --monk-color: #00ff96;
+  --paladin-color: #f58cba;
+  --priest-color: #fff;
+  --rogue-color: #fff569;
+  --shaman-color: #0070de;
+  --warlock-color: #9482c9;
+  --warrior-color: #c79c6e;
+
+  --death-knight-bg-color: #c41f3b55;
+  --demon-hunter-bg-color: #a330c955;
+  --druid-bg-color: #ff7d0a55;
+  --evoker-bg-color: #33937f55;
+  --hunter-bg-color: #abd47355;
+  --mage-bg-color: #69ccf055;
+  --monk-bg-color: #00ff9655;
+  --paladin-bg-color: #f58cba55;
+  --priest-bg-color: #ffffff55;
+  --rogue-bg-color: #fff56955;
+  --shaman-bg-color: #0070de55;
+  --warlock-bg-color: #9482c955;
+  --warrior-bg-color: #c79c6e55;
+
   --header-height: 80px;
   --footer-height: 80px;
+
+  iframe {
+    display: none;
+  }
 }

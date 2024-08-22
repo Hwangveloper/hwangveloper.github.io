@@ -1,0 +1,30 @@
+.accordion-view {
+    .accordion-header-view {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+
+        .accordion-arrow {
+            width: 24px;
+            height: 24px;
+
+            &.is-open {
+                transform: scaleY(-1);
+            }
+        }
+    }
+
+    .accordion-wrapper {
+        height: 0;
+        width: 100%;
+        overflow: hidden;
+        transition: height 0.35s ease;
+
+        .accordion-content {
+            width: 100%;
+            height: fit-content;
+        }
+    }
+}

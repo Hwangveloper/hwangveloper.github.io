@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import classNames from 'classnames/bind';
 import styles from '../../App.module.scss';
 import { useSelector } from 'react-redux';
+import TodoItem from './TodoItem';
 
 const cx = classNames.bind(styles);
 
@@ -13,11 +13,11 @@ const WorldOfWarcraftDailyList = () => {
 
     return (
         <div className={cx('wow-daily-list-view')}>
-            <h2>일일 리스트</h2>
-            <ul>
-                <li>
-                    
-                </li>
+            <h3>일일 리스트</h3>
+            <ul className={cx('wow-daily-list')}>
+                {todoList.map((row) => {
+                    return <li key={row.id}><TodoItem item={row} /></li>
+                })}
             </ul>
         </div>
     );

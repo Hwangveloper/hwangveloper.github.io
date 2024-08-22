@@ -1,34 +1,36 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../layout/components/Loading';
-import WorldOfWarcraftCheckList from '../components/WorldOfWarcraftCheckList';
+import WorldOfWarcraftDailyList from '../components/WorldOfWarcraftDailyList';
 import WorldOfWarcraftWeeklyList from '../components/WorldOfWarcraftWeeklyList';
-import { initAndgetWowTodoList } from '../modules/slice';
+import WorldOfWarcraftEventuallyList from '../components/WorldOfWarcraftEventuallyList';
+import { getProjectList } from '../modules/slice';
 
 import classNames from 'classnames/bind';
 import styles from '../../App.module.scss';
 
 const cx = classNames.bind(styles);
 
-const WorldOfWarcraftPage = () => {
+const ProjectPage = () => {
 
-    const { loading } = useSelector(state => state.wow);
+    const { loading } = useSelector(state => state.project);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(initAndgetWowTodoList());
+        dispatch(getProjectList());
     }, [dispatch]);
 
     return (
         <div className={cx('body-layout')}>
-            <ul className={cx('wow-layout-view')}>
+            <ul className={cx('project-layout-view')}>
+                <li><WorldOfWarcraftDailyList /></li>
                 <li><WorldOfWarcraftWeeklyList /></li>
-                <li><WorldOfWarcraftCheckList /></li>
+                <li><WorldOfWarcraftEventuallyList /></li>
             </ul>
             <Loading loading={loading}/>
         </div>
     );
 };
 
-export default WorldOfWarcraftPage;
+export default ProjectPage;

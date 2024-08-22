@@ -19,7 +19,7 @@ const Header = () => {
                 <nav className={cx('header-navigation-bar')}>
                     <ul>
                         <li><Link to="/wow">WoW</Link></li>
-                        <li>메뉴2</li>
+                        <li><Link to="/projects">Projects</Link></li>
                     </ul>
                 </nav>
             </div>
