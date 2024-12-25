@@ -35,9 +35,17 @@ const covertResponseData = (res: (IWowKeystoneResponse & IWowKeystoneCharacterVa
     const lastRefreshDatetime = data.lastRefreshDatetime ? dayjs(data.lastRefreshDatetime) : dayjs();
 
     if (master?.resetType && master.resetType !== EWowMasterResetType.manual) {
-      const diffUnit = master.resetType;
+      const diffUnit = master.resetType as Exclude<EWowMasterResetType, EWowMasterResetType.manual>;
+      let stdDay = dayjs();
 
-      if (lastRefreshDatetime.add(1, diffUnit as Exclude<EWowMasterResetType, EWowMasterResetType.manual>).diff() < 0) {
+      if (diffUnit === EWowMasterResetType.week) {
+        stdDay = dayjs().startOf('week').add(4, 'day').add(8, 'hour');
+      } else if (diffUnit === EWowMasterResetType.month) {
+        stdDay = dayjs().startOf('month');
+      }console.log(stdDay);
+      console.log(lastRefreshDatetime.add(1, diffUnit));
+
+      if (lastRefreshDatetime.diff(stdDay) < 0) {
         return true;
       }
     }
