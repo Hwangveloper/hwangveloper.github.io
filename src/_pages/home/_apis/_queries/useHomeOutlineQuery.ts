@@ -36,10 +36,11 @@ const covertResponseData = (res: IHomeOutlineResponse[] | undefined, params?: IH
     const lastDoneDatetime = data.lastDoneDatetime ? dayjs(data.lastDoneDatetime) : undefined;
     let status = ETaskStatus.TODO;
     if ((baseDatetime || lastDoneDatetime) && period) {
-      const diff = dayjs().diff(baseDatetime ?? lastDoneDatetime, period.unit);
-      const maxDiff = dayjs().diff(baseDatetime ?? lastDoneDatetime, maxPeriod ? maxPeriod.unit : period.unit);
-      if (diff >= period.period) {
-        if (maxDiff >= (maxPeriod ? maxPeriod.period : period.period)) {
+      const date = dayjs().subtract(period.period, period.unit);
+      const maxDate = dayjs().subtract(maxPeriod ? maxPeriod.period : period.period, maxPeriod ? maxPeriod.unit : period.unit);
+
+      if (date.diff(baseDatetime ?? lastDoneDatetime) > 0) {
+        if (maxDate.diff(baseDatetime ?? lastDoneDatetime) > 0) {
           status = ETaskStatus.DONOT;
         } else {
           status = ETaskStatus.TODO;

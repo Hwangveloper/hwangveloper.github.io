@@ -71,6 +71,9 @@ const UpdateTodoModal: React.FC = () => {
 
   // 항목 추가
   const onSubmit = () => {
+
+    const { id, periodCount, periodUnit } = getValues();
+
     if (id) {
       onConfirm(getValues());
     } else {

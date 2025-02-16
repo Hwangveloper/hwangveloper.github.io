@@ -45,7 +45,7 @@ const TodoList: React.FC = () => {
       {
         updateList: outlineList.filter((data) => data.dataState === EDataState.UPDATED).map((data) => {
           let nextBaseDatetime = data.baseDatetime?.add(data.period.period, data.period.unit);
-          if (dayjs().diff(nextBaseDatetime) > 0) {
+          if (dayjs().diff(nextBaseDatetime) < 0) {
             nextBaseDatetime = data.baseDatetime;
           }
           return {

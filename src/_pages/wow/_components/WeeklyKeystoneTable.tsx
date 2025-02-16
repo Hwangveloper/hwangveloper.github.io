@@ -74,19 +74,19 @@ const WeeklyKeystoneTable: React.FC<WeeklyKeystoneTableProps> = ({ refetch }) =>
           <TableHead>
             <TableRow>
               {characterList.filter((char) => char.isMain === ECommonYN.Y).map((char) => (
-                <HeaderTableCell>{char.name}</HeaderTableCell>
+                <HeaderTableCell key={char.id}>{char.name}</HeaderTableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
             <TableRow key="WOW0">
               {weeklyClears.map((clear) => (
-                <TableCell sx={{textAlign: "center"}}>{clear.value}</TableCell>
+                <TableCell key={clear.charId} sx={{textAlign: "center"}}>{clear.value}</TableCell>
               ))}
             </TableRow>
             <TableRow key="WOW1">
               {weeklyLevels.map((level) => (
-                <TableCell sx={{textAlign: "center"}}>{level.value}</TableCell>
+                <TableCell key={level.charId} sx={{textAlign: "center"}}>{level.value}</TableCell>
               ))}
             </TableRow>
           </TableBody>
