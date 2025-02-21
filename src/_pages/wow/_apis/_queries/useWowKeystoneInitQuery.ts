@@ -39,7 +39,7 @@ const covertResponseData = (res: (IWowKeystoneResponse & IWowKeystoneCharacterVa
       let stdDay = dayjs();
 
       if (diffUnit === EWowMasterResetType.week) {
-        stdDay = dayjs().subtract(4, 'day').startOf('week').add(4, 'day').add(8, 'hour');
+        stdDay = dayjs().subtract(4, 'day').subtract(8, 'hour').startOf('week').add(4, 'day').add(8, 'hour');
       } else if (diffUnit === EWowMasterResetType.month) {
         stdDay = dayjs().startOf('month');
       }
