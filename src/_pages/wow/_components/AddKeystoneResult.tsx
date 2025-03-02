@@ -6,7 +6,7 @@ import { useShallow } from "zustand/shallow";
 import useWowStore from "../_stores/useWowStore";
 import { ECommonYN } from "../../../common/_constants/common";
 import { useForm } from "react-hook-form";
-import { IWowKeystoneSaveRequest } from "../_apis/_models/wowKeystone";
+import { IWowKeystone, IWowKeystoneSaveRequest } from "../_apis/_models/wowKeystone";
 import NumberInputField from "../../../common/_components/fields/NumberInputField";
 import CheckboxInputField from "../../../common/_components/fields/CheckboxInputField";
 import useWowKeystoneUpdateMutation from "../_apis/_mutations/useWowKeystoneUpdateMutation";
@@ -35,6 +35,7 @@ const AddKeystoneResult: React.FC<AddKeystoneResultProps> = ({ refetch }) => {
     setValue,
     getValues,
     formState: { errors },
+    watch,
   } = useForm<IWowKeystoneSaveRequest>({
     defaultValues, 
   });
@@ -46,12 +47,20 @@ const AddKeystoneResult: React.FC<AddKeystoneResultProps> = ({ refetch }) => {
     }))
   );
 
+  const { keystoneTaskList } = useWowKeystoneStore(
+    useShallow((state) => ({
+      keystoneTaskList: state.keystoneTaskList,
+    }))
+  );
+
   const { mutateAsync: updateKeystone } = useWowKeystoneUpdateMutation();
 
-  const { charId, dungeonId, level, score, clearYn } = getValues();
+  const { charId, dungeonId, level, clearYn } = getValues();
+  const { score } = watch();
 
   const [charOptions, setCharOptions] = useState<ICommonOption[]>([]);
   const [dungeonOptions, setDungeonOptions] = useState<ICommonOption[]>([]);
+  const [charScores, setCharScores] = useState<IWowKeystone[]>([]);
 
   const onSubmit = () => {
     useLoader.setState({ isLoading: true });
@@ -70,6 +79,14 @@ const AddKeystoneResult: React.FC<AddKeystoneResultProps> = ({ refetch }) => {
         }
       }
     );
+  }
+
+  const onChangeCharacter = (charId: string) => {
+    setValue(IWowKeystoneSaveRequestFields.charId, charId);
+    const scoreData = charScores.filter((score) => score.charId === charId);
+    if (scoreData && scoreData.length > 0) {
+      setValue(IWowKeystoneSaveRequestFields.score, scoreData[0].value);
+    }
   }
 
   useEffect(() => {
@@ -91,6 +108,12 @@ const AddKeystoneResult: React.FC<AddKeystoneResultProps> = ({ refetch }) => {
       })));
     }
   }, [characterList, setValue]);
+
+  useEffect(() => {
+    if (keystoneTaskList && keystoneTaskList.length > 0) {
+      setCharScores(keystoneTaskList.filter((keystone) => keystone.masterId === "WOW2"));
+    }
+  }, [keystoneTaskList, setValue]);
 
   return (
     <Paper
@@ -114,7 +137,7 @@ const AddKeystoneResult: React.FC<AddKeystoneResultProps> = ({ refetch }) => {
             defaultValue={charId}
             error={!!errors.charId}
             helperText={errors.charId?.message}
-            onChange={(value) => setValue(IWowKeystoneSaveRequestFields.charId, value)}
+            onChange={(value) => onChangeCharacter(value)}
           />
           <SelectInputField
             label="던전"
@@ -161,7 +184,6 @@ const AddKeystoneResult: React.FC<AddKeystoneResultProps> = ({ refetch }) => {
               error={!!errors.clearYn}
               helperText={errors.clearYn?.message}
               onChange={(value) => {
-                console.log(value);
                 setValue(IWowKeystoneSaveRequestFields.clearYn, value ? ECommonYN.Y : ECommonYN.N);
               }}
             />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Box } from "@mui/material";
 import styled from "styled-components";
 import useWowKeystoneStore from "../_stores/useWowKeystoneStore";
 import { useShallow } from "zustand/shallow";
@@ -36,6 +36,16 @@ const KeystoneDungeonTable: React.FC<KeystoneDungeonTableProps> = ({ charId }) =
 
   const [keystoneDungeonData, setKeystoneDungeonData] = useState<IWowKeystoneDungeonView[]>([]);
 
+  const getRenderColor = (value: number, firstStep: number, lastStep: number) => {
+    if (value < firstStep) {
+      return "red";
+    } else if (value < lastStep) {
+      return "blue";
+    } else {
+      return "black";
+    }
+  }
+
   useEffect(() => {
     if (keystoneTaskList && keystoneTaskList.length > 0) {
       setKeystoneDungeonData(dungeonList.map((dungeon) => {
@@ -47,9 +57,13 @@ const KeystoneDungeonTable: React.FC<KeystoneDungeonTableProps> = ({ charId }) =
           id: dungeon.id,
           clearLevel: clearData?.value ?? 0,
           completeLevel: completeData?.value ?? 0,
+          levelFirstStep: completeData?.firstStep ?? 0,
+          levelLastStep: completeData?.lastStep ?? 0,
           dungeonName: completeData?.dungeonName ?? '',
           charName: completeData?.charName ?? '',
           keystoneScore: scoreData?.value ?? 0,
+          scoreFirstStep: scoreData?.firstStep ?? 0,
+          scoreLastStep: scoreData?.lastStep ?? 0,
         };
       }).sort((left, right) => left.completeLevel - right.completeLevel));
     }
@@ -77,15 +91,22 @@ const KeystoneDungeonTable: React.FC<KeystoneDungeonTableProps> = ({ charId }) =
           {keystoneDungeonData.map((row) => charId === ECommonText.ALL ? (
             <TableRow key={row.id}>
               <TableCell>{row.dungeonName}</TableCell>
-              <TableCell sx={{textAlign: "center"}}>{`${row.completeLevel}(${row.clearLevel})`}</TableCell>
+              <TableCell sx={{textAlign: "center", color: getRenderColor(row.clearLevel, row.levelFirstStep, row.levelLastStep)}}>
+                <Box component="span" sx={{color: getRenderColor(row.completeLevel, row.levelFirstStep, row.levelLastStep)}}>
+                  {`${row.completeLevel}`}
+                </Box>
+                {`(${row.clearLevel})`}
+              </TableCell>
               <TableCell sx={{textAlign: "center"}}>{row.charName}</TableCell>
-              <TableCell sx={{textAlign: "center"}}>{row.keystoneScore}</TableCell>
+              <TableCell sx={{textAlign: "center", color: getRenderColor(row.keystoneScore, row.scoreFirstStep, row.scoreLastStep)}}>
+                {row.keystoneScore}
+              </TableCell>
             </TableRow>
           ) : (
             <TableRow key={row.id}>
               <TableCell>{row.dungeonName}</TableCell>
-              <TableCell sx={{textAlign: "center"}}>{row.completeLevel}</TableCell>
-              <TableCell sx={{textAlign: "center"}}>{row.clearLevel}</TableCell>
+              <TableCell sx={{textAlign: "center", color: getRenderColor(row.completeLevel, row.levelFirstStep, row.levelLastStep)}}>{row.completeLevel}</TableCell>
+              <TableCell sx={{textAlign: "center", color: getRenderColor(row.clearLevel, row.levelFirstStep, row.levelLastStep)}}>{row.clearLevel}</TableCell>
             </TableRow>
           ))}
         </TableBody>

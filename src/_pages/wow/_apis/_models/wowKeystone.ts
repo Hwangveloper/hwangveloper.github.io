@@ -38,8 +38,8 @@ export interface IWowKeystone {
   /** Master Info */
   type?: string;
   resetType?: EWowMasterResetType;
-  firstStep?: string;
-  lastStep?: string;
+  firstStep?: number;
+  lastStep?: number;
 
   /** Character Info */
   charRowIndex?: number;
@@ -81,16 +81,24 @@ export interface IWowKeystoneDungeonView {
   id: string;
   clearLevel: number;
   completeLevel: number;
+  levelFirstStep: number;
+  levelLastStep: number;
   dungeonName: string;
   charName: string;
   keystoneScore: number;
+  scoreFirstStep: number;
+  scoreLastStep: number;
 }
 
 export interface IWowKeystoneCharacterView {
   id: string;
   clearLevel: number;
   completeLevel: number;
+  levelFirstStep: number;
+  levelLastStep: number;
   dungeonName: string;
   charName: string;
   keystoneScore: number;
+  scoreFirstStep: number;
+  scoreLastStep: number;
 }

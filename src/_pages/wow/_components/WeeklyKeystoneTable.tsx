@@ -41,6 +41,16 @@ const WeeklyKeystoneTable: React.FC<WeeklyKeystoneTableProps> = ({ refetch }) =>
     refetch();
   }
 
+  const getRenderColor = (value: number, firstStep: number, lastStep: number) => {
+    if (value < firstStep) {
+      return "red";
+    } else if (value < lastStep) {
+      return "blue";
+    } else {
+      return "black";
+    }
+  }
+
   useEffect(() => {
     if (keystoneTaskList && characterList) {
       setWeeklyClears(keystoneTaskList.filter((keystone) => keystone.masterId === "WOW0"));
@@ -73,6 +83,7 @@ const WeeklyKeystoneTable: React.FC<WeeklyKeystoneTableProps> = ({ refetch }) =>
         <Table>
           <TableHead>
             <TableRow>
+              <HeaderTableCell key={"head"}></HeaderTableCell>
               {characterList.filter((char) => char.isMain === ECommonYN.Y).map((char) => (
                 <HeaderTableCell key={char.id}>{char.name}</HeaderTableCell>
               ))}
@@ -80,13 +91,15 @@ const WeeklyKeystoneTable: React.FC<WeeklyKeystoneTableProps> = ({ refetch }) =>
           </TableHead>
           <TableBody>
             <TableRow key="WOW0">
+              <TableCell key={"-"}>{"횟수"}</TableCell>
               {weeklyClears.map((clear) => (
-                <TableCell key={clear.charId} sx={{textAlign: "center"}}>{clear.value}</TableCell>
+                <TableCell key={clear.charId} sx={{textAlign: "center", color: getRenderColor(clear.value, clear.firstStep ?? 0, clear.lastStep ?? 0)}}>{clear.value}</TableCell>
               ))}
             </TableRow>
             <TableRow key="WOW1">
+              <TableCell key={"-"}>{"단수"}</TableCell>
               {weeklyLevels.map((level) => (
-                <TableCell key={level.charId} sx={{textAlign: "center"}}>{level.value}</TableCell>
+                <TableCell key={level.charId} sx={{textAlign: "center", color: getRenderColor(level.value, level.firstStep ?? 0, level.lastStep ?? 0)}}>{level.value}</TableCell>
               ))}
             </TableRow>
           </TableBody>

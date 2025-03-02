@@ -12,8 +12,8 @@ export interface IWowMasterResponse {
   name: string;
   type: string;
   resetType: string;
-  firstStep: string;
-  lastStep: string;
+  firstStep: number;
+  lastStep: number;
 }
 
 export interface IWowMaster {
@@ -24,6 +24,6 @@ export interface IWowMaster {
   name: string;
   type: string;
   resetType: EWowMasterResetType;
-  firstStep: string;
-  lastStep: string;
+  firstStep: number;
+  lastStep: number;
 }

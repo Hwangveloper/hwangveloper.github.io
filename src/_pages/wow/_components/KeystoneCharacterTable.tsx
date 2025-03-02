@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Box } from "@mui/material";
 import styled from "styled-components";
 import useWowKeystoneStore from "../_stores/useWowKeystoneStore";
 import { useShallow } from "zustand/shallow";
@@ -36,6 +36,16 @@ const KeystoneCharacterTable: React.FC<KeystoneCharacterTableProps> = ({ dungeon
 
   const [keystoneCharacterData, setKeystoneCharacterData] = useState<IWowKeystoneCharacterView[]>([]);
 
+  const getRenderColor = (value: number, firstStep: number, lastStep: number) => {
+    if (value < firstStep) {
+      return "red";
+    } else if (value < lastStep) {
+      return "blue";
+    } else {
+      return "black";
+    }
+  }
+
   useEffect(() => {
     if (keystoneTaskList && keystoneTaskList.length > 0) {
       setKeystoneCharacterData(characterList.filter((char) => char.isMain === ECommonYN.Y).map((char) => {
@@ -47,11 +57,15 @@ const KeystoneCharacterTable: React.FC<KeystoneCharacterTableProps> = ({ dungeon
           id: char.id,
           clearLevel: clearData?.value ?? 0,
           completeLevel: completeData?.value ?? 0,
+          levelFirstStep: completeData?.firstStep ?? 0,
+          levelLastStep: completeData?.lastStep ?? 0,
           dungeonName: completeData?.dungeonName ?? '',
           charName: char.name,
           keystoneScore: scoreData?.value ?? 0,
+          scoreFirstStep: scoreData?.firstStep ?? 0,
+          scoreLastStep: scoreData?.lastStep ?? 0,
         };
-      }).sort((left, right) => left.completeLevel - right.completeLevel));
+      }).sort((left, right) => left.completeLevel - right.completeLevel !== 0 ? left.completeLevel - right.completeLevel : left.clearLevel - right.clearLevel));
     }
   }, [dungeonId, keystoneTaskList, characterList]);
 
@@ -76,16 +90,30 @@ const KeystoneCharacterTable: React.FC<KeystoneCharacterTableProps> = ({ dungeon
         <TableBody>
           {keystoneCharacterData.map((row) => dungeonId === ECommonText.ALL ? (
             <TableRow key={row.id}>
-              <TableCell sx={{textAlign: "center"}}>{`${row.completeLevel}(${row.clearLevel})`}</TableCell>
+              <TableCell sx={{textAlign: "center", color: getRenderColor(row.clearLevel, row.levelFirstStep, row.levelLastStep)}}>
+                <Box component="span" sx={{color: getRenderColor(row.completeLevel, row.levelFirstStep, row.levelLastStep)}}>
+                  {`${row.completeLevel}`}
+                </Box>
+                {`(${row.clearLevel})`}
+              </TableCell>
               <TableCell>{row.dungeonName}</TableCell>
               <TableCell sx={{textAlign: "center"}}>{row.charName}</TableCell>
-              <TableCell sx={{textAlign: "center"}}>{row.keystoneScore}</TableCell>
+              <TableCell sx={{textAlign: "center", color: getRenderColor(row.keystoneScore, row.scoreFirstStep, row.scoreLastStep)}}>
+                {row.keystoneScore}
+              </TableCell>
             </TableRow>
           ) : (
             <TableRow key={row.id}>
-              <TableCell sx={{textAlign: "center"}}>{`${row.completeLevel}(${row.clearLevel})`}</TableCell>
+              <TableCell sx={{textAlign: "center", color: getRenderColor(row.clearLevel, row.levelFirstStep, row.levelLastStep)}}>
+                <Box component="span" sx={{color: getRenderColor(row.completeLevel, row.levelFirstStep, row.levelLastStep)}}>
+                  {`${row.completeLevel}`}
+                </Box>
+                {`(${row.clearLevel})`}
+              </TableCell>
               <TableCell sx={{textAlign: "center"}}>{row.charName}</TableCell>
-              <TableCell sx={{textAlign: "center"}}>{row.keystoneScore}</TableCell>
+              <TableCell sx={{textAlign: "center", color: getRenderColor(row.keystoneScore, row.scoreFirstStep, row.scoreLastStep)}}>
+                {row.keystoneScore}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
