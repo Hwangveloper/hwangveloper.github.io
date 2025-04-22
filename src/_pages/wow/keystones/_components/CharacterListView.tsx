@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Typography, IconButton, Box, Paper } from "@mui/material";
 import { useShallow } from "zustand/shallow";
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { ECommonText } from "../../../common/_constants/common";
+import { ECommonText } from "../../../../common/_constants/common";
 import { IWowKeystoneCharacterRequest } from "../_apis/_models/wowKeystone";
 import { useForm } from "react-hook-form";
-import useWowStore from "../_stores/useWowStore";
+import useWowStore from "../../_stores/useWowStore";
 import { IWowKeystoneCharacterRequestFields } from "../_constants/wowKeystone";
-import SelectInputField from "../../../common/_components/fields/SelectInputField";
+import SelectInputField from "../../../../common/_components/fields/SelectInputField";
 import KeystoneCharacterTable from "./KeystoneCharacterTable";
 
 

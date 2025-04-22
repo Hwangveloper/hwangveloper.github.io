@@ -2,7 +2,7 @@ import React from "react";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Link } from "@mui/material";
 import styled from "styled-components";
 import { useShallow } from "zustand/shallow";
-import useWowStore from "../_stores/useWowStore";
+import useWowStore from "../../_stores/useWowStore";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 import useWowCharacterOrderUpdateMutation from "../_apis/_mutations/useWowCharacterOrderUpdateMutation";
 

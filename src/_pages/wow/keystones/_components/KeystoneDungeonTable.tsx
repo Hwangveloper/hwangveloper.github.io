@@ -3,9 +3,9 @@ import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Box }
 import styled from "styled-components";
 import useWowKeystoneStore from "../_stores/useWowKeystoneStore";
 import { useShallow } from "zustand/shallow";
-import { ECommonText, ECommonYN } from "../../../common/_constants/common";
-import { IWowKeystoneCharacterView } from "../_apis/_models/wowKeystone";
-import useWowStore from "../_stores/useWowStore";
+import { ECommonText } from "../../../../common/_constants/common";
+import { IWowKeystoneDungeonView } from "../_apis/_models/wowKeystone";
+import useWowStore from "../../_stores/useWowStore";
 
 
 const HeaderTableCell = styled(TableCell)`
@@ -16,15 +16,15 @@ const HeaderTableCell = styled(TableCell)`
   }
 `;
 
-interface KeystoneCharacterTableProps {
-  dungeonId: string;
+interface KeystoneDungeonTableProps {
+  charId: string;
 }
 
-const KeystoneCharacterTable: React.FC<KeystoneCharacterTableProps> = ({ dungeonId }) => {
+const KeystoneDungeonTable: React.FC<KeystoneDungeonTableProps> = ({ charId }) => {
 
-  const { characterList } = useWowStore(
+  const { dungeonList } = useWowStore(
     useShallow((state) => ({
-      characterList: state.characterList,
+      dungeonList: state.dungeonList,
     }))
   );
 
@@ -34,7 +34,7 @@ const KeystoneCharacterTable: React.FC<KeystoneCharacterTableProps> = ({ dungeon
     }))
   );
 
-  const [keystoneCharacterData, setKeystoneCharacterData] = useState<IWowKeystoneCharacterView[]>([]);
+  const [keystoneDungeonData, setKeystoneDungeonData] = useState<IWowKeystoneDungeonView[]>([]);
 
   const getRenderColor = (value: number, firstStep: number, lastStep: number) => {
     if (value < firstStep) {
@@ -48,55 +48,55 @@ const KeystoneCharacterTable: React.FC<KeystoneCharacterTableProps> = ({ dungeon
 
   useEffect(() => {
     if (keystoneTaskList && keystoneTaskList.length > 0) {
-      setKeystoneCharacterData(characterList.filter((char) => char.isMain === ECommonYN.Y).map((char) => {
-        const allCompleteDataList = keystoneTaskList.filter((keystone) => keystone.masterId === "WOW3" && keystone.charId === char.id && (dungeonId === ECommonText.ALL || keystone.dungeonId === dungeonId));
+      setKeystoneDungeonData(dungeonList.map((dungeon) => {
+        const allCompleteDataList = keystoneTaskList.filter((keystone) => keystone.masterId === "WOW3" && keystone.dungeonId === dungeon.id && (charId === ECommonText.ALL || keystone.charId === charId));
         const completeData = allCompleteDataList.reduce((prev, curr) => curr.value < prev.value ? curr : prev, allCompleteDataList[0]);
-        const clearData = keystoneTaskList.find((keystone) => keystone.masterId === "WOW4" && keystone.charId === char.id && keystone.dungeonId === completeData.dungeonId);
-        const scoreData = keystoneTaskList.find((keystone) => keystone.masterId === "WOW2" && keystone.charId === char.id);
+        const clearData = keystoneTaskList.find((keystone) => keystone.masterId === "WOW4" && keystone.dungeonId === dungeon.id && keystone.charId === completeData.charId);
+        const scoreData = keystoneTaskList.find((keystone) => keystone.masterId === "WOW2" && keystone.charId === completeData.charId);
         return {
-          id: char.id,
+          id: dungeon.id,
           clearLevel: clearData?.value ?? 0,
           completeLevel: completeData?.value ?? 0,
           levelFirstStep: completeData?.firstStep ?? 0,
           levelLastStep: completeData?.lastStep ?? 0,
           dungeonName: completeData?.dungeonName ?? '',
-          charName: char.name,
+          charName: completeData?.charName ?? '',
           keystoneScore: scoreData?.value ?? 0,
           scoreFirstStep: scoreData?.firstStep ?? 0,
           scoreLastStep: scoreData?.lastStep ?? 0,
         };
-      }).sort((left, right) => left.completeLevel - right.completeLevel !== 0 ? left.completeLevel - right.completeLevel : left.clearLevel - right.clearLevel));
+      }).sort((left, right) => left.clearLevel - right.clearLevel));
     }
-  }, [dungeonId, keystoneTaskList, characterList]);
+  }, [charId, keystoneTaskList, dungeonList]);
 
   return (
     <TableContainer>
       <Table>
         <TableHead>
-          {dungeonId === ECommonText.ALL ?
+          {charId === ECommonText.ALL ?
             <TableRow>
-              <HeaderTableCell width={60}>최저기록</HeaderTableCell>
               <HeaderTableCell>던전</HeaderTableCell>
+              <HeaderTableCell width={60}>최저기록</HeaderTableCell>
               <HeaderTableCell>캐릭터</HeaderTableCell>
               <HeaderTableCell>점수</HeaderTableCell>
             </TableRow>
             : <TableRow>
-              <HeaderTableCell>기록</HeaderTableCell>
-              <HeaderTableCell>캐릭터</HeaderTableCell>
-              <HeaderTableCell>점수</HeaderTableCell>
+              <HeaderTableCell>던전</HeaderTableCell>
+              <HeaderTableCell>최고기록</HeaderTableCell>
+              <HeaderTableCell>시클기록</HeaderTableCell>
             </TableRow>
           }
         </TableHead>
         <TableBody>
-          {keystoneCharacterData.map((row) => dungeonId === ECommonText.ALL ? (
+          {keystoneDungeonData.map((row) => charId === ECommonText.ALL ? (
             <TableRow key={row.id}>
+              <TableCell>{row.dungeonName}</TableCell>
               <TableCell sx={{textAlign: "center", color: getRenderColor(row.clearLevel, row.levelFirstStep, row.levelLastStep)}}>
                 <Box component="span" sx={{color: getRenderColor(row.completeLevel, row.levelFirstStep, row.levelLastStep)}}>
                   {`${row.completeLevel}`}
                 </Box>
                 {`(${row.clearLevel})`}
               </TableCell>
-              <TableCell>{row.dungeonName}</TableCell>
               <TableCell sx={{textAlign: "center"}}>{row.charName}</TableCell>
               <TableCell sx={{textAlign: "center", color: getRenderColor(row.keystoneScore, row.scoreFirstStep, row.scoreLastStep)}}>
                 {row.keystoneScore}
@@ -104,16 +104,9 @@ const KeystoneCharacterTable: React.FC<KeystoneCharacterTableProps> = ({ dungeon
             </TableRow>
           ) : (
             <TableRow key={row.id}>
-              <TableCell sx={{textAlign: "center", color: getRenderColor(row.clearLevel, row.levelFirstStep, row.levelLastStep)}}>
-                <Box component="span" sx={{color: getRenderColor(row.completeLevel, row.levelFirstStep, row.levelLastStep)}}>
-                  {`${row.completeLevel}`}
-                </Box>
-                {`(${row.clearLevel})`}
-              </TableCell>
-              <TableCell sx={{textAlign: "center"}}>{row.charName}</TableCell>
-              <TableCell sx={{textAlign: "center", color: getRenderColor(row.keystoneScore, row.scoreFirstStep, row.scoreLastStep)}}>
-                {row.keystoneScore}
-              </TableCell>
+              <TableCell>{row.dungeonName}</TableCell>
+              <TableCell sx={{textAlign: "center", color: getRenderColor(row.completeLevel, row.levelFirstStep, row.levelLastStep)}}>{row.completeLevel}</TableCell>
+              <TableCell sx={{textAlign: "center", color: getRenderColor(row.clearLevel, row.levelFirstStep, row.levelLastStep)}}>{row.clearLevel}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -122,4 +115,4 @@ const KeystoneCharacterTable: React.FC<KeystoneCharacterTableProps> = ({ dungeon
   );
 };
 
-export default KeystoneCharacterTable;
+export default KeystoneDungeonTable;

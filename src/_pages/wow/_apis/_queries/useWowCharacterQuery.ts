@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { gapi } from 'gapi-script';
 import { WOW_CHARACTER_SHEET_RANGE } from "../../../../common/_constants/sheets";
 import { fnConvertTableData } from "../../../../common/_utils/sheets";
-import { IWowCharacter, IWowCharacterParams, IWowCharacterResponse } from "../_models/wowCharacter";
+import { IWowCharacter, IWowCharacterParams, IWowCharacterResponse } from "../../characters/_apis/_models/wowCharacter";
 
 
 export const useWowCharacterQuery = (params?: IWowCharacterParams) => {

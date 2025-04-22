@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import WowKeystoneTabContent from "./_components/WowKeystoneTabContent";
-import WowCharacterTabContent from "./_components/WowCharacterTabContent";
+import WowKeystoneTabContent from "./keystones/_components/WowKeystoneTabContent";
+import WowCharacterTabContent from "./characters/_components/WowCharacterTabContent";
 import useWowMasterQuery from "./_apis/_queries/useWowMasterQuery";
 import useLoader from "../../common/_stores/useLoader";
 import useWowStore from "./_stores/useWowStore";
 import useGoogleApiStore from "../../common/_stores/useGoogleApiStore";
 import { useShallow } from "zustand/shallow";
 import useWowCharacterQuery from "./_apis/_queries/useWowCharacterQuery";
-import useWowDungeonQuery from "./_apis/_queries/useWowDungeonQuery";
+import useWowDungeonQuery from "./keystones/_apis/_queries/useWowDungeonQuery";
+import WowCharacterItemTabContent from "./characterItems/_components/WowCharacterItemTabContent";
+import useWowItemLevelQuery from "./_apis/_queries/useWowItemLevelQuery";
 
 // 속성을 위한 유틸리티 함수
 const tabProps = (index: number) => ({
@@ -31,6 +33,7 @@ const WowPage: React.FC = () => {
   const { data, isFetched, isFetching } = useWowMasterQuery(authStatus ? { ignoreDelete: true } : undefined);
   const { data: charData, isFetched: isCharFetched, isFetching: isCharFetching, refetch: refetchChar } = useWowCharacterQuery(authStatus ? { ignoreDelete: true } : undefined);
   const { data: dungeonData, isFetched: isDungeonFetched, isFetching: isDungeonFetching } = useWowDungeonQuery(authStatus ? { ignoreDelete: true } : undefined);
+  const { data: itemLevels, isFetched: isItemLevelFetched, isFetching: isItemLevelFetching } = useWowItemLevelQuery(authStatus ? { } : undefined);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -59,6 +62,14 @@ const WowPage: React.FC = () => {
       });
     }
   }, [dungeonData, isDungeonFetched, isDungeonFetching]);
+
+  useEffect(() => {
+    if (itemLevels && isItemLevelFetched && !isItemLevelFetching) {
+      useWowStore.setState({
+        itemLevelList: itemLevels,
+      });
+    }
+  }, [itemLevels, isItemLevelFetched, isItemLevelFetching]);
 
   useEffect(() => {
     useLoader.setState({ isLoading: isFetching });
@@ -99,7 +110,8 @@ const WowPage: React.FC = () => {
         }}
       >
         <Tab label="쐐기" {...tabProps(0)} />
-        <Tab label="캐릭터" {...tabProps(1)} />
+        <Tab label="아이템 파밍" {...tabProps(1)} />
+        <Tab label="캐릭터" {...tabProps(2)} />
       </Tabs>
       <Box
         component={"div"}
@@ -122,6 +134,18 @@ const WowPage: React.FC = () => {
         width="100%"
       >
         {tabValue === 1 && (
+          <WowCharacterItemTabContent />
+        )}
+      </Box>
+      <Box
+        component={"div"}
+        role="tabpanel"
+        hidden={tabValue !== 2}
+        id={`vertical-tabpanel-${2}`}
+        aria-labelledby={`vertical-tab-${2}`}
+        width="100%"
+      >
+        {tabValue === 2 && (
           <WowCharacterTabContent refetch={refetchChar}/>
         )}
       </Box>

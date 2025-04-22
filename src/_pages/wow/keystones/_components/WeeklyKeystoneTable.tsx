@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Typography, IconButton, Box, Paper, TableContainer, Table, TableHead, TableRow, TableBody, TableCell } from "@mui/material";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { useShallow } from "zustand/shallow";
-import useWowStore from "../_stores/useWowStore";
+import useWowStore from "../../_stores/useWowStore";
 import styled from "styled-components";
 import useWowKeystoneStore from "../_stores/useWowKeystoneStore";
 import { IWowKeystone } from "../_apis/_models/wowKeystone";
-import { ECommonYN } from "../../../common/_constants/common";
+import { ECommonYN } from "../../../../common/_constants/common";
 
 const HeaderTableCell = styled(TableCell)`
   && {

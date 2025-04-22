@@ -1,9 +1,9 @@
 import { Dayjs } from "dayjs";
-import { IWowCharacter } from "./wowCharacter";
+import { IWowCharacter } from "../../../characters/_apis/_models/wowCharacter";
 import { IWowDungeon } from "./wowDungeon";
-import { IWowMaster } from "./wowMaster";
-import { EWowMasterResetType } from "../../_constants/wowMaster";
-import { ECommonYN } from "../../../../common/_constants/common";
+import { IWowMaster } from "../../../_apis/_models/wowMaster";
+import { EWowMasterResetType } from "../../../_constants/wowMaster";
+import { ECommonYN } from "../../../../../common/_constants/common";
 
 export interface IWowKeystoneParams {
   masterList: IWowMaster[];

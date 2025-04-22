@@ -1,4 +1,4 @@
-import { ECommonYN } from "../../../../common/_constants/common";
+import { ECommonYN } from "../../../../../common/_constants/common";
 
 export interface IWowDungeonParams {
   ignoreDelete: boolean;

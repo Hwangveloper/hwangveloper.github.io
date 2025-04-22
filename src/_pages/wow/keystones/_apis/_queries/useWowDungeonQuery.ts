@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { gapi } from 'gapi-script';
-import { WOW_DUNGEON_SHEET_RANGE } from "../../../../common/_constants/sheets";
-import { fnConvertTableData } from "../../../../common/_utils/sheets";
+import { WOW_DUNGEON_SHEET_RANGE } from "../../../../../common/_constants/sheets";
+import { fnConvertTableData } from "../../../../../common/_utils/sheets";
 import { IWowDungeon, IWowDungeonParams, IWowDungeonResponse } from "../_models/wowDungeon";
 
 
