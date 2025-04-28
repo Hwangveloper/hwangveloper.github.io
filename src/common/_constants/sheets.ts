@@ -18,6 +18,8 @@ export const WOW_CHARACTER_SHEET_UPDATE_START_ROW = 2;
 export const WOW_DUNGEON_SHEET_RANGE = 'Wow_Dungeons!A:C';
 export const WOW_ITEM_LEVEL_SHEET_RANGE = 'Wow_ItemLevels!A:B';
 export const WOW_CHAR_ITEM_SHEET_RANGE = 'Wow_CharItems!A:V';
+export const WOW_CHAR_ITEM_SHEET_UPDATE_RANGE = 'Wow_CharItems!C##:V##';
+export const WOW_CHAR_ITEM_SHEET_UPDATE_START_ROW = 2;
 
 export const PROJECT_SHEET_RANGE = 'Project!A:E';
 export const PROJECT_TASK_SHEET_RANGE = 'Project_Tasks!A:L';

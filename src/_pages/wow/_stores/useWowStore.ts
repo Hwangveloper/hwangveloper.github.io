@@ -10,7 +10,7 @@ interface WowState {
   characterList: IWowCharacter[];
   dungeonList: IWowDungeon[];
   itemLevelList: IWowItemLevel[];
-  getItemLevelsOfType: (type: EWowItemType) => IWowItemLevel[];
+  getItemLevelsOfType: (type?: EWowItemType) => IWowItemLevel[];
 }
 
 const useWowStore = create<WowState>((set, get) => ({
@@ -19,7 +19,7 @@ const useWowStore = create<WowState>((set, get) => ({
   dungeonList: [],
   itemLevelList: [],
 
-  getItemLevelsOfType: (type: EWowItemType) => {
+  getItemLevelsOfType: (type?: EWowItemType) => {
 
     const { itemLevelList } = get();
 

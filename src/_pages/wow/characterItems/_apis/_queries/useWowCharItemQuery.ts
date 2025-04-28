@@ -39,6 +39,7 @@ const covertResponseData = (res: IWowCharItemResponse[] | undefined, params?: IW
     list.push({
       charId: charItemLevels?.charId ?? "",
       charName: char.name,
+      charJob: char.job,
 
       levelRowIndex: charItemLevels?.rowIndex ?? 0,
       typeRowIndex: charItemTypes?.rowIndex ?? 0,

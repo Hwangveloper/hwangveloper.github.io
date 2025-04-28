@@ -7,9 +7,10 @@ import { EWowItemType } from "../../_constants/wowCharacterItem";
 
 interface WowWeaponTableCellProps {
   items: IWowCharItem;
+  onClickWeaponCell: (items: IWowCharItem) => void;
 }
 
-const WowWeaponTableCell: React.FC<WowWeaponTableCellProps> = ({ items }) => {
+const WowWeaponTableCell: React.FC<WowWeaponTableCellProps> = ({ items, onClickWeaponCell }) => {
 
   const { itemLevelList, getItemLevelsOfType } = useWowStore(
     useShallow((state) => ({
@@ -23,7 +24,7 @@ const WowWeaponTableCell: React.FC<WowWeaponTableCellProps> = ({ items }) => {
   const [weapon2, setWeapon2] = useState<IWowItem>();
 
   useEffect(() => {
-    if (items) {console.log(items);
+    if (items) {
       let currLevel = items.thWeapon1.level !== '' ? Number(items.thWeapon1.level) : 0;
       if (currLevel > 0) {
         setWeapon1(items.thWeapon1);
@@ -102,17 +103,17 @@ const WowWeaponTableCell: React.FC<WowWeaponTableCellProps> = ({ items }) => {
     if (!isTwoHandWeapon) {
       return (
         <>
-          <TableCell sx={{textAlign: "center", fontWeight: "600", backgroundColor: getItemUpgradeColor(weapon1), color: getItemLevelColor(weapon1)}}>
+          <TableCell onClick={() => onClickWeaponCell(items)} sx={{textAlign: "center", fontWeight: "600", backgroundColor: getItemUpgradeColor(weapon1), color: getItemLevelColor(weapon1)}}>
             {weapon1?.level}
           </TableCell>
-          <TableCell sx={{textAlign: "center", fontWeight: "600", backgroundColor: getItemUpgradeColor(weapon2), color: getItemLevelColor(weapon2)}}>
+          <TableCell onClick={() => onClickWeaponCell(items)} sx={{textAlign: "center", fontWeight: "600", backgroundColor: getItemUpgradeColor(weapon2), color: getItemLevelColor(weapon2)}}>
             {weapon2?.level}
           </TableCell>
         </>
       );
     } else {
       return (
-        <TableCell colSpan={2} sx={{textAlign: "center", fontWeight: "600", backgroundColor: getItemUpgradeColor(weapon1), color: getItemLevelColor(weapon1)}}>
+        <TableCell onClick={() => onClickWeaponCell(items)} colSpan={2} sx={{textAlign: "center", fontWeight: "600", backgroundColor: getItemUpgradeColor(weapon1), color: getItemLevelColor(weapon1)}}>
           {weapon1?.level}
         </TableCell>
       );

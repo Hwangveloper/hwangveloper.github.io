@@ -5,7 +5,12 @@ import { useShallow } from "zustand/shallow";
 import useWowCharItemStore from "../_stores/useWowCharItemStore";
 import WowItemTableCell from "./_table/WowItemTableCell";
 import WowWeaponTableCell from "./_table/WowWeaponTableCell";
-// import useWowCharacterOrderUpdateMutation from "../_apis/_mutations/useWowCharacterOrderUpdateMutation";
+import { EWowItemPartType, itemPartTypeOptions } from "../_constants/wowCharacterItem";
+import { IWowCharItem } from "../_apis/_models/wowCharacterItem";
+import useWowCharItemModalStore from "../_stores/useWowCharItemModalStore";
+import useWowCharItemUpdateMutation from "../_apis/_mutations/useWowCharItemUpdateMutation";
+import useWowCharWeaponModalStore from "../_stores/useWowCharWeaponModalStore";
+import useWowCharWeaponUpdateMutation from "../_apis/_mutations/useWowCharWeaponUpdateMutation";
 
 
 const HeaderTableCell = styled(TableCell)`
@@ -16,7 +21,11 @@ const HeaderTableCell = styled(TableCell)`
   }
 `;
 
-const WowCharacterItemTable: React.FC = () => {
+interface WowCharacterItemTableProps {
+  refetch: () => void;
+}
+
+const WowCharacterItemTable: React.FC<WowCharacterItemTableProps> = ({ refetch }) => {
 
   const { charItemList } = useWowCharItemStore(
     useShallow((state) => ({
@@ -24,48 +33,92 @@ const WowCharacterItemTable: React.FC = () => {
     }))
   );
 
+  const { mutateAsync: updateWeapon } = useWowCharWeaponUpdateMutation();
+  const { mutateAsync: updateItem } = useWowCharItemUpdateMutation();
+
+  const handleClickWeaponCell = (items: IWowCharItem) => {
+    useWowCharWeaponModalStore.getState().open({
+      items,
+      onConfirm: (request) => {
+        updateWeapon(
+          {
+            item: request,
+          },
+          {
+            onSuccess: (res) => {
+              refetch();
+            }
+          }
+        );
+      }
+    });
+  }
+
+  const handleClickItemCell = (items: IWowCharItem, partType: EWowItemPartType) => {
+    useWowCharItemModalStore.getState().open({
+      items,
+      itemPartType: partType,
+      onConfirm: (request) => {
+        updateItem(
+          {
+            item: request,
+          },
+          {
+            onSuccess: (res) => {
+              refetch();
+            }
+          }
+        );
+      }
+    });
+  }
+
+  const getItemPartTypeName = (partType: EWowItemPartType) => {
+    return itemPartTypeOptions.find((part) => partType === part.value)?.label;
+  }
+
   return (
     <TableContainer>
       <Table>
         <TableHead>
           <TableRow>
             <HeaderTableCell width={70}>이름</HeaderTableCell>
-            <HeaderTableCell colSpan={2}>무기</HeaderTableCell>
-            <HeaderTableCell>머리</HeaderTableCell>
-            <HeaderTableCell>목</HeaderTableCell>
-            <HeaderTableCell>어깨</HeaderTableCell>
-            <HeaderTableCell>등</HeaderTableCell>
-            <HeaderTableCell>가슴</HeaderTableCell>
-            <HeaderTableCell>손목</HeaderTableCell>
-            <HeaderTableCell>손</HeaderTableCell>
-            <HeaderTableCell>허리</HeaderTableCell>
-            <HeaderTableCell>다리</HeaderTableCell>
-            <HeaderTableCell>발</HeaderTableCell>
-            <HeaderTableCell>반지1</HeaderTableCell>
-            <HeaderTableCell>반지2</HeaderTableCell>
-            <HeaderTableCell>장신구1</HeaderTableCell>
-            <HeaderTableCell>장신구2</HeaderTableCell>
+            <HeaderTableCell colSpan={2}>{getItemPartTypeName(EWowItemPartType.UNDEFINED)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.HEAD)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.NECK)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.SHOULDERS)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.BACK)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.CHEST)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.WRIST)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.HANDS)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.WAIST)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.LEGS)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.FEET)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.RING1)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.RING2)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.TRINKET1)}</HeaderTableCell>
+            <HeaderTableCell>{getItemPartTypeName(EWowItemPartType.TRINKET2)}</HeaderTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {charItemList.map((row, index) => (
             <TableRow key={`${row.charId}-${index}`} >
               <TableCell sx={{textAlign: "center"}}>{row.charName}</TableCell>
-              <WowWeaponTableCell items={row} />
-              <WowItemTableCell item={row.head} />
-              <WowItemTableCell item={row.neck} />
-              <WowItemTableCell item={row.shoulders} />
-              <WowItemTableCell item={row.back} />
-              <WowItemTableCell item={row.chest} />
-              <WowItemTableCell item={row.wrist} />
-              <WowItemTableCell item={row.hands} />
-              <WowItemTableCell item={row.waist} />
-              <WowItemTableCell item={row.legs} />
-              <WowItemTableCell item={row.feet} />
-              <WowItemTableCell item={row.ring1} />
-              <WowItemTableCell item={row.ring2} />
-              <WowItemTableCell item={row.trinket1} />
-              <WowItemTableCell item={row.trinket2} />
+              <WowWeaponTableCell items={row} onClickWeaponCell={handleClickWeaponCell} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.HEAD} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.NECK} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.SHOULDERS} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.BACK} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.CHEST} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.WRIST} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.HANDS} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.WAIST} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.LEGS} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.FEET} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.RING1} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.RING2} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.TRINKET1} />
+              <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.TRINKET2} />
             </TableRow>
           ))}
         </TableBody>

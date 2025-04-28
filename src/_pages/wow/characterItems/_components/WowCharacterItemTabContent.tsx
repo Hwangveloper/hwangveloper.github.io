@@ -7,6 +7,8 @@ import useGoogleApiStore from "../../../../common/_stores/useGoogleApiStore";
 import { useShallow } from "zustand/shallow";
 import useWowStore from "../../_stores/useWowStore";
 import useWowCharItemStore from "../_stores/useWowCharItemStore";
+import UpdateCharItemModal from "./UpdateCharItemModal";
+import UpdateCharWeaponModal from "./UpdateCharWeaponModal";
 
 interface WowCharacterItemTabContentProps {
 }
@@ -60,7 +62,9 @@ const WowCharacterItemTabContent: React.FC<WowCharacterItemTabContentProps> = ()
       <Typography variant="h4" align="center" gutterBottom>
         캐릭터 아이템 목록
       </Typography>
-      <WowCharacterItemTable />
+      <WowCharacterItemTable refetch={refetchCharItem} />
+      <UpdateCharItemModal />
+      <UpdateCharWeaponModal />
     </Paper>
   );
 };
