@@ -102,3 +102,21 @@ export interface IWowKeystoneCharacterView {
   scoreFirstStep: number;
   scoreLastStep: number;
 }
+
+export interface IWowKeystoneRecordView {
+  charId: string;
+  charName: string;
+  keystoneScore: number;
+  scoreFirstStep: number;
+  scoreLastStep: number;
+
+  dungeonRecords: IWowKeystoneDungeonRecord[];
+}
+
+export interface IWowKeystoneDungeonRecord {
+  dungeonId: string;
+  clearLevel: number;
+  completeLevel: number;
+  levelFirstStep: number;
+  levelLastStep: number;
+}

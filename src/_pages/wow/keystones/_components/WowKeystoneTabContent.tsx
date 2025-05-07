@@ -11,6 +11,7 @@ import AddKeystoneResult from "./AddKeystoneResult";
 import WeeklyKeystoneTable from "./WeeklyKeystoneTable";
 import useWowKeystoneInitQuery from "../_apis/_queries/useWowKeystoneInitQuery";
 import useWowKeystoneRefreshMutation from "../_apis/_mutations/useWowKeystoneRefreshMutation";
+import KeystoneRecordTable from "./KeystoneRecordTable";
 
 const WowKeystoneTabContent: React.FC = () => {
 
@@ -76,6 +77,7 @@ const WowKeystoneTabContent: React.FC = () => {
           <CharacterListView refetch={refetch} />
         </Box>
       </Box>
+      <KeystoneRecordTable refetch={refetch} />
     </Box>
   );
 };
