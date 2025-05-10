@@ -49,10 +49,10 @@ const KeystoneDungeonTable: React.FC<KeystoneDungeonTableProps> = ({ charId }) =
   useEffect(() => {
     if (keystoneTaskList && keystoneTaskList.length > 0) {
       setKeystoneDungeonData(dungeonList.map((dungeon) => {
-        const allCompleteDataList = keystoneTaskList.filter((keystone) => keystone.masterId === "WOW3" && keystone.dungeonId === dungeon.id && (charId === ECommonText.ALL || keystone.charId === charId));
-        const completeData = allCompleteDataList.reduce((prev, curr) => curr.value < prev.value ? curr : prev, allCompleteDataList[0]);
-        const clearData = keystoneTaskList.find((keystone) => keystone.masterId === "WOW4" && keystone.dungeonId === dungeon.id && keystone.charId === completeData.charId);
-        const scoreData = keystoneTaskList.find((keystone) => keystone.masterId === "WOW2" && keystone.charId === completeData.charId);
+        const allClearDataList = keystoneTaskList.filter((keystone) => keystone.masterId === "WOW4" && keystone.dungeonId === dungeon.id && (charId === ECommonText.ALL || keystone.charId === charId));
+        const clearData = allClearDataList.reduce((prev, curr) => curr.value < prev.value ? curr : prev, allClearDataList[0]);
+        const completeData = keystoneTaskList.find((keystone) => keystone.masterId === "WOW3" && keystone.dungeonId === dungeon.id && keystone.charId === clearData.charId);
+        const scoreData = keystoneTaskList.find((keystone) => keystone.masterId === "WOW2" && keystone.charId === clearData.charId);
         return {
           id: dungeon.id,
           clearLevel: clearData?.value ?? 0,
