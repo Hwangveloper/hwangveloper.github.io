@@ -65,6 +65,7 @@ const KeystoneRecordTable: React.FC<KeystoneRecordTableProps> = ({ refetch }) =>
               clearLevel: keystoneTaskList.find((keystone) => keystone.masterId === "WOW4" && keystone.charId === char.id && keystone.dungeonId === dungeon.id)?.value ?? 0,
               levelFirstStep: keystoneTaskList.find((keystone) => keystone.masterId === "WOW3" && keystone.charId === char.id && keystone.dungeonId === dungeon.id)?.firstStep ?? 0,
               levelLastStep: keystoneTaskList.find((keystone) => keystone.masterId === "WOW3" && keystone.charId === char.id && keystone.dungeonId === dungeon.id)?.lastStep ?? 0,
+              isFavorite: keystoneTaskList.find((keystone) => keystone.masterId === "WOW5" && keystone.charId === char.id && keystone.dungeonId === dungeon.id)?.value === 1 ? true : false,
             })),
           });
         });
@@ -113,7 +114,7 @@ const KeystoneRecordTable: React.FC<KeystoneRecordTableProps> = ({ refetch }) =>
             </TableHead>
             <TableBody>
               {characterList.filter((char) => char.isMain === ECommonYN.Y).map((char) => (
-                <KeystoneRecordTableRow row={keystoneRecordMap.get(char.id)} />
+                <KeystoneRecordTableRow row={keystoneRecordMap.get(char.id)} refetch={refetch}/>
               ))}
             </TableBody>
           </Table>

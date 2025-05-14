@@ -1,39 +1,26 @@
 import { gapi } from "gapi-script";
 import { useMutation, UseMutationResult } from "react-query";
 import { ESheetValueInputOption, WOW_KEYSTONE_SHEET_UPDATE_DATETIME_RANGE, WOW_KEYSTONE_SHEET_UPDATE_RANGE, WOW_KEYSTONE_SHEET_UPDATE_START_COLUMN, WOW_KEYSTONE_SHEET_UPDATE_START_ROW } from "../../../../../common/_constants/sheets";
-import { DATETIME_FORMAT, ECommonYN } from "../../../../../common/_constants/common";
+import { DATETIME_FORMAT } from "../../../../../common/_constants/common";
 import { IWowKeystone } from "../_models/wowKeystone";
 import { IUpdateListResponse } from "../../../../../common/_models/sheets";
 import dayjs from "dayjs";
 
-interface IWowKeystoneUpdatePayload {
+interface IWowKeystoneFavoriteUpdatePayload {
   list: IWowKeystone[];
   charId: string;
   dungeonId: string;
-  level: number;
-  clearYn: ECommonYN;
-  score: number;
+  isFavorite: boolean;
 }
 
-const wowKeystoneUpdate = async (payload: IWowKeystoneUpdatePayload): Promise<IUpdateListResponse | undefined> => {
+const wowKeystoneFavoriteUpdate = async (payload: IWowKeystoneFavoriteUpdatePayload): Promise<IUpdateListResponse | undefined> => {
 
   const range = WOW_KEYSTONE_SHEET_UPDATE_RANGE;
 
-  const updateRows = payload.list.filter((keystone) => keystone.charId === payload.charId && (keystone.dungeonId === '' || keystone.dungeonId === payload.dungeonId));
+  const updateRows = payload.list.filter((keystone) => keystone.charId === payload.charId && (keystone.dungeonId === '' || keystone.dungeonId === payload.dungeonId) && keystone.masterId === "WOW5");
 
   const updateValues = updateRows.map((data) => {
-    let value = '';
-    if (data.masterId === 'WOW0') {
-      value = `${data.value + 1}`;
-    } else if (data.masterId === 'WOW1' || data.masterId === 'WOW3') {
-      value = `${data.value > payload.level ? data.value : payload.level}`;
-    } else if (data.masterId === 'WOW2') {
-      value = `${payload.score}`;
-    } else if (data.masterId === 'WOW4') {
-      value = `${(data.value < payload.level && payload.clearYn === ECommonYN.Y) ? payload.level : data.value}`;
-    } else {
-      value = `${data.value}`;
-    }
+    let value = `${payload.isFavorite ? 1 : 0}`;
     return {
       range: range.replaceAll(/([A-Z]*##)/g, `${String.fromCharCode(WOW_KEYSTONE_SHEET_UPDATE_START_COLUMN.charCodeAt(0) + (data.charRowIndex ?? 0))}${WOW_KEYSTONE_SHEET_UPDATE_START_ROW + data.rowIndex}`),
       values: [[ value ]],
@@ -58,12 +45,12 @@ const wowKeystoneUpdate = async (payload: IWowKeystoneUpdatePayload): Promise<IU
   }
 };
 
-export const useWowKeystoneUpdateMutation = (): UseMutationResult<
+export const useWowKeystoneFavoriteUpdateMutation = (): UseMutationResult<
   IUpdateListResponse | undefined,
   Error,
-  IWowKeystoneUpdatePayload
+  IWowKeystoneFavoriteUpdatePayload
 > => {
-  return useMutation(wowKeystoneUpdate);
+  return useMutation(wowKeystoneFavoriteUpdate);
 }
 
-export default useWowKeystoneUpdateMutation;
+export default useWowKeystoneFavoriteUpdateMutation;

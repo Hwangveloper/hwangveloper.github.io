@@ -119,4 +119,5 @@ export interface IWowKeystoneDungeonRecord {
   completeLevel: number;
   levelFirstStep: number;
   levelLastStep: number;
+  isFavorite: boolean;
 }
