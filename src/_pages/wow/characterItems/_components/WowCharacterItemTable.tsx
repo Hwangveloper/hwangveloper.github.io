@@ -103,7 +103,7 @@ const WowCharacterItemTable: React.FC<WowCharacterItemTableProps> = ({ refetch }
         <TableBody>
           {charItemList.map((row, index) => (
             <TableRow key={`${row.charId}-${index}`} >
-              <TableCell sx={{textAlign: "center"}}>{row.charName}</TableCell>
+              <TableCell sx={{textAlign: "center"}}>{`${row.charName}(${row.itemAverage.toFixed(1)})`}</TableCell>
               <WowWeaponTableCell items={row} onClickWeaponCell={handleClickWeaponCell} />
               <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.HEAD} />
               <WowItemTableCell items={row} onClickItemCell={handleClickItemCell} partType={EWowItemPartType.NECK} />

@@ -44,6 +44,7 @@ export interface IWowCharItem {
   charId: string;
   charName: string;
   charJob: string;
+  itemAverage: number;
 
   levelRowIndex: number;
   typeRowIndex: number;

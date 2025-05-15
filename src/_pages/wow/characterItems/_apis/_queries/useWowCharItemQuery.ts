@@ -36,10 +36,33 @@ const covertResponseData = (res: IWowCharItemResponse[] | undefined, params?: IW
     const charItemLevels = res?.find((data) => data.charId === char.id && data.dataType === EWowCharItemDataType.ITEM_LEVEL);
     const charItemTypes = res?.find((data) => data.charId === char.id && data.dataType === EWowCharItemDataType.ITEM_TYPE);
 
+    let charItemTotal = 0;
+    const weaponLevels: number[] = [];
+    weaponLevels.push(Number(charItemLevels?.thWeapon1) * 2);
+    weaponLevels.push(Number(charItemLevels?.thWeapon2) * 2);
+    weaponLevels.push(Number(charItemLevels?.ohWeapon1) + Number(charItemLevels?.ohWeapon2));
+    weaponLevels.push(Number(charItemLevels?.ohWeapon3) + Number(charItemLevels?.ohWeapon4));
+    charItemTotal += weaponLevels.reduce((prev, curr) => prev < curr ? curr : prev, 0);
+    charItemTotal += Number(charItemLevels?.head);
+    charItemTotal += Number(charItemLevels?.neck);
+    charItemTotal += Number(charItemLevels?.shoulders);
+    charItemTotal += Number(charItemLevels?.back);
+    charItemTotal += Number(charItemLevels?.chest);
+    charItemTotal += Number(charItemLevels?.wrist);
+    charItemTotal += Number(charItemLevels?.hands);
+    charItemTotal += Number(charItemLevels?.waist);
+    charItemTotal += Number(charItemLevels?.legs);
+    charItemTotal += Number(charItemLevels?.feet);
+    charItemTotal += Number(charItemLevels?.ring1);
+    charItemTotal += Number(charItemLevels?.ring2);
+    charItemTotal += Number(charItemLevels?.trinket1);
+    charItemTotal += Number(charItemLevels?.trinket2);
+
     list.push({
       charId: charItemLevels?.charId ?? "",
       charName: char.name,
       charJob: char.job,
+      itemAverage: charItemTotal / 16,
 
       levelRowIndex: charItemLevels?.rowIndex ?? 0,
       typeRowIndex: charItemTypes?.rowIndex ?? 0,
