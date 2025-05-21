@@ -66,9 +66,9 @@ const WowItemTableCell: React.FC<WowItemTableCellProps> = ({ items, partType, on
       return "#ff9900";
     } else if (lvl < 12) {
       return "#ff0000";
-    } else if (lvl < 13) {
+    } else if (lvl < 16) {
       return "#0000ff";
-    } else if (lvl < 17) {
+    } else if (lvl < 19) {
       return "#9900ff";
     } else {
       return "black";
