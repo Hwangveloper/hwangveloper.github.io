@@ -27,3 +27,8 @@ export interface IWowMaster {
   firstStep: number;
   lastStep: number;
 }
+
+export interface IWowAccountProfileParams {
+  namespace: string;
+  locale: string;
+}

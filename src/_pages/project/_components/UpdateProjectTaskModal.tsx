@@ -10,7 +10,6 @@ import { useShallow } from "zustand/shallow";
 import { useForm } from "react-hook-form";
 import TextInputField from "../../../common/_components/fields/TextInputField";
 import SelectInputField from "../../../common/_components/fields/SelectInputField";
-import dayjs from "dayjs";
 import { IProjectTaskUpdateRequest } from "../_apis/_models/projectTask";
 import { EProjectTaskPriority, EProjectTaskStatus, EProjectTaskType, EProjectTaskSaveRequestFields, taskStatusOptions, projectTaskTypeOptions, taskPriorityOptions } from "../_constants/projectTask";
 import useProjectTaskUpdateModalStore from "../_stores/useProjectTaskUpdateModalStore";
@@ -33,8 +32,8 @@ const UpdateProjectTaskModal: React.FC = () => {
     title: '',
     description: '',
     state: EProjectTaskStatus.BACKLOG,
-    startDatetime: dayjs(),
-    endDatetime: dayjs(),
+    startDatetime: undefined,
+    endDatetime: undefined,
   };
 
   const {

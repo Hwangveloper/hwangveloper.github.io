@@ -6,6 +6,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DATE_FORMAT } from '../../../common/_constants/common';
+import { EProjectTaskType } from '../_constants/projectTask';
 
 const TaskCard = styled(Card)(({ theme }) => ({
   padding: theme.spacing(1),
@@ -37,6 +38,17 @@ const ProjectTaskCard: React.FC<ProjectTaskCardProps> = ({ task, index, onUpdate
     onDelete(task);
   }
 
+  const getTypeColor = (type: EProjectTaskType) => {
+    switch (type) {
+      case EProjectTaskType.FEATURE:
+        return "green";
+      case EProjectTaskType.FIX:
+        return "red";
+      case EProjectTaskType.PLANNING:
+        return "blue";
+    }
+  }
+
   return (
     <Draggable key={task.id} draggableId={task.id} index={index}>
       {(provided) => (
@@ -46,12 +58,15 @@ const ProjectTaskCard: React.FC<ProjectTaskCardProps> = ({ task, index, onUpdate
           {...provided.dragHandleProps}
           elevation={2}
         >
-          <Typography variant="body1" component="div">
+          <Typography variant="body1" component="div" fontWeight="bold" display="flex" flexDirection="row" justifyContent="center">
             {`[${task.projectTitle}]`}
           </Typography>
+          {task.prevTaskId && <Typography variant="body2" component="div" align="right">
+            {` - ${task.prevTaskId}`}
+          </Typography>}
           <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" borderTop="1px solid black">
-            <Typography variant="h6" component="div">
-              {task.title}
+            <Typography variant="subtitle1" component="div" color={getTypeColor(task.type)}>
+              {`[${task.id}] ${task.title}`}
             </Typography>
             <Box display="flex" flexDirection="row">
               <Button size="small" onClick={handleEdit}>
@@ -67,14 +82,24 @@ const ProjectTaskCard: React.FC<ProjectTaskCardProps> = ({ task, index, onUpdate
               {task.description}
             </Typography>
             <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
-              <Chip
-                label={`${task.priority} Priority`}
-                sx={{
-                  backgroundColor: priorityColors[task.priority]?.bg,
-                  color: priorityColors[task.priority]?.color,
-                  fontWeight: 'bold',
-                }}
-              />
+              <Box display="flex" flexDirection="row" gap="4px">
+                <Chip
+                  label={task.priority}
+                  sx={{
+                    backgroundColor: priorityColors[task.priority]?.bg,
+                    color: priorityColors[task.priority]?.color,
+                    fontWeight: 'bold',
+                  }}
+                />
+                {task.label && <Chip
+                  label={task.label}
+                  sx={{
+                    backgroundColor: "#cfe2f3",
+                    color: "#0000ff",
+                    fontWeight: 'bold',
+                  }}
+                />}
+              </Box>
               <Box display="flex" flexDirection="column" alignItems="end">
                 {(task.startDatetime && task.startDatetime.isValid()) && <Typography variant="caption" color="text.secondary">
                   Start: {task.startDatetime?.format(DATE_FORMAT)}

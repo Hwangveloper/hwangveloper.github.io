@@ -58,7 +58,7 @@ const Header = () => {
         My Website
         </Typography>
         {/* 네비게이션 메뉴 */}
-        <Button color={(!pathname.includes("/wow") && !pathname.includes("project")) ? "secondary" : "inherit"} onClick={() => navigate("/")}>
+        <Button color={(!pathname.includes("/wow") && !pathname.includes("/project")) ? "secondary" : "inherit"} onClick={() => navigate("/")}>
           Home
         </Button>
         <Button color={pathname.includes("/wow") ? "secondary" : "inherit"} onClick={() => navigate("/wow")}>
@@ -80,8 +80,6 @@ const Header = () => {
                 "aria-labelledby": "account-button",
               }}
             >
-              {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-              <MenuItem onClick={handleMenuClose}>Settings</MenuItem> */}
               <MenuItem onClick={handleSignOut}>로그아웃</MenuItem>
             </Menu>
           </> :

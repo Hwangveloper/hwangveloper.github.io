@@ -17,8 +17,8 @@ const projectTaskStateUpdate = async (payload: IProjectTaskStateUpdatePayload): 
   const data = payload.item;
   const updateValues = [[
     data.state,
-    data.state === EProjectTaskStatus.DOING ? dayjs().format(DATE_FORMAT) : data.startDatetime?.format(DATE_FORMAT),
-    data.state === EProjectTaskStatus.DONE ? dayjs().format(DATE_FORMAT) : data.endDatetime?.format(DATE_FORMAT),
+    data.state === EProjectTaskStatus.DOING ? dayjs().format(DATE_FORMAT) : (data.startDatetime?.format(DATE_FORMAT) ?? ''),
+    data.state === EProjectTaskStatus.DONE ? dayjs().format(DATE_FORMAT) : (data.endDatetime?.format(DATE_FORMAT) ?? ''),
   ]];
 
   try {
