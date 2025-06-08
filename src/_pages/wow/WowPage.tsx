@@ -43,7 +43,7 @@ const WowPage: React.FC = () => {
   const { data: charData, isFetched: isCharFetched, isFetching: isCharFetching, refetch: refetchChar } = useWowCharacterQuery(authStatus ? { ignoreDelete: true } : undefined);
   const { data: dungeonData, isFetched: isDungeonFetched, isFetching: isDungeonFetching } = useWowDungeonQuery(authStatus ? { ignoreDelete: true } : undefined);
   const { data: itemLevels, isFetched: isItemLevelFetched, isFetching: isItemLevelFetching } = useWowItemLevelQuery(authStatus ? { } : undefined);
-  const { data: accountProfile } = useWowAccountProfileQuery(accessToken, {namespace: "profile-kr", locale: "ko_KR"})
+  const { data: accountProfile } = useWowAccountProfileQuery(accessToken);
 
   useEffect(() => {
     console.log(accountProfile);

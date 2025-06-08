@@ -28,7 +28,7 @@ export interface IWowMaster {
   lastStep: number;
 }
 
-export interface IWowAccountProfileParams {
-  namespace: string;
-  locale: string;
+export interface IWowMythicDungeonRecordParams {
+  realm: string;
+  charName: string;
 }

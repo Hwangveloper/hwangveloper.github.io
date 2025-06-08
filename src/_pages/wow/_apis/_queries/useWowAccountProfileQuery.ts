@@ -1,10 +1,9 @@
 import { useQuery } from "react-query";
-import { IWowAccountProfileParams } from "../_models/wowMaster";
 import axios from "axios";
 
 
-export const useWowAccountProfileQuery = (accessToken: string, params?: IWowAccountProfileParams) => {
-  return useQuery<any>(generateQueryKey(params), async () => {
+export const useWowAccountProfileQuery = (accessToken?: string) => {
+  return useQuery<any>(generateQueryKey(), async () => {
 
     const url = "https://kr.api.blizzard.com/profile/user/wow";
 
@@ -12,20 +11,22 @@ export const useWowAccountProfileQuery = (accessToken: string, params?: IWowAcco
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      params,
+      params: {
+        namespace: "profile-kr",
+        locale: "ko_KR",
+      },
     });
   }, {
-    enabled: !!params,
+    enabled: !!accessToken,
     refetchOnWindowFocus: false, // 화면 포커스 시 다시 가져오지 않음
   });
 }
 
-export const generateQueryKey = (params?: IWowAccountProfileParams) => {
+export const generateQueryKey = () => {
   return [
     "wow",
     "account",
     "profile",
-    params,
   ];
 }
 

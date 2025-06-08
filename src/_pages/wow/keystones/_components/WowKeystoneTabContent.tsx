@@ -67,7 +67,7 @@ const WowKeystoneTabContent: React.FC = () => {
 
   return (
     <Box display="flex" flexDirection="column">
-      <WeeklyKeystoneTable refetch={refetch} />
+      <WeeklyKeystoneTable />
       <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="center">
         <Box display="flex" flexDirection="column">
           <AddKeystoneResult refetch={refetch} />

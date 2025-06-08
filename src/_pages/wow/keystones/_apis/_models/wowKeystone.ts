@@ -106,6 +106,7 @@ export interface IWowKeystoneCharacterView {
 export interface IWowKeystoneRecordView {
   charId: string;
   charName: string;
+  server: string;
   keystoneScore: number;
   scoreFirstStep: number;
   scoreLastStep: number;
@@ -120,4 +121,40 @@ export interface IWowKeystoneDungeonRecord {
   levelFirstStep: number;
   levelLastStep: number;
   isFavorite: boolean;
+}
+
+export interface IWowCharacterMythicRecordResponse {
+  character: {
+    name: string;
+    realm: {
+      name: string;
+      slug: string;
+    }
+  }
+  current_mythic_rating: {
+    rating: number;
+  }
+  current_period: {
+    best_runs?: {
+      dungeon: {
+        name: string;
+        id: number;
+      }
+      is_completed_within_time: boolean;
+      keystone_level: number;
+    }[];
+  }
+}
+
+export interface IWowCharacterMythicRecord {
+  charName: string;
+  charRealm: string;
+  mythicRating: number;
+  currRuns: IWowCharacterMythicRun[];
+}
+
+export interface IWowCharacterMythicRun {
+  dungeonName: string;
+  isClear: boolean;
+  level: number;
 }

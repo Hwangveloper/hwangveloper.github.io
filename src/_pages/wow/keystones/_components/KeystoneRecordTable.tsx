@@ -56,6 +56,7 @@ const KeystoneRecordTable: React.FC<KeystoneRecordTableProps> = ({ refetch }) =>
           recordMap.set(char.id, {
             charId: char.id,
             charName: char.name,
+            server: char.server,
             keystoneScore: scoreData?.value ?? 0,
             scoreFirstStep: scoreData?.firstStep ?? 0,
             scoreLastStep: scoreData?.lastStep ?? 0,
@@ -105,7 +106,7 @@ const KeystoneRecordTable: React.FC<KeystoneRecordTableProps> = ({ refetch }) =>
         <TableContainer>
           <Table>
             <TableHead>
-              <TableRow>
+              <TableRow key={dungeonList.length}>
                 <HeaderTableCell key={"head"}></HeaderTableCell>
                 {dungeonList.map((dungeon) => (
                   <HeaderTableCell key={dungeon.id}>{dungeon.name}</HeaderTableCell>
