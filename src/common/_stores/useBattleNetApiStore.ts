@@ -12,7 +12,14 @@ interface BattleNetApiStore {
 const useBattleNetApiStore = create<BattleNetApiStore>((set) => ({
   accessToken: '', // 초기 상태
   getAuthURL: () => {
-    return `https://oauth.battle.net/authorize?client_id=${BNET_CLIENT_ID}&scope=wow.profile&redirect_uri=${BNET_REDIRECT_URL}&response_type=code&state=${uuid}`;
+    const params = new URLSearchParams({
+      client_id: BNET_CLIENT_ID ?? '',
+      redirect_uri: BNET_REDIRECT_URL ?? '',
+      response_type: 'code',
+      scope: 'wow.profile',
+      state: uuid,
+    });
+    return `https://oauth.battle.net/authorize?${params.toString()}`;
   },
 }));
 

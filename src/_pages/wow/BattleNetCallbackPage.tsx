@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import useBattleNetApiStore from '../_stores/useBattleNetApiStore';
+import useBattleNetApiStore from '../../common/_stores/useBattleNetApiStore';
 import { useShallow } from 'zustand/shallow';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ const BattleNetCallbackPage: React.FC = () => {
 
   useEffect(() => {
     if (accessToken) {
-      navigate('/wow');
+      navigate("/wow");
       return;
     }
 
