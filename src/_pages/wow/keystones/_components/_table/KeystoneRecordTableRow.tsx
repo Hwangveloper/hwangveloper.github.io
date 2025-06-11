@@ -14,8 +14,10 @@ const KeystoneRecordTableRow: React.FC<KeystoneRecordTableRowProps> = ({ row, re
   const { mutateAsync: updateKeystoneFavorite } = useWowKeystoneFavoriteUpdateMutation();
 
   const getBackgroundColor = (value: number, lastStep: number, isFavorites: boolean) => {
-    if (value < lastStep) {
+    if (value < lastStep && isFavorites) {
       return "#f4cccc";
+    } else if (value < lastStep) {
+      return "#d9ead3";
     } else if (isFavorites) {
       return "#cfe2f3";
     } else {
