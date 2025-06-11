@@ -5,12 +5,31 @@ const BNET_REDIRECT_URL = process.env.REACT_APP_BATTLE_NET_REDIRECT_URL;  // API
 const uuid = crypto.randomUUID();
 
 interface BattleNetApiStore {
+  isInit: boolean;
   accessToken: string; // 엑세스 토큰
+  setAccessToken: (token: string) => void;
+  initBattleNetToken: () => void;
   getAuthURL: () => string;
 }
 
-const useBattleNetApiStore = create<BattleNetApiStore>((set) => ({
+const useBattleNetApiStore = create<BattleNetApiStore>((set, get) => ({
+  isInit: false,
   accessToken: '', // 초기 상태
+  initBattleNetToken: () => {
+    const savedToken = localStorage.getItem("battleNetToken");
+    if (savedToken) {
+      set({
+        isInit: true,
+        accessToken: savedToken
+      });
+    } else {
+      set({isInit: true});
+    }
+  },
+  setAccessToken: (token: string) => {
+    localStorage.setItem("battleNetToken", token);
+    set({accessToken: token});
+  },
   getAuthURL: () => {
     const params = new URLSearchParams({
       client_id: BNET_CLIENT_ID ?? '',

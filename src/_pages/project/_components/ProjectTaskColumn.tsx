@@ -1,5 +1,5 @@
-import React from 'react';
-import { Typography, Paper, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Typography, Paper, Button, Box, Checkbox } from '@mui/material';
 import { styled } from '@mui/system';
 import { Droppable } from 'react-beautiful-dnd';
 import ProjectTaskCard from './ProjectTaskCard';
@@ -31,6 +31,8 @@ const ProjectTaskColumn: React.FC<ProjectTaskColumnProps> = ({ column, refetch }
 
   const { mutateAsync: deleteTask } = useProjectTaskDeleteMutation();
   const { mutateAsync: updateTask } = useProjectTaskUpdateMutation();
+
+  const [weeklyStatus, setWeeklyStatus] = useState<boolean>(true);
 
   const handleAddTask = (columnId: EProjectTaskStatus, task?: IProjectTask) => {
     useProjectTaskUpdateModalStore.getState().open({
@@ -72,8 +74,23 @@ const ProjectTaskColumn: React.FC<ProjectTaskColumnProps> = ({ column, refetch }
     <Droppable key={column.id} droppableId={column.id}>
       {(provided) => (
         <Column ref={provided.innerRef} {...provided.droppableProps} elevation={3}>
-          <Typography variant="h6">{column.title}</Typography>
-          {getList(column.id).map((task, index) => (
+          {column.id === EProjectTaskStatus.DONE ? <Box height="30px" display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Typography variant="h6">{column.title}</Typography>
+            <Box display="flex" flexDirection="row" alignItems="center">
+              <Checkbox
+                color="primary"
+                defaultChecked={weeklyStatus}
+                value={weeklyStatus}
+                size="medium"
+                autoFocus
+                onChange={(e, checked) => setWeeklyStatus(checked)}
+              />
+              <Typography>
+                {"일주일 내"}
+              </Typography>
+            </Box>
+          </Box> : <Typography height="30px" variant="h6">{column.title}</Typography>}
+          {getList(column.id, column.id === EProjectTaskStatus.DONE ? weeklyStatus : false).map((task, index) => (
            <ProjectTaskCard index={index} task={task} column={column} onUpdate={handleUpdateTask} onDelete={handleDeleteTask} />
           ))}
           {provided.placeholder}

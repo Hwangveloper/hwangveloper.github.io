@@ -31,9 +31,10 @@ const WowPage: React.FC = () => {
     }))
   );
 
-  const { accessToken } = useBattleNetApiStore(
+  const { accessToken, initBattleNetToken } = useBattleNetApiStore(
     useShallow((state) => ({
       accessToken: state.accessToken,
+      initBattleNetToken: state.initBattleNetToken,
     }))
   );
 
@@ -44,6 +45,10 @@ const WowPage: React.FC = () => {
   const { data: dungeonData, isFetched: isDungeonFetched, isFetching: isDungeonFetching } = useWowDungeonQuery(authStatus ? { ignoreDelete: true } : undefined);
   const { data: itemLevels, isFetched: isItemLevelFetched, isFetching: isItemLevelFetching } = useWowItemLevelQuery(authStatus ? { } : undefined);
   const { data: accountProfile } = useWowAccountProfileQuery(accessToken);
+
+  useEffect(() => {
+    initBattleNetToken();
+  }, [initBattleNetToken]);
 
   useEffect(() => {
     console.log(accountProfile);

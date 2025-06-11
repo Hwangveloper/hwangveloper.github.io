@@ -10,9 +10,10 @@ const HomePage: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const { accessToken } = useBattleNetApiStore(
+  const { accessToken, setAccessToken } = useBattleNetApiStore(
     useShallow((state) => ({
       accessToken: state.accessToken,
+      setAccessToken: state.setAccessToken,
     }))
   );
 
@@ -39,9 +40,7 @@ const HomePage: React.FC = () => {
           }
         );
 
-        useBattleNetApiStore.setState({
-          accessToken: response.data.access_token,
-        });
+        setAccessToken(response.data.access_token);
 
         navigate("/wow");
       } catch (error) {
@@ -50,7 +49,7 @@ const HomePage: React.FC = () => {
     };
 
     if (code) fetchToken();
-  }, [accessToken, navigate]);
+  }, [accessToken, navigate, setAccessToken]);
 
   return (
     <TodoList />
