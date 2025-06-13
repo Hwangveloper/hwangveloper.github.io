@@ -16,6 +16,7 @@ import useWowItemLevelQuery from "./_apis/_queries/useWowItemLevelQuery";
 import { Typography } from "@mui/material";
 import useBattleNetApiStore from "../../common/_stores/useBattleNetApiStore";
 import useWowAccountProfileQuery from "./_apis/_queries/useWowAccountProfileQuery";
+import WowTierStatusTabContent from "./tierStatus/_components/WowTierStatusTabContent";
 
 // 속성을 위한 유틸리티 함수
 const tabProps = (index: number) => ({
@@ -44,15 +45,19 @@ const WowPage: React.FC = () => {
   const { data: charData, isFetched: isCharFetched, isFetching: isCharFetching, refetch: refetchChar } = useWowCharacterQuery(authStatus ? { ignoreDelete: true } : undefined);
   const { data: dungeonData, isFetched: isDungeonFetched, isFetching: isDungeonFetching } = useWowDungeonQuery(authStatus ? { ignoreDelete: true } : undefined);
   const { data: itemLevels, isFetched: isItemLevelFetched, isFetching: isItemLevelFetching } = useWowItemLevelQuery(authStatus ? { } : undefined);
-  const { data: accountProfile } = useWowAccountProfileQuery(accessToken);
+  const { data: accountProfile, isFetched: isAccountFetched, isFetching: isAccountFetching } = useWowAccountProfileQuery(accessToken);
 
   useEffect(() => {
     initBattleNetToken();
   }, [initBattleNetToken]);
 
   useEffect(() => {
-    console.log(accountProfile);
-  }, [accountProfile]);
+    if (isAccountFetched && !isAccountFetching) {
+      if (!accountProfile) {
+        useBattleNetApiStore.getState().setAccessToken('');
+      }
+    }
+  }, [accountProfile, isAccountFetched, isAccountFetching]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -155,6 +160,7 @@ const WowPage: React.FC = () => {
           <Tab label="쐐기" {...tabProps(0)} />
           <Tab label="아이템 파밍" {...tabProps(1)} />
           <Tab label="캐릭터" {...tabProps(2)} />
+          <Tab label="티어룩 현황" {...tabProps(3)} />
         </Tabs>
         <Box
           component={"div"}
@@ -189,7 +195,19 @@ const WowPage: React.FC = () => {
           width="100%"
         >
           {tabValue === 2 && (
-            <WowCharacterTabContent refetch={refetchChar}/>
+            <WowCharacterTabContent refetch={refetchChar} />
+          )}
+        </Box>
+        <Box
+          component={"div"}
+          role="tabpanel"
+          hidden={tabValue !== 3}
+          id={`vertical-tabpanel-${3}`}
+          aria-labelledby={`vertical-tab-${3}`}
+          width="100%"
+        >
+          {tabValue === 3 && (
+            <WowTierStatusTabContent />
           )}
         </Box>
       </Box>
