@@ -9,6 +9,7 @@ import useProjectTaskDeleteMutation from '../_apis/_mutations/useProjectTaskDele
 import useProjectTaskUpdateModalStore from '../_stores/useProjectTaskUpdateModalStore';
 import { EProjectTaskStatus } from '../_constants/projectTask';
 import useProjectTaskUpdateMutation from '../_apis/_mutations/useProjectTaskUpdateMutation';
+import { useShallow } from 'zustand/shallow';
 
 // Styled Components
 const Column = styled(Paper)(({ theme }) => ({
@@ -27,7 +28,12 @@ interface ProjectTaskColumnProps {
 
 const ProjectTaskColumn: React.FC<ProjectTaskColumnProps> = ({ column, refetch }) => {
 
-  const { getList } = useProjectTaskStore();
+  const { currSprint, getList } = useProjectTaskStore(
+    useShallow((state) => ({
+      currSprint: state.currSprint,
+      getList: state.getList,
+    }))
+  );
 
   const { mutateAsync: deleteTask } = useProjectTaskDeleteMutation();
   const { mutateAsync: updateTask } = useProjectTaskUpdateMutation();
@@ -86,11 +92,11 @@ const ProjectTaskColumn: React.FC<ProjectTaskColumnProps> = ({ column, refetch }
                 onChange={(e, checked) => setWeeklyStatus(checked)}
               />
               <Typography>
-                {"일주일 내"}
+                {"스프린트 내"}
               </Typography>
             </Box>
           </Box> : <Typography height="30px" variant="h6">{column.title}</Typography>}
-          {getList(column.id, column.id === EProjectTaskStatus.DONE ? weeklyStatus : false).map((task, index) => (
+          {getList(column.id, (column.id === EProjectTaskStatus.BACKLOG || !weeklyStatus) ? undefined : currSprint).map((task, index) => (
            <ProjectTaskCard index={index} task={task} column={column} onUpdate={handleUpdateTask} onDelete={handleDeleteTask} />
           ))}
           {provided.placeholder}

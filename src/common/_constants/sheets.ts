@@ -25,10 +25,10 @@ export const WOW_CHAR_TIER_TRANSMOG_SHEET_UPDATE_RANGE = 'Wow_CharTierTransmog!C
 export const WOW_CHAR_TIER_TRANSMOG_SHEET_UPDATE_START_ROW = 2;
 
 export const PROJECT_SHEET_RANGE = 'Project!A:E';
-export const PROJECT_TASK_SHEET_RANGE = 'Project_Tasks!A:L';
-export const PROJECT_TASK_SHEET_UPDATE_RANGE = 'Project_Tasks!A##:L##';
+export const PROJECT_TASK_SHEET_RANGE = 'Project_Tasks!A:N';
+export const PROJECT_TASK_SHEET_UPDATE_RANGE = 'Project_Tasks!A##:N##';
 export const PROJECT_TASK_SHEET_STATE_UPDATE_RANGE = 'Project_Tasks!I##:K##';
-export const PROJECT_TASK_SHEET_DELETE_UPDATE_RANGE = 'Project_Tasks!L##';
+export const PROJECT_TASK_SHEET_DELETE_UPDATE_RANGE = 'Project_Tasks!N##';
 export const PROJECT_TASK_SHEET_UPDATE_START_ROW = 2;
 export const PROJECT_TASK_SHEET_DEFAULT_ID = 'PROJ_TASK';
 

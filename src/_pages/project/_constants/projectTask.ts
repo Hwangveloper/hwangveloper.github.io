@@ -28,6 +28,8 @@ export enum EProjectTaskSaveRequestFields {
   state = 'state',
   startDatetime = 'startDatetime',
   endDatetime = 'endDatetime',
+  sprintStartDate = 'sprintStartDate',
+  sprintEndDate = 'sprintEndDate',
 }
 
 export const taskStatusOptions = [

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Box, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, MenuItem, Select, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { IProjectTaskColumn } from '../_apis/_models/projectTask';
@@ -13,6 +13,8 @@ import useProjectTaskStore from '../_stores/useProjectTaskStore';
 import useProjectTaskStateUpdateMutation from '../_apis/_mutations/useProjectTaskStateUpdateMutation';
 import UpdateProjectTaskModal from './UpdateProjectTaskModal';
 import useProjectTaskUpdateModalStore from '../_stores/useProjectTaskUpdateModalStore';
+import { ICommonOption } from '../../../common/_models/common';
+import { DATE_FORMAT, ECommonText } from '../../../common/_constants/common';
 
 // Styled Components
 const BoardContainer = styled(Box)(({ theme }) => ({
@@ -31,8 +33,10 @@ const ProjectTaskBoard: React.FC = () => {
     }))
   );
 
-  const { getList } = useProjectTaskStore(
+  const { currSprint, sprintList, getList } = useProjectTaskStore(
     useShallow((state) => ({
+      currSprint: state.currSprint,
+      sprintList: state.sprintList,
       getList: state.getList,
     }))
   );
@@ -54,10 +58,13 @@ const ProjectTaskBoard: React.FC = () => {
 
   const { mutateAsync: updateTaskState } = useProjectTaskStateUpdateMutation();
 
+  const [sprintOptions, setSprintOptions] = useState<ICommonOption[]>([]);
+
   useEffect(() => {
     if (data && isFetched && !isFetching) {
       useProjectTaskStore.setState({
-        taskList: data,
+        taskList: data.taskList,
+        sprintList: data.sprintList,
       });
     }
   }, [data, isFetched, isFetching]);
@@ -65,6 +72,24 @@ const ProjectTaskBoard: React.FC = () => {
   useEffect(() => {
     useLoader.setState({ isLoading: isFetching });
   }, [isFetching]);
+
+  useEffect(() => {
+    if (sprintList) {
+      setSprintOptions([
+        {
+          label: '전체',
+          value: ECommonText.ALL,
+        },
+        ...sprintList.map((sprint) => {
+        const startDate = sprint.startDate.format(DATE_FORMAT);
+        const endDate = sprint.endDate.format(DATE_FORMAT);
+        return {
+          label: `${startDate} ~ ${endDate}`,
+          value: `${startDate}&${endDate}`,
+        };
+      })]);
+    }
+  }, [sprintList]);
 
   const handleDragEnd = (result: DropResult) => {
     const { draggableId: taskId, source, destination } = result;
@@ -90,11 +115,33 @@ const ProjectTaskBoard: React.FC = () => {
     );
   };
 
+  const handleChangeSprint = (sprint: string) => {
+    useProjectTaskStore.setState({
+      currSprint: sprint,
+    });
+  };
+
   return (
     <Box>
       <Typography variant="h4" align="center" gutterBottom marginTop="16px">
         프로젝트 할 일
       </Typography>
+      <Box display="flex" flexDirection="row" alignItems="center" marginX="20px" gap="10px">
+        <Typography variant="h6">스프린트</Typography>
+        <Select
+          variant="standard"
+          autoFocus
+          sx={{minWidth: "200px"}}
+          value={currSprint}
+          onChange={(e) => handleChangeSprint(e.target.value as string)}
+        >
+          {sprintOptions.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </Select>
+      </Box>
       <DragDropContext onDragEnd={handleDragEnd}>
         <BoardContainer>
           {columns.map((column) => (

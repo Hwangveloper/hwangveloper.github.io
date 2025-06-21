@@ -22,6 +22,8 @@ export interface IProjectTaskResponse {
   startDatetime: string;
   endDatetime: string;
   isDelete: string;
+  sprintStartDate: string;
+  sprintEndDate: string;
 }
 
 export interface IProjectTask {
@@ -37,9 +39,21 @@ export interface IProjectTask {
   state: EProjectTaskStatus;
   startDatetime?: Dayjs;
   endDatetime?: Dayjs;
+  sprintStartDate?: Dayjs;
+  sprintEndDate?: Dayjs;
   isDelete: ECommonYN;
 
   projectTitle?: string;
+}
+
+export interface IProjectSprint {
+  startDate: Dayjs;
+  endDate: Dayjs;
+}
+
+export interface IProjectSprintTask {
+  sprintList: IProjectSprint[];
+  taskList: IProjectTask[];
 }
 
 export interface IProjectTaskColumn {
@@ -60,6 +74,8 @@ export interface IProjectTaskUpdateRequest {
   state: string;
   startDatetime?: Dayjs;
   endDatetime?: Dayjs;
+  sprintStartDate?: Dayjs;
+  sprintEndDate?: Dayjs;
   isDelete: ECommonYN;
 }
 

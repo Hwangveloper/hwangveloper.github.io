@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Typography,
 } from "@mui/material";
 import { useShallow } from "zustand/shallow";
 import { useForm } from "react-hook-form";
@@ -18,6 +20,8 @@ import useProjectStore from "../_stores/useProjectStore";
 import { ICommonOption } from "../../../common/_models/common";
 import DatePickerField from "../../../common/_components/fields/DatePickerField";
 import { PROJECT_TASK_SHEET_DEFAULT_ID } from "../../../common/_constants/sheets";
+import { DATE_FORMAT } from "../../../common/_constants/common";
+import dayjs from "dayjs";
 
 const UpdateProjectTaskModal: React.FC = () => {
 
@@ -34,6 +38,8 @@ const UpdateProjectTaskModal: React.FC = () => {
     state: EProjectTaskStatus.BACKLOG,
     startDatetime: undefined,
     endDatetime: undefined,
+    sprintStartDate: undefined,
+    sprintEndDate: undefined,
   };
 
   const {
@@ -42,6 +48,7 @@ const UpdateProjectTaskModal: React.FC = () => {
     reset,
     setValue,
     getValues,
+    watch,
     formState: { errors },
   } = useForm<IProjectTaskUpdateRequest>({
     defaultValues, 
@@ -72,6 +79,7 @@ const UpdateProjectTaskModal: React.FC = () => {
   const [taskOptions, setTaskOptions] = useState<ICommonOption[]>([]);
 
   const { id, projectId, prevTaskId, type, label, priority, title, description, state, startDatetime, endDatetime } = getValues();
+  const { sprintStartDate, sprintEndDate } = watch();
 
   // 모달 닫기
   const handleCloseModal = () => {
@@ -101,6 +109,25 @@ const UpdateProjectTaskModal: React.FC = () => {
     }
     handleCloseModal();
   };
+
+  const handleIncreaseSprint = () => {
+    setValue(EProjectTaskSaveRequestFields.sprintStartDate, sprintStartDate?.add(1, 'week'));
+    setValue(EProjectTaskSaveRequestFields.sprintEndDate, sprintEndDate?.add(1, 'week'));
+  };
+
+  const handleDecreaseSprint = () => {
+    setValue(EProjectTaskSaveRequestFields.sprintStartDate, sprintStartDate?.subtract(1, 'week'));
+    setValue(EProjectTaskSaveRequestFields.sprintEndDate, sprintEndDate?.subtract(1, 'week'));
+  };
+
+  const handleSetSprint = () => {
+    initSprint();
+  };
+
+  const initSprint = useCallback(() => {
+    setValue(EProjectTaskSaveRequestFields.sprintStartDate, dayjs().startOf('day').subtract(4, 'day').startOf('week').add(4, 'day'));
+    setValue(EProjectTaskSaveRequestFields.sprintEndDate, dayjs().startOf('day').subtract(4, 'day').startOf('week').add(10, 'day'));
+  }, [setValue]);
 
   useEffect(() => {
     if (projectList && projectList.length > 0) {
@@ -134,10 +161,15 @@ const UpdateProjectTaskModal: React.FC = () => {
 
   useEffect(() => {
     if (taskStatus) {
-      console.log(taskStatus);
       setValue(EProjectTaskSaveRequestFields.state, taskStatus);
     }
   }, [taskStatus, setValue]);
+
+  useEffect(() => {
+    if (!projectTask) {
+      initSprint();
+    }
+  }, [projectTask, initSprint, setValue]);
 
   return (
     <Dialog open={isOpen} maxWidth="md" onClose={handleCloseModal}>
@@ -145,6 +177,18 @@ const UpdateProjectTaskModal: React.FC = () => {
       <DialogContent sx={{width: "500px"}}>
         <form name="newProjectTaskForm" onSubmit={handleSubmit(onSubmit)}>
           {/* 입력 필드 */}
+          <Box display="flex" alignItems="center" justifyContent="space-between" gap={2}>
+            <Button variant="outlined" onClick={handleDecreaseSprint}>
+              -
+            </Button>
+            {(sprintStartDate && sprintEndDate) ? <Typography variant="body1" textAlign="center">
+              {`${sprintStartDate?.format(DATE_FORMAT)} - ${sprintEndDate?.format(DATE_FORMAT)}`}
+            </Typography> : <Button variant="outlined" onClick={handleSetSprint}>스프린트 적용</Button>
+            }
+            <Button variant="outlined" onClick={handleIncreaseSprint}>
+              +
+            </Button>
+          </Box>
           <SelectInputField
             label="프로젝트"
             name={EProjectTaskSaveRequestFields.projectId}

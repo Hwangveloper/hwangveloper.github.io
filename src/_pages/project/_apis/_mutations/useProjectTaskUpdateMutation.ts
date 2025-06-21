@@ -26,6 +26,8 @@ const projectTaskUpdate = async (payload: IProjectTaskUpdatePayload): Promise<IU
     data.state,
     (data.startDatetime && data.startDatetime.isValid()) ? data.startDatetime.format(DATE_FORMAT) : '',
     (data.endDatetime && data.endDatetime.isValid()) ? data.endDatetime.format(DATE_FORMAT) : '',
+    (data.sprintStartDate && data.sprintStartDate.isValid()) ? data.sprintStartDate.format(DATE_FORMAT) : '',
+    (data.sprintEndDate && data.sprintEndDate.isValid()) ? data.sprintEndDate.format(DATE_FORMAT) : '',
     ECommonYN.N,
   ]];
 
