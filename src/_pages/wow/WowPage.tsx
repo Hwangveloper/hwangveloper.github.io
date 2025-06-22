@@ -17,6 +17,7 @@ import { Typography } from "@mui/material";
 import useBattleNetApiStore from "../../common/_stores/useBattleNetApiStore";
 import useWowAccountProfileQuery from "./_apis/_queries/useWowAccountProfileQuery";
 import WowTierStatusTabContent from "./tierStatus/_components/WowTierStatusTabContent";
+import WowAchievementTabContent from "./achievements/_components/WowAchievementTabContent";
 
 // 속성을 위한 유틸리티 함수
 const tabProps = (index: number) => ({
@@ -161,6 +162,7 @@ const WowPage: React.FC = () => {
           <Tab label="아이템 파밍" {...tabProps(1)} />
           <Tab label="캐릭터" {...tabProps(2)} />
           <Tab label="티어룩 현황" {...tabProps(3)} />
+          <Tab label="업적" {...tabProps(4)} />
         </Tabs>
         <Box
           component={"div"}
@@ -208,6 +210,18 @@ const WowPage: React.FC = () => {
         >
           {tabValue === 3 && (
             <WowTierStatusTabContent />
+          )}
+        </Box>
+        <Box
+          component={"div"}
+          role="tabpanel"
+          hidden={tabValue !== 4}
+          id={`vertical-tabpanel-${4}`}
+          aria-labelledby={`vertical-tab-${4}`}
+          width="100%"
+        >
+          {tabValue === 4 && (
+            <WowAchievementTabContent />
           )}
         </Box>
       </Box>
