@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import TextInputField from "../../../common/_components/fields/TextInputField";
 import SelectInputField from "../../../common/_components/fields/SelectInputField";
 import { IProjectTaskUpdateRequest } from "../_apis/_models/projectTask";
-import { EProjectTaskPriority, EProjectTaskStatus, EProjectTaskType, EProjectTaskSaveRequestFields, taskStatusOptions, projectTaskTypeOptions, taskPriorityOptions } from "../_constants/projectTask";
+import { EProjectTaskStatus, EProjectTaskType, EProjectTaskSaveRequestFields, taskStatusOptions, projectTaskTypeOptions, EProjectTaskWeight, taskWeightOptions } from "../_constants/projectTask";
 import useProjectTaskUpdateModalStore from "../_stores/useProjectTaskUpdateModalStore";
 import useProjectTaskStore from "../_stores/useProjectTaskStore";
 import useProjectStore from "../_stores/useProjectStore";
@@ -32,7 +32,7 @@ const UpdateProjectTaskModal: React.FC = () => {
     prevTaskId: '',
     type: EProjectTaskType.PLANNING,
     label: '',
-    priority: EProjectTaskPriority.MEDIUM,
+    weight: EProjectTaskWeight.MEDIUM,
     title: '',
     description: '',
     state: EProjectTaskStatus.BACKLOG,
@@ -78,7 +78,7 @@ const UpdateProjectTaskModal: React.FC = () => {
   const [projectOptions, setProjectOptions] = useState<ICommonOption[]>([]);
   const [taskOptions, setTaskOptions] = useState<ICommonOption[]>([]);
 
-  const { id, projectId, prevTaskId, type, label, priority, title, description, state, startDatetime, endDatetime } = getValues();
+  const { id, projectId, prevTaskId, type, label, weight, title, description, state, startDatetime, endDatetime } = getValues();
   const { sprintStartDate, sprintEndDate } = watch();
 
   // 모달 닫기
@@ -220,14 +220,14 @@ const UpdateProjectTaskModal: React.FC = () => {
             onChange={(value) => setValue(EProjectTaskSaveRequestFields.type, value)}
           />
           <SelectInputField
-            label="우선순위"
-            name={EProjectTaskSaveRequestFields.priority}
-            options={taskPriorityOptions}
+            label="분량"
+            name={EProjectTaskSaveRequestFields.weight}
+            options={taskWeightOptions}
             control={control}
-            defaultValue={priority}
-            error={!!errors.priority}
-            helperText={errors.priority?.message}
-            onChange={(value) => setValue(EProjectTaskSaveRequestFields.priority, value)}
+            defaultValue={weight}
+            error={!!errors.weight}
+            helperText={errors.weight?.message}
+            onChange={(value) => setValue(EProjectTaskSaveRequestFields.weight, value)}
           />
           <TextInputField
             label="라벨"

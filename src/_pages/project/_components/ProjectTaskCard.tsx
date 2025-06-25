@@ -1,12 +1,14 @@
 import { Box, Button, Card, CardContent, Chip, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/system';
 import { IProjectTask, IProjectTaskColumn } from '../_apis/_models/projectTask';
 import { Draggable } from 'react-beautiful-dnd';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DATE_FORMAT } from '../../../common/_constants/common';
-import { EProjectTaskType } from '../_constants/projectTask';
+import { EProjectTaskType, projectTaskTypeOptions, taskWeightOptions } from '../_constants/projectTask';
+import useProjectTaskStore from '../_stores/useProjectTaskStore';
+import { useShallow } from 'zustand/shallow';
 
 const TaskCard = styled(Card)(({ theme }) => ({
   padding: theme.spacing(1),
@@ -22,13 +24,25 @@ interface ProjectTaskCardProps {
   onDelete: (task: IProjectTask) => void;
 }
 
-const priorityColors: Record<string, { bg: string; color: string }> = {
+const weightColors: Record<string, { bg: string; color: string }> = {
   HIGH: { bg: '#ffcccc', color: '#cc0000' },
   MEDIUM: { bg: '#fff3cd', color: '#856404' },
   LOW: { bg: '#d4edda', color: '#155724' },
 };
 
 const ProjectTaskCard: React.FC<ProjectTaskCardProps> = ({ task, index, onUpdate, onDelete }) => {
+
+  const { currSprint } = useProjectTaskStore(
+    useShallow((state) => ({
+      currSprint: state.currSprint,
+    }))
+  );
+
+  const [weightText, setWeightText] = useState<string>('');
+
+  useEffect(() => {
+    setWeightText(taskWeightOptions.find((w) => w.value === task.weight)?.label ?? '');
+  }, [task.weight]);
 
   const handleEdit = () => {
     onUpdate(task);
@@ -39,14 +53,11 @@ const ProjectTaskCard: React.FC<ProjectTaskCardProps> = ({ task, index, onUpdate
   }
 
   const getTypeColor = (type: EProjectTaskType) => {
-    switch (type) {
-      case EProjectTaskType.FEATURE:
-        return "green";
-      case EProjectTaskType.FIX:
-        return "red";
-      case EProjectTaskType.PLANNING:
-        return "blue";
-    }
+    return projectTaskTypeOptions.find((status) => status.value === type)?.color ?? 'undefined';
+  }
+
+  const getSprintId = () => {
+    return `${task.sprintStartDate?.format(DATE_FORMAT)}&${task.sprintEndDate?.format(DATE_FORMAT)}`
   }
 
   return (
@@ -56,6 +67,7 @@ const ProjectTaskCard: React.FC<ProjectTaskCardProps> = ({ task, index, onUpdate
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          sx={{backgroundColor: currSprint !== getSprintId() ? "#DDDDDD" : undefined}}
           elevation={2}
         >
           <Typography variant="body1" component="div" fontWeight="bold" display="flex" flexDirection="row" justifyContent="center">
@@ -84,10 +96,10 @@ const ProjectTaskCard: React.FC<ProjectTaskCardProps> = ({ task, index, onUpdate
             <Box display="flex" justifyContent="space-between" alignItems="center" mt={2}>
               <Box display="flex" flexDirection="row" gap="4px">
                 <Chip
-                  label={task.priority}
+                  label={weightText}
                   sx={{
-                    backgroundColor: priorityColors[task.priority]?.bg,
-                    color: priorityColors[task.priority]?.color,
+                    backgroundColor: weightColors[task.weight]?.bg,
+                    color: weightColors[task.weight]?.color,
                     fontWeight: 'bold',
                   }}
                 />

@@ -45,9 +45,12 @@ const covertResponseData = (res: IProjectTaskResponse[] | undefined, params?: IP
     startDate: task.sprintStartDate,
     endDate: task.sprintEndDate,
   })) as IProjectSprint[];
-console.log(sprintList.filter((sprint) => sprint.startDate && sprint.endDate).filter((sprint, idx, self) => idx === self.findIndex((s) => s.startDate.isSame(sprint.startDate, 'day') && s.endDate.isSame(sprint.endDate, 'day'))));
+
   return {
-    sprintList: sprintList.filter((sprint) => sprint.startDate && sprint.endDate).filter((sprint, idx, self) => idx === self.findIndex((s) => s.startDate.isSame(sprint.startDate, 'day') && s.endDate.isSame(sprint.endDate, 'day'))),
+    sprintList: sprintList
+      .filter((sprint) => sprint.startDate && sprint.endDate)
+      .filter((sprint, idx, self) => idx === self.findIndex((s) => s.startDate.isSame(sprint.startDate, 'day') && s.endDate.isSame(sprint.endDate, 'day')))
+      .sort((lSprint, rSprint) => lSprint.startDate.isBefore(rSprint.startDate) ? -1 : 0),
     taskList,
   } as IProjectSprintTask;
 }

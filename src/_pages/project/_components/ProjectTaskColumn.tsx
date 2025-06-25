@@ -28,10 +28,10 @@ interface ProjectTaskColumnProps {
 
 const ProjectTaskColumn: React.FC<ProjectTaskColumnProps> = ({ column, refetch }) => {
 
-  const { currSprint, getList } = useProjectTaskStore(
+  const { currSprint, getSortedList } = useProjectTaskStore(
     useShallow((state) => ({
       currSprint: state.currSprint,
-      getList: state.getList,
+      getSortedList: state.getSortedList,
     }))
   );
 
@@ -96,7 +96,7 @@ const ProjectTaskColumn: React.FC<ProjectTaskColumnProps> = ({ column, refetch }
               </Typography>
             </Box>
           </Box> : <Typography height="30px" variant="h6">{column.title}</Typography>}
-          {getList(column.id, (column.id === EProjectTaskStatus.BACKLOG || !weeklyStatus) ? undefined : currSprint).map((task, index) => (
+          {getSortedList(column.id, (column.id === EProjectTaskStatus.BACKLOG || !weeklyStatus) ? undefined : currSprint).map((task, index) => (
            <ProjectTaskCard index={index} task={task} column={column} onUpdate={handleUpdateTask} onDelete={handleDeleteTask} />
           ))}
           {provided.placeholder}

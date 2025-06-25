@@ -1,7 +1,8 @@
 export enum EProjectTaskType {
   PLANNING = 'PLANNING',
-  FEATURE = 'FEATURE',
-  FIX = 'FIX',
+  DESIGN = 'DESIGN',
+  DEVELOPMENT = 'DEVELOPMENT',
+  TEST_FIX = 'TEST_FIX',
 }
 
 export enum EProjectTaskStatus {
@@ -11,7 +12,7 @@ export enum EProjectTaskStatus {
   BACKLOG = 'BACKLOG',
 }
 
-export enum EProjectTaskPriority {
+export enum EProjectTaskWeight {
   HIGH = 'HIGH',
   MEDIUM = 'MEDIUM',
   LOW = 'LOW',
@@ -22,7 +23,7 @@ export enum EProjectTaskSaveRequestFields {
   prevTaskId = 'prevTaskId',
   type = 'type',
   label = 'label',
-  priority = 'priority',
+  weight = 'weight',
   title = 'title',
   description = 'description',
   state = 'state',
@@ -57,36 +58,41 @@ export const taskStatusOptions = [
 
 export const projectTaskTypeOptions = [
   {
-    label: "계획",
+    label: "기획",
     value: EProjectTaskType.PLANNING,
-    color: "primary.main",
+    color: "success.main",
   },
   {
-    label: "신규",
-    value: EProjectTaskType.FEATURE,
+    label: "디자인",
+    value: EProjectTaskType.DESIGN,
     color: "secondary.main",
   },
   {
-    label: "수정",
-    value: EProjectTaskType.FIX,
-    color: "success.main",
+    label: "개발",
+    value: EProjectTaskType.DEVELOPMENT,
+    color: "primary.main",
+  },
+  {
+    label: "테스트&수정",
+    value: EProjectTaskType.TEST_FIX,
+    color: "warning.main",
   },
 ];
 
-export const taskPriorityOptions = [
+export const taskWeightOptions = [
   {
     label: "높음",
-    value: EProjectTaskPriority.HIGH,
+    value: EProjectTaskWeight.HIGH,
     color: "primary.main",
   },
   {
     label: "중간",
-    value: EProjectTaskPriority.MEDIUM,
+    value: EProjectTaskWeight.MEDIUM,
     color: "secondary.main",
   },
   {
     label: "낮음",
-    value: EProjectTaskPriority.LOW,
+    value: EProjectTaskWeight.LOW,
     color: "success.main",
   },
 ];

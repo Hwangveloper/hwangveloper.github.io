@@ -1,5 +1,5 @@
 import { Dayjs } from "dayjs";
-import { EProjectTaskPriority, EProjectTaskStatus, EProjectTaskType } from "../../_constants/projectTask";
+import { EProjectTaskWeight, EProjectTaskStatus, EProjectTaskType } from "../../_constants/projectTask";
 import { IProject } from "./project";
 import { ECommonYN } from "../../../../common/_constants/common";
 
@@ -15,7 +15,7 @@ export interface IProjectTaskResponse {
   prevTaskId: string;
   type: string;
   label: string;
-  priority: string;
+  weight: string;
   title: string;
   description: string;
   state: string;
@@ -33,7 +33,7 @@ export interface IProjectTask {
   prevTaskId: string;
   type: EProjectTaskType;
   label: string;
-  priority: EProjectTaskPriority;
+  weight: EProjectTaskWeight;
   title: string;
   description: string;
   state: EProjectTaskStatus;
@@ -68,7 +68,7 @@ export interface IProjectTaskUpdateRequest {
   prevTaskId: string;
   type: string;
   label: string;
-  priority: string;
+  weight: string;
   title: string;
   description: string;
   state: string;

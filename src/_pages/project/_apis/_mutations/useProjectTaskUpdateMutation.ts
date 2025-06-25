@@ -20,7 +20,7 @@ const projectTaskUpdate = async (payload: IProjectTaskUpdatePayload): Promise<IU
     data.prevTaskId,
     data.type,
     data.label,
-    data.priority,
+    data.weight,
     data.title,
     data.description,
     data.state,
