@@ -24,16 +24,18 @@ interface KeystoneRecordTableProps {
 
 const KeystoneRecordTable: React.FC<KeystoneRecordTableProps> = ({ refetch }) => {
 
-  const { dungeonList, characterList } = useWowStore(
+  const { masterList, dungeonList, characterList } = useWowStore(
     useShallow((state) => ({
+      masterList: state.masterList,
       dungeonList: state.dungeonList,
       characterList: state.characterList,
     }))
   );
 
-  const { keystoneTaskList } = useWowKeystoneStore(
+  const { keystoneTaskList, keystoneRecordList } = useWowKeystoneStore(
     useShallow((state) => ({
       keystoneTaskList: state.keystoneTaskList,
+      keystoneRecordList: state.keystoneRecordList,
     }))
   );
 
@@ -49,30 +51,33 @@ const KeystoneRecordTable: React.FC<KeystoneRecordTableProps> = ({ refetch }) =>
   };
 
   useEffect(() => {
-      if (keystoneTaskList && characterList && dungeonList) {
+      if (keystoneRecordList && characterList && dungeonList && masterList) {
         const recordMap = new Map<string, IWowKeystoneRecordView>();
         characterList.filter((char) => char.isMain === ECommonYN.Y).forEach((char) => {
-          const scoreData = keystoneTaskList.find((keystone) => keystone.masterId === "WOW2" && keystone.charId === char.id);
+          const charRecordList = keystoneRecordList.find((keystone) => keystone.charName === char.name);
+          const scoreData = keystoneRecordList.find((keystone) => keystone.charId === char.id);
+          const scoreMaster = masterList.find((master) => master.id === "WOW2");
+          const completeMaster = masterList.find((master) => master.id === "WOW3");
           recordMap.set(char.id, {
             charId: char.id,
             charName: char.name,
             server: char.server,
-            keystoneScore: scoreData?.value ?? 0,
-            scoreFirstStep: scoreData?.firstStep ?? 0,
-            scoreLastStep: scoreData?.lastStep ?? 0,
+            keystoneScore: scoreData?.mythicRating ?? 0,
+            scoreFirstStep: scoreMaster?.firstStep ?? 0,
+            scoreLastStep: scoreMaster?.lastStep ?? 0,
             dungeonRecords: dungeonList.map((dungeon) => ({
               dungeonId: dungeon.id,
-              completeLevel: keystoneTaskList.find((keystone) => keystone.masterId === "WOW3" && keystone.charId === char.id && keystone.dungeonId === dungeon.id)?.value ?? 0,
-              clearLevel: keystoneTaskList.find((keystone) => keystone.masterId === "WOW4" && keystone.charId === char.id && keystone.dungeonId === dungeon.id)?.value ?? 0,
-              levelFirstStep: keystoneTaskList.find((keystone) => keystone.masterId === "WOW3" && keystone.charId === char.id && keystone.dungeonId === dungeon.id)?.firstStep ?? 0,
-              levelLastStep: keystoneTaskList.find((keystone) => keystone.masterId === "WOW3" && keystone.charId === char.id && keystone.dungeonId === dungeon.id)?.lastStep ?? 0,
+              completeLevel: charRecordList?.seasonRecords.find((record) => record.dungeonId === dungeon.id)?.completeLevel ?? 0,
+              clearLevel: charRecordList?.seasonRecords.find((record) => record.dungeonId === dungeon.id)?.clearLevel ?? 0,
+              levelFirstStep: completeMaster?.firstStep ?? 0,
+              levelLastStep: completeMaster?.lastStep ?? 0,
               isFavorite: keystoneTaskList.find((keystone) => keystone.masterId === "WOW5" && keystone.charId === char.id && keystone.dungeonId === dungeon.id)?.value === 1 ? true : false,
             })),
           });
         });
         setKeystoneRecordMap(recordMap);
       }
-    }, [keystoneTaskList, characterList, dungeonList]);
+    }, [keystoneRecordList, keystoneTaskList, characterList, dungeonList, masterList]);
 
   return (
     <Paper

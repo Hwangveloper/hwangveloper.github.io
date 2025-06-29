@@ -27,8 +27,3 @@ export interface IWowMaster {
   firstStep: number;
   lastStep: number;
 }
-
-export interface IWowMythicDungeonRecordParams {
-  realm: string;
-  charName: string;
-}

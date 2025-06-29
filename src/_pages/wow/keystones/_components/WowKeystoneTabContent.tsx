@@ -7,7 +7,6 @@ import CharacterListView from "./CharacterListView";
 import useWowKeystoneQuery from "../_apis/_queries/useWowKeystoneQuery";
 import useWowKeystoneStore from "../_stores/useWowKeystoneStore";
 import useWowStore from "../../_stores/useWowStore";
-import AddKeystoneResult from "./AddKeystoneResult";
 import WeeklyKeystoneTable from "./WeeklyKeystoneTable";
 import useWowKeystoneInitQuery from "../_apis/_queries/useWowKeystoneInitQuery";
 import useWowKeystoneRefreshMutation from "../_apis/_mutations/useWowKeystoneRefreshMutation";
@@ -70,7 +69,6 @@ const WowKeystoneTabContent: React.FC = () => {
       <WeeklyKeystoneTable />
       <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="center">
         <Box display="flex" flexDirection="column">
-          <AddKeystoneResult refetch={refetch} />
           <DungeonListView refetch={refetch} />
         </Box>
         <Box>

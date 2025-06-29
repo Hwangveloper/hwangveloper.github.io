@@ -6,6 +6,8 @@ import { useShallow } from "zustand/shallow";
 import { IWowCharacter } from "../../../characters/_apis/_models/wowCharacter";
 import styled from "styled-components";
 import useWowKeystoneStore from "../../_stores/useWowKeystoneStore";
+import { CURR_SEASON_NO } from "../../_constants/wowKeystone";
+import useWowStore from "../../../_stores/useWowStore";
 
 const HeaderTableCell = styled(TableCell)`
   && {
@@ -27,13 +29,24 @@ const WeeklyKeystoneHeaderTableCell: React.FC<WeeklyKeystoneHeaderTableCellProps
     }))
   );
 
+  const { dungeonList } = useWowStore(
+    useShallow((state) => ({
+      dungeonList: state.dungeonList,
+    }))
+  );
+
   const { addCharRecord } = useWowKeystoneStore(
     useShallow((state) => ({
       addCharRecord: state.addCharRecord,
     }))
   );
 
-  const { data: charRecord } = useWowMythicDungeonRecordQuery(accessToken, {realm: char?.server ?? '', charName: char?.name ?? ''});
+  const { data: charRecord } = useWowMythicDungeonRecordQuery(accessToken, {
+    realm: char?.server ?? '',
+    charName: char?.name ?? '',
+    seasonNo: CURR_SEASON_NO,
+    dungeonList,
+  });
 
   useEffect(() => {
     if (charRecord) {

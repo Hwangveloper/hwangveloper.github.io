@@ -60,7 +60,7 @@ const covertResponseData = (res: (IWowKeystoneResponse & IWowKeystoneCharacterVa
 
         /** Dungeon Info */
         dungeonName: dungeon?.name,
-        dungeonPortal: dungeon?.portal,
+        blizzardDungeonId: dungeon?.blizzardId,
       });
     });
   });

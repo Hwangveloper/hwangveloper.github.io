@@ -22,15 +22,16 @@ interface KeystoneDungeonTableProps {
 
 const KeystoneDungeonTable: React.FC<KeystoneDungeonTableProps> = ({ charId }) => {
 
-  const { dungeonList } = useWowStore(
+  const { masterList, dungeonList } = useWowStore(
     useShallow((state) => ({
+      masterList: state.masterList,
       dungeonList: state.dungeonList,
     }))
   );
 
-  const { keystoneTaskList } = useWowKeystoneStore(
+  const { keystoneRecordList } = useWowKeystoneStore(
     useShallow((state) => ({
-      keystoneTaskList: state.keystoneTaskList,
+      keystoneRecordList: state.keystoneRecordList,
     }))
   );
 
@@ -47,27 +48,33 @@ const KeystoneDungeonTable: React.FC<KeystoneDungeonTableProps> = ({ charId }) =
   }
 
   useEffect(() => {
-    if (keystoneTaskList && keystoneTaskList.length > 0) {
+    if (keystoneRecordList && keystoneRecordList.length > 0) {
       setKeystoneDungeonData(dungeonList.map((dungeon) => {
-        const allClearDataList = keystoneTaskList.filter((keystone) => keystone.masterId === "WOW4" && keystone.dungeonId === dungeon.id && (charId === ECommonText.ALL || keystone.charId === charId));
-        const clearData = allClearDataList.reduce((prev, curr) => curr.value < prev.value ? curr : prev, allClearDataList[0]);
-        const completeData = keystoneTaskList.find((keystone) => keystone.masterId === "WOW3" && keystone.dungeonId === dungeon.id && keystone.charId === clearData.charId);
-        const scoreData = keystoneTaskList.find((keystone) => keystone.masterId === "WOW2" && keystone.charId === clearData.charId);
+        const dungeonRecordList = keystoneRecordList.map((keystone) => ({
+          charId: keystone.charId,
+          charName: keystone.charName,
+          score: keystone.mythicRating,
+          records: keystone.seasonRecords.find((record) => record.dungeonId === dungeon.id),
+        }));
+        const allClearRecordList = dungeonRecordList.filter((record) => charId === ECommonText.ALL || record.charId === charId) ?? [];
+        const recordData = allClearRecordList.reduce((prev, curr) => (curr.records?.clearLevel ?? 0) < (prev.records?.clearLevel ?? 0) ? curr : prev, allClearRecordList[0]);
+        const scoreMaster = masterList.find((master) => master.id === "WOW2");
+        const completeMaster = masterList.find((master) => master.id === "WOW3");
         return {
           id: dungeon.id,
-          clearLevel: clearData?.value ?? 0,
-          completeLevel: completeData?.value ?? 0,
-          levelFirstStep: completeData?.firstStep ?? 0,
-          levelLastStep: completeData?.lastStep ?? 0,
-          dungeonName: completeData?.dungeonName ?? '',
-          charName: completeData?.charName ?? '',
-          keystoneScore: scoreData?.value ?? 0,
-          scoreFirstStep: scoreData?.firstStep ?? 0,
-          scoreLastStep: scoreData?.lastStep ?? 0,
+          clearLevel: recordData.records?.clearLevel ?? 0,
+          completeLevel: recordData.records?.completeLevel ?? 0,
+          levelFirstStep: completeMaster?.firstStep ?? 0,
+          levelLastStep: completeMaster?.lastStep ?? 0,
+          dungeonName: dungeon.name ?? '',
+          charName: recordData.charName ?? '',
+          keystoneScore: recordData.score ?? 0,
+          scoreFirstStep: scoreMaster?.firstStep ?? 0,
+          scoreLastStep: scoreMaster?.lastStep ?? 0,
         };
       }).sort((left, right) => left.clearLevel - right.clearLevel));
     }
-  }, [charId, keystoneTaskList, dungeonList]);
+  }, [charId, keystoneRecordList, dungeonList, masterList]);
 
   return (
     <TableContainer>

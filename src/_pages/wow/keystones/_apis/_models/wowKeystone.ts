@@ -51,7 +51,7 @@ export interface IWowKeystone {
 
   /** Dungeon Info */
   dungeonName?: string;
-  dungeonPortal?: ECommonYN;
+  blizzardDungeonId?: number;
 }
 
 export interface IWowKeystoneInitResponse {
@@ -123,6 +123,13 @@ export interface IWowKeystoneDungeonRecord {
   isFavorite: boolean;
 }
 
+export interface IWowMythicDungeonRecordParams {
+  realm: string;
+  charName: string;
+  seasonNo: number;
+  dungeonList: IWowDungeon[];
+}
+
 export interface IWowCharacterMythicRecordResponse {
   character: {
     name: string;
@@ -146,15 +153,41 @@ export interface IWowCharacterMythicRecordResponse {
   }
 }
 
+export interface IWowCharacterSeasonRecordResponse {
+  best_runs?: {
+    keystone_level: number;
+    dungeon: {
+      id: number;
+      name: string;
+    }
+    is_completed_within_time: boolean;
+    mythic_rating: {
+      rating: number
+    }
+    duration: number;
+  }[];
+}
+
 export interface IWowCharacterMythicRecord {
+  charId: string;
   charName: string;
   charRealm: string;
   mythicRating: number;
   currRuns: IWowCharacterMythicRun[];
+  seasonRecords: IWowCharacterSeasonRecord[];
 }
 
 export interface IWowCharacterMythicRun {
   dungeonName: string;
   isClear: boolean;
   level: number;
+}
+
+export interface IWowCharacterSeasonRecord {
+  dungeonId: string;
+  blizzardDungeonId: number;
+  dungeonName: string;
+  clearLevel: number;
+  completeLevel: number;
+
 }

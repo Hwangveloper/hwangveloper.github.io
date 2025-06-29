@@ -26,6 +26,7 @@ export const useWowDungeonQuery = (params?: IWowDungeonParams) => {
 const covertResponseData = (res: IWowDungeonResponse[] | undefined) => {
   return res?.map((data) => ({
     ...data,
+    blizzardId: Number(data.blizzardId),
   })) as IWowDungeon[];
 }
 
