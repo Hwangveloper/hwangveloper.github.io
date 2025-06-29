@@ -62,12 +62,12 @@ const KeystoneDungeonTable: React.FC<KeystoneDungeonTableProps> = ({ charId }) =
         const completeMaster = masterList.find((master) => master.id === "WOW3");
         return {
           id: dungeon.id,
-          clearLevel: recordData.records?.clearLevel ?? 0,
-          completeLevel: recordData.records?.completeLevel ?? 0,
+          clearLevel: recordData?.records?.clearLevel ?? 0,
+          completeLevel: recordData?.records?.completeLevel ?? 0,
           levelFirstStep: completeMaster?.firstStep ?? 0,
           levelLastStep: completeMaster?.lastStep ?? 0,
           dungeonName: dungeon.name ?? '',
-          charName: recordData.charName ?? '',
+          charName: recordData?.charName ?? '',
           keystoneScore: recordData.score ?? 0,
           scoreFirstStep: scoreMaster?.firstStep ?? 0,
           scoreLastStep: scoreMaster?.lastStep ?? 0,
