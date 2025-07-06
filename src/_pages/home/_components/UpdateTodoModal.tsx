@@ -26,6 +26,7 @@ const UpdateTodoModal: React.FC = () => {
     rowIndex: undefined,
     id: undefined,
     name: '',
+    description: '',
     category: ETaskCategory.NORMAL,
     periodCount: 1,
     periodUnit: ECommonTimeUnit.DAY,
@@ -53,7 +54,7 @@ const UpdateTodoModal: React.FC = () => {
     }))
   );
 
-  const { id, name, category, periodCount, periodUnit, maxPeriodCount, maxPeriodUnit } = getValues();
+  const { id, name, description, category, periodCount, periodUnit, maxPeriodCount, maxPeriodUnit } = getValues();
 
   const { outlineList } = useHomeStore(
     useShallow((state) => ({
@@ -112,6 +113,16 @@ const UpdateTodoModal: React.FC = () => {
       <DialogContent>
         <form name="newTaskForm" onSubmit={handleSubmit(onSubmit)}>
           {/* 입력 필드 */}
+          <SelectInputField
+            label="카테고리"
+            name={IHomeOutlineUpdateRequestFields.category}
+            options={taskCategoryOptions}
+            control={control}
+            defaultValue={category}
+            error={!!errors.category}
+            helperText={errors.category?.message}
+            onChange={(value) => setValue(IHomeOutlineUpdateRequestFields.category, value)}
+          />
           <TextInputField
             label="이름"
             name={IHomeOutlineUpdateRequestFields.name}
@@ -122,15 +133,15 @@ const UpdateTodoModal: React.FC = () => {
             helperText={errors.name?.message}
             onChange={(value) => setValue(IHomeOutlineUpdateRequestFields.name, value)}
           />
-          <SelectInputField
-            label="카테고리"
-            name={IHomeOutlineUpdateRequestFields.category}
-            options={taskCategoryOptions}
+          <TextInputField
+            label="내용"
+            name={IHomeOutlineUpdateRequestFields.description}
             control={control}
-            defaultValue={category}
-            error={!!errors.category}
-            helperText={errors.category?.message}
-            onChange={(value) => setValue(IHomeOutlineUpdateRequestFields.category, value)}
+            defaultValue={description}
+            minLength={3}
+            error={!!errors.description}
+            helperText={errors.description?.message}
+            onChange={(value) => setValue(IHomeOutlineUpdateRequestFields.description, value)}
           />
           <Box display="flex" flexDirection="row" gap="8px">
             <NumberInputField

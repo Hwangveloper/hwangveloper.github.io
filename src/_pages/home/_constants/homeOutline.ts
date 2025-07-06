@@ -24,6 +24,7 @@ export enum IHomeOutlineUpdateRequestFields {
   id = 'id',
   category = 'category',
   name = 'name',
+  description = 'description',
   periodCount = 'periodCount',
   periodUnit = 'periodUnit',
   maxPeriodCount = 'maxPeriodCount',

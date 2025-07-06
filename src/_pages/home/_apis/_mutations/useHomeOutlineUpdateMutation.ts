@@ -19,6 +19,7 @@ const outlineUpdate = async (payload: IHomeOutlineUpdatePayload): Promise<IUpdat
     data.id,
     data.category,
     data.name,
+    data.description,
     `${data.periodCount}${data.periodUnit}`,
     `${data.maxPeriodCount}${data.maxPeriodUnit}`,
     data.baseDatetime?.format(DATETIME_FORMAT) ?? '',

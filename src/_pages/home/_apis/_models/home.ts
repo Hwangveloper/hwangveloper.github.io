@@ -11,6 +11,7 @@ export interface IHomeOutlineResponse {
   id: string;
   category: string;
   name: string;
+  description: string;
   period: string;
   maxPeriod: string;
   baseDatetime: string;
@@ -24,6 +25,7 @@ export interface IHomeOutline {
   taskStatus: ETaskStatus;
   category: ETaskCategory;
   name: string;
+  description: string;
   period: ICommonPeriod;
   maxPeriod: ICommonPeriod;
   baseDatetime?: Dayjs;
@@ -38,6 +40,7 @@ export interface IHomeOutlineUpdateRequest {
   id?: string;
   category: string;
   name: string;
+  description: string;
   periodCount: number;
   periodUnit: string;
   maxPeriodCount: number;

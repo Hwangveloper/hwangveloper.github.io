@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Checkbox, IconButton, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { Box, Checkbox, IconButton, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IHomeOutline } from "../_apis/_models/home";
@@ -60,22 +60,27 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, toggleTodo, updateTodo, delet
       </ListItemIcon>
       <ListItemText
         primary={
-          <Box display="flex" alignItems="center">
-            {/* Prefix Box */}
-            <Box
-              sx={{
-                backgroundColor: todo.taskStatus === ETaskStatus.DONE ? "#d3d3d3" : taskCategoryOptions.find((opt) => opt.value === todo.category)?.color,
-                color: 'white',
-                padding: '4px 8px',
-                borderRadius: '4px',
-                marginRight: '8px',
-                fontWeight: 'bold',
-              }}
-            >
-              {todo.category}
+          <Box display="flex" flexDirection="column">
+            <Box display="flex" flexDirection="row" alignItems="center" marginBottom="4px">
+              {/* Prefix Box */}
+              <Box
+                sx={{
+                  backgroundColor: todo.taskStatus === ETaskStatus.DONE ? "#d3d3d3" : taskCategoryOptions.find((opt) => opt.value === todo.category)?.color,
+                  color: 'white',
+                  padding: '4px 8px',
+                  borderRadius: '4px',
+                  marginRight: '8px',
+                  fontWeight: 'bold',
+                }}
+              >
+                {todo.category}
+              </Box>
+              {/* Text */}
+              {todo.name}
             </Box>
-            {/* Text */}
-            {todo.name}
+            {todo.description ? <Box marginBottom="4px">
+              <Typography fontSize="14px" color={todo.taskStatus === ETaskStatus.DONE ? "#d3d3d3" : "#737373"}>{todo.description}</Typography>
+            </Box> : <></>}
           </Box>
         }
         secondary={`${renderPeriod(todo.period, todo.baseDatetime ?? todo.lastDoneDatetime ?? dayjs().subtract(todo.period.period, todo.period.unit))}(${renderPeriod(todo.maxPeriod ?? todo.period, todo.baseDatetime ?? todo.lastDoneDatetime ?? dayjs().subtract(todo.period.period, todo.period.unit))})`}

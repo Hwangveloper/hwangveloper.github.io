@@ -1,7 +1,7 @@
-export const OUTLINE_SHEET_RANGE = 'Outline!A:H';
-export const OUTLINE_SHEET_UPDATE_RANGE = 'Outline!A##:H##';
-export const OUTLINE_SHEET_CHECK_UPDATE_RANGE = 'Outline!F##:G##';
-export const OUTLINE_SHEET_DELETE_RANGE = 'Outline!H##';
+export const OUTLINE_SHEET_RANGE = 'Outline!A:I';
+export const OUTLINE_SHEET_UPDATE_RANGE = 'Outline!A##:I##';
+export const OUTLINE_SHEET_CHECK_UPDATE_RANGE = 'Outline!G##:H##';
+export const OUTLINE_SHEET_DELETE_RANGE = 'Outline!I##';
 export const OUTLINE_SHEET_UPDATE_START_ROW = 2;
 export const OUTLINE_SHEET_DEFAULT_ID = 'OUTLINE';
 
