@@ -174,7 +174,7 @@ const AddKeystoneResult: React.FC<AddKeystoneResultProps> = ({ refetch }) => {
               helperText={errors.score?.message}
               onChange={(value) => setValue(IWowKeystoneSaveRequestFields.score, value)}
             />
-            </Box>
+          </Box>
           <Box flex={1} display="flex" alignItems="center">
             <CheckboxInputField
               label="시클여부"

@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import axios from "axios";
-import { IWowAchievement, IWowAchievementParams, IWowAchievementResponse } from "../_models/wowAchievement";
+import { IWowAchievement, IWowAchievementCriteria, IWowAchievementCriteriaResponse, IWowAchievementParams, IWowAchievementResponse } from "../_models/wowAchievement";
 
 
 export const useWowAchievementQuery = (accessToken?: string, params?: IWowAchievementParams) => {
@@ -30,8 +30,21 @@ const convertResponseData = (res?: IWowAchievementResponse[]) => {
     id: data?.id,
     link: data?.achievement.key.href,
     name: data?.achievement.name,
-    isCompleted: data?.criteria?.is_completed ?? false,
+    criteria: convertCriteriaData(data?.criteria),
   })) as IWowAchievement[];
+}
+
+const convertCriteriaData = (data?: IWowAchievementCriteriaResponse) => {
+  return !!data ? {
+    id: data.id,
+    amount: data.amount,
+    isCompleted: data.is_completed,
+    childCriteria: data.child_criteria?.map((child) => ({
+      id: child.id,
+      amount: child.amount,
+      isCompleted: child.is_completed,
+    })),
+  } as IWowAchievementCriteria : undefined;
 }
 
 export const generateQueryKey = (params?: IWowAchievementParams) => {

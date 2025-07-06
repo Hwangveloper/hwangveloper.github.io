@@ -17,7 +17,7 @@ import { Typography } from "@mui/material";
 import useBattleNetApiStore from "../../common/_stores/useBattleNetApiStore";
 import useWowAccountProfileQuery from "./_apis/_queries/useWowAccountProfileQuery";
 import WowTierStatusTabContent from "./tierStatus/_components/WowTierStatusTabContent";
-import WowAchievementTabContent from "./achievements/_components/WowAchievementTabContent";
+import WowTaskTabContent from "./tasks/_components/WowTaskTabContent";
 
 // 속성을 위한 유틸리티 함수
 const tabProps = (index: number) => ({
@@ -159,10 +159,10 @@ const WowPage: React.FC = () => {
           }}
         >
           <Tab label="쐐기" {...tabProps(0)} />
-          <Tab label="아이템 파밍" {...tabProps(1)} />
-          <Tab label="캐릭터" {...tabProps(2)} />
+          <Tab label="할 일" {...tabProps(1)} />
+          <Tab label="아이템 파밍" {...tabProps(2)} />
           <Tab label="티어룩 현황" {...tabProps(3)} />
-          <Tab label="업적" {...tabProps(4)} />
+          <Tab label="캐릭터" {...tabProps(4)} />
         </Tabs>
         <Box
           component={"div"}
@@ -185,7 +185,7 @@ const WowPage: React.FC = () => {
           width="100%"
         >
           {tabValue === 1 && (
-            <WowCharacterItemTabContent />
+            <WowTaskTabContent />
           )}
         </Box>
         <Box
@@ -197,7 +197,7 @@ const WowPage: React.FC = () => {
           width="100%"
         >
           {tabValue === 2 && (
-            <WowCharacterTabContent refetch={refetchChar} />
+            <WowCharacterItemTabContent />
           )}
         </Box>
         <Box
@@ -221,7 +221,7 @@ const WowPage: React.FC = () => {
           width="100%"
         >
           {tabValue === 4 && (
-            <WowAchievementTabContent />
+            <WowCharacterTabContent refetch={refetchChar} />
           )}
         </Box>
       </Box>

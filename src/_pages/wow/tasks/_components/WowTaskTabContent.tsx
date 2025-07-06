@@ -4,13 +4,16 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { useShallow } from "zustand/shallow";
 import useWowAchievementQuery from "../_apis/_queries/useWowAchievementQuery";
 import useBattleNetApiStore from "../../../../common/_stores/useBattleNetApiStore";
-import useWowAchievementStore from "../stores/useWowAchievementStore";
-import WowAchievementTable from "./WowAchievementTable";
+import useWowTaskStore from "../stores/useWowTaskStore";
+import WowTaskTable from "./WowTaskTable";
+import AddWowTask from "./AddWowTask";
+import useWowTaskQuery from "../_apis/_queries/useWowTaskQuery";
+import useLoader from "../../../../common/_stores/useLoader";
 
-interface WowAchievementTabContentProps {
+interface WowTaskTabContentProps {
 }
 
-const WowAchievementTabContent: React.FC<WowAchievementTabContentProps> = () => {
+const WowTaskTabContent: React.FC<WowTaskTabContentProps> = () => {
 
   const { accessToken } = useBattleNetApiStore(
     useShallow((state) => ({
@@ -22,17 +25,31 @@ const WowAchievementTabContent: React.FC<WowAchievementTabContentProps> = () => 
     realm: "azshara",
     charName: "기분탓이죠",
   });
+  const { data: wowTasks, isFetched, isFetching, refetch: refetchTasks } = useWowTaskQuery({ignoreDelete: true});
 
   useEffect(() => {
     if (achievements && isAchievementsFetched && !isAchievementsFetching) {
-      useWowAchievementStore.setState({
+      useWowTaskStore.setState({
         achievementList: achievements,
       });
     }
   }, [achievements, isAchievementsFetched, isAchievementsFetching]);
 
+  useEffect(() => {
+    if (wowTasks && isFetched && !isFetching) {
+      useWowTaskStore.setState({
+        taskList: wowTasks
+      });
+    }
+  }, [wowTasks, isFetched, isFetching]);
+
+  useEffect(() => {
+    useLoader.setState({ isLoading: isFetching });
+  }, [isFetching]);
+
   const handleRefresh = () => {
     refetchAchievements();
+    refetchTasks();
   }
 
   return (
@@ -53,12 +70,13 @@ const WowAchievementTabContent: React.FC<WowAchievementTabContentProps> = () => 
           <RefreshIcon />
         </IconButton>
       </Box>
+      <AddWowTask refetch={refetchTasks} />
       <Typography variant="h4" align="center" gutterBottom>
-        업적 리스트
+        와우 할 일 리스트
       </Typography>
-      <WowAchievementTable refetch={refetchAchievements} />
+      <WowTaskTable />
     </Paper>
   );
 };
 
-export default WowAchievementTabContent;
+export default WowTaskTabContent;
