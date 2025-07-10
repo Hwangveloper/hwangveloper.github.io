@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useShallow } from "zustand/shallow";
 import useWowTaskStore from "../stores/useWowTaskStore";
 import WowTaskTableRow from "./_tables/WowTaskTableRow";
+import { IWowTask } from "../_apis/_models/wowTask";
 
 
 const HeaderTableCell = styled(TableCell)`
@@ -15,9 +16,10 @@ const HeaderTableCell = styled(TableCell)`
 `;
 
 interface WowTaskTableProps {
+  onDelete: (task?: IWowTask) => void;
 }
 
-const WowTaskTable: React.FC<WowTaskTableProps> = () => {
+const WowTaskTable: React.FC<WowTaskTableProps> = ({ onDelete }) => {
 
   const { taskList } = useWowTaskStore(
     useShallow((state) => ({
@@ -39,7 +41,7 @@ const WowTaskTable: React.FC<WowTaskTableProps> = () => {
         </TableHead>
         <TableBody>
           {taskList.map((row) => (
-            <WowTaskTableRow key={`${row.id}`} row={row} />
+            <WowTaskTableRow key={`${row.id}`} row={row} onDelete={onDelete} />
           ))}
         </TableBody>
       </Table>

@@ -6,12 +6,14 @@ import { useShallow } from "zustand/shallow";
 import useWowAchievementInfoQuery from "../../_apis/_queries/useWowAchievementInfoQuery";
 import useWowTaskStore from "../../stores/useWowTaskStore";
 import { IWowAchievement, IWowAchievementCriteria } from "../../_apis/_models/wowAchievement";
+import useConfirmDialog from "../../../../../common/_stores/useConfirmDialog";
 
 interface WowTaskTableRowProps {
   row?: IWowTask;
+  onDelete: (task?: IWowTask) => void;
 }
 
-const WowTaskTableRow: React.FC<WowTaskTableRowProps> = ({ row }) => {
+const WowTaskTableRow: React.FC<WowTaskTableRowProps> = ({ row, onDelete }) => {
 
   const { accessToken } = useBattleNetApiStore(
     useShallow((state) => ({
@@ -31,10 +33,17 @@ const WowTaskTableRow: React.FC<WowTaskTableRowProps> = ({ row }) => {
 
   useEffect(() => {
     if (achievementList && row) {
-      console.log(achievementList.find((achv) => achv.id === Number(row.blizzardId)));
       setAchievementStatus(achievementList.find((achv) => achv.id === row.blizzardId));
     }
   }, [achievementList, row]);
+
+  const handleClickRow = () => {
+    useConfirmDialog.setState({
+      isOpen: true,
+      message: `${achievement?.name} 항목을 삭제하시겠습니까?`,
+      onConfirm: () => onDelete(row),
+    });
+  }
 
   const renderCriteria = (criteriaStatus?: IWowAchievementCriteria, criteriaInfo?: IWowAchievementCriteria) => {
     return (
@@ -45,7 +54,7 @@ const WowTaskTableRow: React.FC<WowTaskTableRowProps> = ({ row }) => {
   }
 
   return (
-    <TableRow key={`${row?.charId}${row?.blizzardId}`}>
+    <TableRow key={`${row?.charId}${row?.blizzardId}`} onClick={() => handleClickRow()}>
       <TableCell key={row?.charId}>{row?.charId}</TableCell>
       <TableCell key={row?.category}>{row?.category}</TableCell>
       <TableCell key={achievement?.name}>{achievement?.name}</TableCell>

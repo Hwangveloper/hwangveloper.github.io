@@ -9,6 +9,8 @@ import WowTaskTable from "./WowTaskTable";
 import AddWowTask from "./AddWowTask";
 import useWowTaskQuery from "../_apis/_queries/useWowTaskQuery";
 import useLoader from "../../../../common/_stores/useLoader";
+import useWowTaskDeleteMutation from "../_apis/_mutations/useWowTaskDeleteMutation";
+import { IWowTask } from "../_apis/_models/wowTask";
 
 interface WowTaskTabContentProps {
 }
@@ -26,6 +28,7 @@ const WowTaskTabContent: React.FC<WowTaskTabContentProps> = () => {
     charName: "기분탓이죠",
   });
   const { data: wowTasks, isFetched, isFetching, refetch: refetchTasks } = useWowTaskQuery({ignoreDelete: true});
+  const { mutateAsync: deleteTask } = useWowTaskDeleteMutation();
 
   useEffect(() => {
     if (achievements && isAchievementsFetched && !isAchievementsFetching) {
@@ -52,6 +55,19 @@ const WowTaskTabContent: React.FC<WowTaskTabContentProps> = () => {
     refetchTasks();
   }
 
+  const deleteItem = (task?: IWowTask) => {
+    deleteTask(
+      {
+        deleteItem: task,
+      },
+      {
+        onSuccess: (res) => {
+          refetchTasks();
+        }
+      }
+    )
+  }
+
   return (
     <Paper
       elevation={3}
@@ -74,7 +90,7 @@ const WowTaskTabContent: React.FC<WowTaskTabContentProps> = () => {
       <Typography variant="h4" align="center" gutterBottom>
         와우 할 일 리스트
       </Typography>
-      <WowTaskTable />
+      <WowTaskTable onDelete={(task) => deleteItem(task)}/>
     </Paper>
   );
 };

@@ -5,6 +5,7 @@ import { useShallow } from "zustand/shallow";
 import useWowStore from "../../_stores/useWowStore";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 import useWowCharacterOrderUpdateMutation from "../_apis/_mutations/useWowCharacterOrderUpdateMutation";
+import { IWowCharacter } from "../_apis/_models/wowCharacter";
 
 
 const HeaderTableCell = styled(TableCell)`
@@ -15,7 +16,11 @@ const HeaderTableCell = styled(TableCell)`
   }
 `;
 
-const WowCharacterTable: React.FC = () => {
+interface WowCharacterTableProps {
+  refetch: () => void;
+}
+
+const WowCharacterTable: React.FC<WowCharacterTableProps> = ({ refetch }) => {
 
   const { characterList } = useWowStore(
     useShallow((state) => ({
@@ -30,38 +35,39 @@ const WowCharacterTable: React.FC = () => {
     if (!destination) return;
     if (source.index === destination.index) return;
 
-    const sourceChar = characterList[source.index];
-    const destChar = characterList[destination.index];
+    const sourceOrder = characterList[source.index].order;
+    const destOrder = characterList[destination.index].order
+
+    var updatedCharList: IWowCharacter[] = [];
+    if (sourceOrder < destOrder) {
+      updatedCharList = characterList.filter((char) => char.order >= sourceOrder && char.order <= destOrder);
+      updatedCharList = updatedCharList.map((char) => ({
+        ...char,
+        order: char.order === sourceOrder ? destOrder : char.order - 1,
+      }))
+    } else {
+      updatedCharList = characterList.filter((char) => char.order >= destOrder && char.order <= sourceOrder);
+      updatedCharList = updatedCharList.map((char) => ({
+        ...char,
+        order: char.order === sourceOrder ? destOrder : char.order + 1,
+      }))
+    }
 
     updateCharacterOrder(
       {
-        list: characterList.filter((char) => char.id === sourceChar.id || char.id === destChar.id).map((char) => ({
-          rowIndex: char.rowIndex,
-          order: char.id === sourceChar.id ? destChar.order : (char.id === destChar.id ? sourceChar.order : 0),
-        }))
+        list: updatedCharList,
       },
       {
         onSuccess: (res) => {
-          useWowStore.setState({
-            characterList: characterList.map((char) => {
-              if (char.id === sourceChar.id) {
-                return {
-                  ...char,
-                  order: destChar.order,
-                };
-              } else if (char.id === destChar.id) {
-                return {
-                  ...char,
-                  order: sourceChar.order,
-                };
-              }
-              return char;
-            }).sort((left, right) => left.order - right.order)
-          });
+          refetch();
         }
       }
     );
   };
+
+  const getCharUrl = (serverName: string, charName: string): string => {
+    return `https://worldofwarcraft.blizzard.com/ko-kr/character/kr/${serverName}/${charName}`;
+  }
 
   return (
     <TableContainer>
@@ -82,7 +88,7 @@ const WowCharacterTable: React.FC = () => {
             {(provided) => (
               <TableBody ref={provided.innerRef} {...provided.droppableProps}>
                 {characterList.map((row, index) => (
-                  <Draggable key={row.id} draggableId={`${index}`} index={index}>
+                  <Draggable key={row.id} draggableId={row.id} index={index}>
                     {(provided, snapshot) => (
                       <TableRow
                         key={row.id}
@@ -100,7 +106,7 @@ const WowCharacterTable: React.FC = () => {
                         <TableCell sx={{textAlign: "center"}}>{row.job}</TableCell>
                         <TableCell sx={{textAlign: "center"}}>{row.tribe}</TableCell>
                         <TableCell sx={{textAlign: "center"}}>{row.server}</TableCell>
-                        <TableCell sx={{textAlign: "center"}}><Link href={row.link} target="_blank">링크</Link></TableCell>
+                        <TableCell sx={{textAlign: "center"}}><Link href={getCharUrl(row.server, row.name)} target="_blank">링크</Link></TableCell>
                       </TableRow>
                     )}
                   </Draggable>

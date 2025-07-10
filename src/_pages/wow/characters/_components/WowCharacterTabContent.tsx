@@ -34,7 +34,7 @@ const WowCharacterTabContent: React.FC<WowCharacterTabContentProps> = ({ refetch
       <Typography variant="h4" align="center" gutterBottom>
         캐릭터 목록
       </Typography>
-      <WowCharacterTable />
+      <WowCharacterTable refetch={refetch} />
     </Paper>
   );
 };
