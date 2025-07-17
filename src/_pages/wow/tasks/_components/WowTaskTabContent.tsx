@@ -11,6 +11,9 @@ import useWowTaskQuery from "../_apis/_queries/useWowTaskQuery";
 import useLoader from "../../../../common/_stores/useLoader";
 import useWowTaskDeleteMutation from "../_apis/_mutations/useWowTaskDeleteMutation";
 import { IWowTask } from "../_apis/_models/wowTask";
+import useWowMountQuery from "../_apis/_queries/useWowMountQuery";
+import useWowPetQuery from "../_apis/_queries/useWowPetQuery";
+import useWowToyQuery from "../_apis/_queries/useWowToyQuery";
 
 interface WowTaskTabContentProps {
 }
@@ -23,10 +26,13 @@ const WowTaskTabContent: React.FC<WowTaskTabContentProps> = () => {
     }))
   );
 
-  const { data: achievements, isFetched: isAchievementsFetched, isFetching: isAchievementsFetching, refetch: refetchAchievements } = useWowAchievementQuery(accessToken, {
+  const { data: achievements, isFetched: isAchievementsFetched, isFetching: isAchievementsFetching } = useWowAchievementQuery(accessToken, {
     realm: "azshara",
     charName: "기분탓이죠",
   });
+  const { data: mounts, isFetched: isMountsFetched, isFetching: isMountsFetching } = useWowMountQuery(accessToken);
+  const { data: pets, isFetched: isPetsFetched, isFetching: isPetsFetching } = useWowPetQuery(accessToken);
+  const { data: toys, isFetched: isToysFetched, isFetching: isToysFetching } = useWowToyQuery(accessToken);
   const { data: wowTasks, isFetched, isFetching, refetch: refetchTasks } = useWowTaskQuery({ignoreDelete: true});
   const { mutateAsync: deleteTask } = useWowTaskDeleteMutation();
 
@@ -39,6 +45,30 @@ const WowTaskTabContent: React.FC<WowTaskTabContentProps> = () => {
   }, [achievements, isAchievementsFetched, isAchievementsFetching]);
 
   useEffect(() => {
+    if (mounts && isMountsFetched && !isMountsFetching) {
+      useWowTaskStore.setState({
+        mountList: mounts,
+      });
+    }
+  }, [mounts, isMountsFetched, isMountsFetching]);
+
+  useEffect(() => {
+    if (pets && isPetsFetched && !isPetsFetching) {
+      useWowTaskStore.setState({
+        petList: pets,
+      });
+    }
+  }, [pets, isPetsFetched, isPetsFetching]);
+
+  useEffect(() => {
+    if (toys && isToysFetched && !isToysFetching) {
+      useWowTaskStore.setState({
+        toyList: toys,
+      });
+    }
+  }, [toys, isToysFetched, isToysFetching]);
+
+  useEffect(() => {
     if (wowTasks && isFetched && !isFetching) {
       useWowTaskStore.setState({
         taskList: wowTasks
@@ -47,11 +77,10 @@ const WowTaskTabContent: React.FC<WowTaskTabContentProps> = () => {
   }, [wowTasks, isFetched, isFetching]);
 
   useEffect(() => {
-    useLoader.setState({ isLoading: isFetching });
-  }, [isFetching]);
+    useLoader.setState({ isLoading: isFetching || isAchievementsFetching || isMountsFetching || isPetsFetching || isToysFetching });
+  }, [isFetching, isAchievementsFetching, isMountsFetching, isPetsFetching, isToysFetching]);
 
   const handleRefresh = () => {
-    refetchAchievements();
     refetchTasks();
   }
 

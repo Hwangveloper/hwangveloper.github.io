@@ -43,7 +43,7 @@ const WowPage: React.FC = () => {
   const [tabValue, setTabValue] = useState<number>(0);
 
   const { data, isFetched, isFetching } = useWowMasterQuery(authStatus ? { ignoreDelete: true } : undefined);
-  const { data: charData, isFetched: isCharFetched, isFetching: isCharFetching, refetch: refetchChar } = useWowCharacterQuery(authStatus ? { ignoreDelete: true } : undefined);
+  const { data: charData, isFetched: isCharFetched, isFetching: isCharFetching, refetch: refetchChar } = useWowCharacterQuery(accessToken, authStatus ? { ignoreDelete: true } : undefined);
   const { data: dungeonData, isFetched: isDungeonFetched, isFetching: isDungeonFetching } = useWowDungeonQuery(authStatus ? { ignoreDelete: true } : undefined);
   const { data: itemLevels, isFetched: isItemLevelFetched, isFetching: isItemLevelFetching } = useWowItemLevelQuery(authStatus ? { } : undefined);
   const { data: accountProfile, isFetched: isAccountFetched, isFetching: isAccountFetching } = useWowAccountProfileQuery(accessToken);

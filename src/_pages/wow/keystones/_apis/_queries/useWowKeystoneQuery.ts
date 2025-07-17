@@ -55,7 +55,6 @@ const covertResponseData = (res: (IWowKeystoneResponse & IWowKeystoneCharacterVa
         charId: char.id,
         charName: char.name,
         charJob: char.job,
-        charLink: char.link,
         charOrder: char.order,
 
         /** Dungeon Info */

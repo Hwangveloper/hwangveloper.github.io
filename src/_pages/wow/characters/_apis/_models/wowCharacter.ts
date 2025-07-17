@@ -4,6 +4,25 @@ export interface IWowCharacterParams {
   ignoreDelete: boolean;
 }
 
+export interface IWowUserInfoResponse {
+  characters: {
+    id: number;
+    name: string;
+    realm: {
+      slug: string;
+    }
+    playable_class: {
+      name: string;
+    }
+    playable_race: {
+      name: string;
+    }
+    faction: {
+      name: string;
+    }
+  }[];
+}
+
 export interface IWowCharacterResponse {
   rowIndex: number;
   id: string;
@@ -13,6 +32,7 @@ export interface IWowCharacterResponse {
   job: string;
   tribe: string;
   server: string;
+  faction: string;
   link: string;
 }
 
@@ -21,11 +41,12 @@ export interface IWowCharacter {
   id: string;
   order: number;
   isMain: ECommonYN;
+
+  blizzardId: number;
   name: string;
   job: string;
   tribe: string;
   server: string;
-  link: string;
 }
 
 export interface IWowCharacterOrderUpdateRequest {

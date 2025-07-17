@@ -47,7 +47,6 @@ export interface IWowKeystone {
   charOrder?: number;
   charName?: string;
   charJob?: string;
-  charLink?: string;
 
   /** Dungeon Info */
   dungeonName?: string;

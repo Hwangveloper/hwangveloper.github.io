@@ -2,10 +2,11 @@ import { useQuery } from "react-query";
 import { gapi } from 'gapi-script';
 import { WOW_CHARACTER_SHEET_RANGE } from "../../../../common/_constants/sheets";
 import { fnConvertTableData } from "../../../../common/_utils/sheets";
-import { IWowCharacter, IWowCharacterParams, IWowCharacterResponse } from "../../characters/_apis/_models/wowCharacter";
+import { IWowCharacter, IWowCharacterParams, IWowCharacterResponse, IWowUserInfoResponse } from "../../characters/_apis/_models/wowCharacter";
+import axios from "axios";
 
 
-export const useWowCharacterQuery = (params?: IWowCharacterParams) => {
+export const useWowCharacterQuery = (accessToken?: string, params?: IWowCharacterParams) => {
   return useQuery<IWowCharacter[] | undefined>(generateQueryKey(params), async () => {
     if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
       const response = await gapi.client.sheets.spreadsheets.values.get({
@@ -13,21 +14,49 @@ export const useWowCharacterQuery = (params?: IWowCharacterParams) => {
         range: WOW_CHARACTER_SHEET_RANGE,
       });
 
-      return covertResponseData(fnConvertTableData<IWowCharacterResponse>(response.result.values));
+      const res = fnConvertTableData<IWowCharacterResponse>(response.result.values);
+      
+      const infoUrl = `https://kr.api.blizzard.com/profile/user/wow`;
+
+      const charInfoResp = await axios.get(infoUrl, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          namespace: "profile-kr",
+          locale: "ko_KR",
+        },
+      });
+
+      return convertResponseData(res, charInfoResp.data)
     } else {
       return undefined;
     }
   }, {
-    enabled: !!params,
+    enabled: !!accessToken && !!params,
     refetchOnWindowFocus: false, // 화면 포커스 시 다시 가져오지 않음
   });
 }
 
-const covertResponseData = (res: IWowCharacterResponse[] | undefined) => {
-  return res?.map((data) => ({
-    ...data,
-    order: Number(data.order),
-  })).sort((left, right) => left.order - right.order) as IWowCharacter[];
+const convertResponseData = (res: IWowCharacterResponse[] | undefined, infoRes?: IWowUserInfoResponse) => {
+  return res?.map((data) => {
+    const idSplit = data.id.split("@");
+    const charName = idSplit[0];
+    var serverName = "azshara";
+    if (idSplit.length === 2) {
+      serverName = idSplit[1];
+    }
+    const info = infoRes?.characters.find((info) => info.name === charName && info.realm.slug === serverName);
+    return {
+      ...data,
+      order: Number(data.order),
+      blizzardId: info?.id ?? 0,
+      name: info?.name ?? '',
+      job: info?.playable_class.name ?? '',
+      tribe: info?.playable_race.name ?? '',
+      server: info?.realm.slug ?? '',
+    }
+  }).sort((left, right) => left.order - right.order) as IWowCharacter[];
 }
 
 export const generateQueryKey = (params?: IWowCharacterParams) => {
