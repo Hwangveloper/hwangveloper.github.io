@@ -25,10 +25,7 @@ export const useWowTaskQuery = (params?: IWowTaskParams) => {
 }
 
 const covertResponseData = (res: IWowTaskResponse[] | undefined, params?: IWowTaskParams) => {
-  return res?.filter((data) => !(params?.ignoreDelete) || data.isDeleted === ECommonYN.N).map((data) => ({
-    ...data,
-    blizzardId: Number(data.blizzardId),
-  })) as IWowTask[];
+  return res?.filter((data) => !(params?.ignoreDelete) || data.isDeleted === ECommonYN.N) as IWowTask[];
 }
 
 export const generateQueryKey = (params?: IWowTaskParams) => {

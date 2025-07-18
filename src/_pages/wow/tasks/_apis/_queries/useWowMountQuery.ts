@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import axios from "axios";
-import { IWowMount, IWowMountInfoResponse, IWowMountResponse } from "../_models/wowMount";
+import { IWowMount, IWowCharMountResponse, IWowMountResponse } from "../_models/wowMount";
 
 
 export const useWowMountQuery = (accessToken?: string) => {
@@ -28,14 +28,6 @@ export const useWowMountQuery = (accessToken?: string) => {
       },
     });
 
-    // 탈것 전체 목록
-    // https://kr.api.blizzard.com/data/wow/mount/index?namespace=static-kr&locale=ko_KR
-    // 특정 탈것의 정보
-    // https://kr.api.blizzard.com/data/wow/mount/${mountId}?namespace=static-kr&locale=ko_KR
-    // 수집한 탈것 목록
-    // https://kr.api.blizzard.com/profile/user/wow/collections/mounts?namespace=profile-kr&locale=ko_KR
-    
-
     return convertResponseData(response.data, collectResp.data);
   }, {
     enabled: !!accessToken,
@@ -43,11 +35,11 @@ export const useWowMountQuery = (accessToken?: string) => {
   });
 }
 
-const convertResponseData = (res?: IWowMountInfoResponse, collectResp?: IWowMountResponse) => {
+const convertResponseData = (res?: IWowMountResponse, collectResp?: IWowCharMountResponse) => {
   return res?.mounts.map((data) => ({
     id: data?.id,
     name: data?.name,
-    is_collected: collectResp?.mounts.find((coll) => coll.mount.id === data.id) !== null ? true : false,
+    is_collected: !!collectResp?.mounts.find((coll) => coll.mount.id === data.id) ? true : false,
   })) as IWowMount[];
 }
 

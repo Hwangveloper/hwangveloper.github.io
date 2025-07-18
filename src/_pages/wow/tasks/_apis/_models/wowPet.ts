@@ -1,4 +1,8 @@
-export interface IWowPetResponse {
+export interface IWowPetInfoParams {
+  petId?: number;
+}
+
+export interface IWowCharPetResponse {
   pets: {
     species: {
       id: number;
@@ -18,11 +22,20 @@ export interface IWowPetResponse {
   }[];
 }
 
-export interface IWowPetInfoResponse {
+export interface IWowPetResponse {
   pets: {
     id: number;
     name: string;
   }[];
+}
+
+export interface IWowPetInfoResponse {
+  id: number;
+  name: string;
+  description: string;
+  source: {
+    name: string;
+  }
 }
 
 export interface IWowPet {
@@ -33,4 +46,11 @@ export interface IWowPet {
     qualityName: string;
     isFavorite: boolean;
   }[];
+}
+
+export interface IWowPetInfo {
+  id: number;
+  name: string;
+  description: string;
+  source: string;
 }

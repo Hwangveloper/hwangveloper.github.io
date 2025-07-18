@@ -5,7 +5,6 @@ import { useShallow } from "zustand/shallow";
 import useWowStore from "../../_stores/useWowStore";
 import { ECommonYN } from "../../../../common/_constants/common";
 import { useForm } from "react-hook-form";
-import NumberInputField from "../../../../common/_components/fields/NumberInputField";
 import useSimpleDialog from "../../../../common/_stores/useSimpleDialog";
 import useLoader from "../../../../common/_stores/useLoader";
 import { ICommonOption } from "../../../../common/_models/common";
@@ -14,6 +13,7 @@ import { IWowTaskSaveRequest } from "../_apis/_models/wowTask";
 import useWowTaskCreateMutation from "../_apis/_mutations/useWowTaskCreateMutation";
 import useWowTaskStore from "../stores/useWowTaskStore";
 import { WOW_TASK_SHEET_DEFAULT_ID } from "../../../../common/_constants/sheets";
+import TextInputField from "../../../../common/_components/fields/TextInputField";
 
 interface AddWowTaskProps {
   refetch: () => void;
@@ -28,7 +28,7 @@ const AddWowTask: React.FC<AddWowTaskProps> = ({ refetch }) => {
     category: EWowTaskCategory.ACHIEVEMENT,
     frequency: '',
     type: '',
-    blizzardId: undefined,
+    idOrName: '',
   };
 
   const {
@@ -55,7 +55,7 @@ const AddWowTask: React.FC<AddWowTaskProps> = ({ refetch }) => {
 
   const { mutateAsync: createTask } = useWowTaskCreateMutation();
 
-  const { charId, category, blizzardId } = getValues();
+  const { charId, category, idOrName } = getValues();
 
   const [charOptions, setCharOptions] = useState<ICommonOption[]>([]);
 
@@ -138,15 +138,15 @@ const AddWowTask: React.FC<AddWowTaskProps> = ({ refetch }) => {
           />
         </Box>
         <Box display="flex" flexDirection="row" gap="12px">
-          <NumberInputField
-            label="블리자드 ID"
-            name={IWowTaskSaveRequestFields.blizzardId}
+          <TextInputField
+            label="블리자드ID / 펫이름 / 장난감이름"
+            name={IWowTaskSaveRequestFields.idOrName}
             control={control}
-            defaultValue={blizzardId}
+            defaultValue={idOrName}
             minLength={1}
-            error={!!errors.blizzardId}
-            helperText={errors.blizzardId?.message}
-            onChange={(value) => setValue(IWowTaskSaveRequestFields.blizzardId, value)}
+            error={!!errors.idOrName}
+            helperText={errors.idOrName?.message}
+            onChange={(value) => setValue(IWowTaskSaveRequestFields.idOrName, value)}
           />
           <Button type="submit" form="newWowTask" onClick={onSubmit} color="primary" variant="contained" sx={{width: '100px', margin: '12px 0'}}>
             저장

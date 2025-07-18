@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { gapi } from 'gapi-script';
 import { WOW_CHARACTER_SHEET_RANGE } from "../../../../common/_constants/sheets";
 import { fnConvertTableData } from "../../../../common/_utils/sheets";
-import { IWowCharacter, IWowCharacterParams, IWowCharacterResponse, IWowUserInfoResponse } from "../../characters/_apis/_models/wowCharacter";
+import { IWowCharacter, IWowCharacterParams, IWowCharacterResponse, IWowUserInfoCharacterResponse, IWowUserInfoResponse } from "../../characters/_apis/_models/wowCharacter";
 import axios from "axios";
 
 
@@ -46,7 +46,11 @@ const convertResponseData = (res: IWowCharacterResponse[] | undefined, infoRes?:
     if (idSplit.length === 2) {
       serverName = idSplit[1];
     }
-    const info = infoRes?.characters.find((info) => info.name === charName && info.realm.slug === serverName);
+    var accountCharacters: IWowUserInfoCharacterResponse[] = [];
+    infoRes?.wow_accounts.forEach((account) => {
+      accountCharacters.concat(account.characters)
+    })
+    const info = infoRes?.wow_accounts[0].characters.find((info) => info.name === charName && info.realm.slug === serverName);
     return {
       ...data,
       order: Number(data.order),

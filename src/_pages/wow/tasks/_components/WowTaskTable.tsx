@@ -3,8 +3,12 @@ import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from
 import styled from "styled-components";
 import { useShallow } from "zustand/shallow";
 import useWowTaskStore from "../stores/useWowTaskStore";
-import WowTaskTableRow from "./_tables/WowTaskTableRow";
+import WowAchievementTaskTableRow from "./_tables/WowAchievementTaskTableRow";
 import { IWowTask } from "../_apis/_models/wowTask";
+import { EWowTaskCategory } from "../_constants/wowTask";
+import WowMountTaskTableRow from "./_tables/WowMountTaskTableRow";
+import WowPetTaskTableRow from "./_tables/WowPetTaskTableRow";
+import WowToyTaskTableRow from "./_tables/WowToyTaskTableRow";
 
 
 const HeaderTableCell = styled(TableCell)`
@@ -40,9 +44,19 @@ const WowTaskTable: React.FC<WowTaskTableProps> = ({ onDelete }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {taskList.map((row) => (
-            <WowTaskTableRow key={`${row.id}`} row={row} onDelete={onDelete} />
-          ))}
+          {taskList.map((row) => {
+            switch (row.category) {
+              case EWowTaskCategory.ACHIEVEMENT:
+                return <WowAchievementTaskTableRow key={`${row.id}`} row={row} onDelete={onDelete} />;
+              case EWowTaskCategory.MOUNT:
+                return <WowMountTaskTableRow key={`${row.id}`} row={row} onDelete={onDelete} />;
+              case EWowTaskCategory.PET:
+                return <WowPetTaskTableRow key={`${row.id}`} row={row} onDelete={onDelete} />;
+              case EWowTaskCategory.TOY:
+                return <WowToyTaskTableRow key={`${row.id}`} row={row} onDelete={onDelete} />;
+            }
+            return <></>;
+          })}
         </TableBody>
       </Table>
     </TableContainer>

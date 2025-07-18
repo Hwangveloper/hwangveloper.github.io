@@ -8,12 +8,12 @@ import useWowTaskStore from "../../stores/useWowTaskStore";
 import { IWowAchievement, IWowAchievementCriteria } from "../../_apis/_models/wowAchievement";
 import useConfirmDialog from "../../../../../common/_stores/useConfirmDialog";
 
-interface WowTaskTableRowProps {
+interface WowAchievementTaskTableRowProps {
   row?: IWowTask;
   onDelete: (task?: IWowTask) => void;
 }
 
-const WowTaskTableRow: React.FC<WowTaskTableRowProps> = ({ row, onDelete }) => {
+const WowAchievementTaskTableRow: React.FC<WowAchievementTaskTableRowProps> = ({ row, onDelete }) => {
 
   const { accessToken } = useBattleNetApiStore(
     useShallow((state) => ({
@@ -27,13 +27,13 @@ const WowTaskTableRow: React.FC<WowTaskTableRowProps> = ({ row, onDelete }) => {
     }))
   );
 
-  const { data: achievement } = useWowAchievementInfoQuery(accessToken, {achievementId: row?.blizzardId});
+  const { data: achievement } = useWowAchievementInfoQuery(accessToken, {achievementId: Number(row?.term)});
 
   const [achievementStatus, setAchievementStatus] = useState<IWowAchievement>();
 
   useEffect(() => {
     if (achievementList && row) {
-      setAchievementStatus(achievementList.find((achv) => achv.id === row.blizzardId));
+      setAchievementStatus(achievementList.find((achv) => achv.id === Number(row.term)));
     }
   }, [achievementList, row]);
 
@@ -54,12 +54,12 @@ const WowTaskTableRow: React.FC<WowTaskTableRowProps> = ({ row, onDelete }) => {
   }
 
   return (
-    <TableRow key={`${row?.charId}${row?.blizzardId}`} onClick={() => handleClickRow()}>
+    <TableRow key={`${row?.charId}${row?.term}`} onClick={() => handleClickRow()}>
       <TableCell key={row?.charId}>{row?.charId}</TableCell>
       <TableCell key={row?.category}>{row?.category}</TableCell>
       <TableCell key={achievement?.name}>{achievement?.name}</TableCell>
       <TableCell key={achievement?.description}>{achievement?.description}</TableCell>
-      <TableCell key={row?.blizzardId}>
+      <TableCell key={row?.term}>
         <Box display="flex" flexDirection="column">
           {achievement?.criteria.childCriteria ? achievement?.criteria.childCriteria?.map((child, idx) => renderCriteria(achievementStatus?.criteria.childCriteria?.[idx], child)) : renderCriteria(achievementStatus?.criteria, achievement?.criteria)}
         </Box>
@@ -68,4 +68,4 @@ const WowTaskTableRow: React.FC<WowTaskTableRowProps> = ({ row, onDelete }) => {
   );
 };
 
-export default WowTaskTableRow;
+export default WowAchievementTaskTableRow;

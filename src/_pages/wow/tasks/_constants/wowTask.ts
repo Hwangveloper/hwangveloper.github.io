@@ -12,7 +12,7 @@ export enum IWowTaskSaveRequestFields {
   category = 'category',
   frequency = 'frequency',
   type = 'type',
-  blizzardId = 'blizzardId',
+  idOrName = 'idOrName',
 }
 
 export const taskCategoryOptions = [

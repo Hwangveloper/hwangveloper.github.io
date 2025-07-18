@@ -20,7 +20,7 @@ const useWowTaskCreate = async (payload: IWowTaskCreatePayload): Promise<IUpdate
     "none",
     "normal",
     data.category,
-    data.blizzardId,
+    data.idOrName,
     ECommonYN.N,
   ]];
 

@@ -12,7 +12,7 @@ export interface IWowTaskResponse {
   frequency: string;
   type: string;
   category: string;
-  blizzardId: number;
+  term: string;
   isDeleted: string;
 }
 
@@ -23,7 +23,7 @@ export interface IWowTask {
   frequency: string;
   type: string;
   category: EWowTaskCategory;
-  blizzardId: number;
+  term: string;
   isDeleted: ECommonYN;
 }
 
@@ -34,5 +34,5 @@ export interface IWowTaskSaveRequest {
   category: string;
   frequency: string;
   type: string;
-  blizzardId?: number;
+  idOrName?: string;
 }

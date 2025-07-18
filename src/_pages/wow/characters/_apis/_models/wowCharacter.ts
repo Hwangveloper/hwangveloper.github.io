@@ -5,22 +5,26 @@ export interface IWowCharacterParams {
 }
 
 export interface IWowUserInfoResponse {
-  characters: {
-    id: number;
-    name: string;
-    realm: {
-      slug: string;
-    }
-    playable_class: {
-      name: string;
-    }
-    playable_race: {
-      name: string;
-    }
-    faction: {
-      name: string;
-    }
+  wow_accounts: {
+    characters: IWowUserInfoCharacterResponse[];
   }[];
+}
+
+export interface IWowUserInfoCharacterResponse {
+  id: number;
+  name: string;
+  realm: {
+    slug: string;
+  }
+  playable_class: {
+    name: string;
+  }
+  playable_race: {
+    name: string;
+  }
+  faction: {
+    name: string;
+  }
 }
 
 export interface IWowCharacterResponse {

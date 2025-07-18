@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import axios from "axios";
-import { IWowPet, IWowPetInfoResponse, IWowPetResponse } from "../_models/wowPet";
+import { IWowCharPetResponse, IWowPet, IWowPetResponse } from "../_models/wowPet";
 
 
 export const useWowPetQuery = (accessToken?: string) => {
@@ -28,13 +28,6 @@ export const useWowPetQuery = (accessToken?: string) => {
       },
     });
 
-    // 펫 전체 목록
-    // https://kr.api.blizzard.com/data/wow/pet/index?namespace=static-kr&locale=ko_KR
-    // 특정 펫의 정보
-    // https://kr.api.blizzard.com/data/wow/pet/${petId}?namespace=static-kr&locale=ko_KR
-    // 수집한 펫 목록
-    // https://kr.api.blizzard.com/profile/user/wow/collections/pets?namespace=profile-kr&locale=ko_KR
-    
     return convertResponseData(response.data, collectResp.data);
   }, {
     enabled: !!accessToken,
@@ -42,7 +35,7 @@ export const useWowPetQuery = (accessToken?: string) => {
   });
 }
 
-const convertResponseData = (res?: IWowPetInfoResponse, collectResp?: IWowPetResponse) => {
+const convertResponseData = (res?: IWowPetResponse, collectResp?: IWowCharPetResponse) => {
   return res?.pets.map((data) => {
     const collectList = collectResp?.pets.filter((pet) => pet.species.id === data.id).map((pet) => ({
       level: pet.level,

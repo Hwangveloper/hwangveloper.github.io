@@ -11,8 +11,11 @@ import { AccountCircle } from '@mui/icons-material';
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useLocation, useNavigate } from 'react-router-dom';
+import useSimpleTextInputDialog from '../_stores/useSimpleTextInputDialog';
+import useBattleNetApiStore from '../_stores/useBattleNetApiStore';
+import SimpleTextInputModal from './SimpleTextInputModal';
 
-const Header = () => {
+const Header: React.FC = () => {
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const navigate = useNavigate();
@@ -27,9 +30,26 @@ const Header = () => {
     }))
   );
 
+  const { setAccessToken } = useBattleNetApiStore(
+    useShallow((state) => ({
+      setAccessToken: state.setAccessToken,
+    }))
+  );
+
   useEffect(() => {
     initGoogleApi();
   }, [initGoogleApi]);
+
+  const handleSetToken = () => {
+    useSimpleTextInputDialog.setState({
+      isOpen: true,
+      title: "Battle Net 토큰",
+      name: "토큰",
+      onConfirm: (text: string) => {
+        setAccessToken(text);
+      }
+    });
+  }
 
   const handleSignIn = () => {
     signIn();
@@ -67,6 +87,10 @@ const Header = () => {
         <Button color={pathname.includes("/project") ? "secondary" : "inherit"} onClick={() => navigate("/project")}>
           Project
         </Button>
+        {process.env.NODE_ENV === "development" ?
+          <Button color="inherit" onClick={handleSetToken}>BNET-TOKEN</Button> :
+          <></>
+        }
         {authStatus ?
           <>
             <IconButton size="large" edge="end" color="inherit" onClick={handleMenuOpen}>
@@ -86,6 +110,7 @@ const Header = () => {
           <Button color="inherit" onClick={handleSignIn}>로그인</Button>
         }
       </Toolbar>
+      <SimpleTextInputModal />
     </AppBar>
   );
 }

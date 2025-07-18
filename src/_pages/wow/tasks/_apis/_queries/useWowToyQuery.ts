@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import axios from "axios";
-import { IWowToy, IWowToyInfoResponse, IWowToyResponse } from "../_models/wowToy";
+import { IWowCharToyResponse, IWowToy, IWowToyResponse } from "../_models/wowToy";
 
 
 export const useWowToyQuery = (accessToken?: string) => {
@@ -27,14 +27,7 @@ export const useWowToyQuery = (accessToken?: string) => {
         locale: "ko_KR",
       },
     });
-
-    // 장난감 전체 목록
-    // https://kr.api.blizzard.com/data/wow/toy/index?namespace=static-kr&locale=ko_KR
-    // 특정 장난감의 수집방법
-    // https://kr.api.blizzard.com/data/wow/toy/${toyId}?namespace=static-kr&locale=ko_KR
-    // 수집한 장난감 목록
-    // https://kr.api.blizzard.com/profile/user/wow/collections/toys?namespace=profile-kr&locale=ko_KR
-
+    
     return convertResponseData(response.data, collectResp.data);
   }, {
     enabled: !!accessToken,
@@ -42,11 +35,11 @@ export const useWowToyQuery = (accessToken?: string) => {
   });
 }
 
-const convertResponseData = (res?: IWowToyInfoResponse, collectResp?: IWowToyResponse) => {
+const convertResponseData = (res?: IWowToyResponse, collectResp?: IWowCharToyResponse) => {
   return res?.toys.map((data) => ({
     id: data?.id,
     name: data?.name,
-    is_collected: collectResp?.toys.find((coll) => coll.toy.id === data.id) !== null ? true : false,
+    is_collected: !!collectResp?.toys.find((coll) => coll.toy.id === data.id) ? true : false,
   })) as IWowToy[];
 }
 
