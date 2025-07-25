@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TableRow, TableCell, Box } from "@mui/material";
+import { TableRow, TableCell, Box, Typography, Link } from "@mui/material";
 import { IWowTask } from "../../_apis/_models/wowTask";
 import useBattleNetApiStore from "../../../../../common/_stores/useBattleNetApiStore";
 import { useShallow } from "zustand/shallow";
@@ -53,17 +53,64 @@ const WowAchievementTaskTableRow: React.FC<WowAchievementTaskTableRowProps> = ({
     );
   }
 
+  const getClassColor = (className?: string): string => {
+    switch (className) {
+      case "수도사":
+        return "#00ff98";
+      case "기원사":
+        return "#33937f";
+      case "마법사":
+        return "#3fc7eb";
+      case "성기사":
+        return "#f48cba";
+      case "드루이드":
+        return "#ff7c0a";
+      case "사냥꾼":
+        return "#aad372";
+      case "사제":
+        return "#ffffff";
+      case "전사":
+        return "#c69b6d";
+      case "악마사냥꾼":
+        return "#a330c9";
+      case "주술사":
+        return "#0070dd";
+      case "흑마법사":
+        return "#8788ee";
+      case "죽음의 기사":
+        return "#c41e3a";
+      case "도적":
+        return "#fff468";
+    }
+
+    return "#000000";
+  }
+
   return (
-    <TableRow key={`${row?.charId}${row?.term}`} onClick={() => handleClickRow()}>
-      <TableCell key={row?.charId}>{row?.charId}</TableCell>
-      <TableCell key={row?.category}>{row?.category}</TableCell>
-      <TableCell key={achievement?.name}>{achievement?.name}</TableCell>
-      <TableCell key={achievement?.description}>{achievement?.description}</TableCell>
-      <TableCell key={row?.term}>
+    <TableRow key={`${row?.charId}${row?.term}`} sx={{backgroundColor: "#fff2cc"}}>
+      <TableCell key={row?.charId}
+        sx={{
+          textAlign: "center",
+          fontWeight: "700",
+          color: `${getClassColor(row?.charJob)}`,
+          textShadow: (row?.charJob === "사제" || row?.charJob === "도적") ? "1px 1px 4px black" : "1px 1px 0 black",
+        }}
+        onClick={() => handleClickRow()}
+      >
+        {row?.charName}
+      </TableCell>
+      <TableCell key={row?.category} onClick={() => handleClickRow()}>업적</TableCell>
+      <TableCell key={achievement?.name} onClick={() => handleClickRow()}>{achievement?.name}</TableCell>
+      <TableCell key={achievement?.description} onClick={() => handleClickRow()}>{achievement?.description}</TableCell>
+      <TableCell key={row?.term} onClick={() => handleClickRow()}>
         <Box display="flex" flexDirection="column">
-          {achievement?.criteria.childCriteria ? achievement?.criteria.childCriteria?.map((child, idx) => renderCriteria(achievementStatus?.criteria.childCriteria?.[idx], child)) : renderCriteria(achievementStatus?.criteria, achievement?.criteria)}
+          <Typography variant="subtitle2" fontWeight="700">{row?.description}</Typography>
+          <Box display="flex" flexDirection="row" flexWrap="wrap" columnGap="8px" justifyContent="center">
+            {achievement?.criteria.childCriteria ? achievement?.criteria.childCriteria?.map((child, idx) => renderCriteria(achievementStatus?.criteria.childCriteria?.[idx], child)) : renderCriteria(achievementStatus?.criteria, achievement?.criteria)}
+          </Box>
         </Box>
       </TableCell>
+      <TableCell sx={{textAlign: "center"}}>{row?.reference ? <Link href={row?.reference} target="_blank">링크</Link> : <></>}</TableCell>
     </TableRow>
   );
 };

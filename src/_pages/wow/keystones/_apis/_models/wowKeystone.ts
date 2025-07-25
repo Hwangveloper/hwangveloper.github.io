@@ -84,6 +84,7 @@ export interface IWowKeystoneDungeonView {
   levelLastStep: number;
   dungeonName: string;
   charName: string;
+  charJob: string;
   keystoneScore: number;
   scoreFirstStep: number;
   scoreLastStep: number;
@@ -97,6 +98,7 @@ export interface IWowKeystoneCharacterView {
   levelLastStep: number;
   dungeonName: string;
   charName: string;
+  charJob: string;
   keystoneScore: number;
   scoreFirstStep: number;
   scoreLastStep: number;
@@ -105,6 +107,7 @@ export interface IWowKeystoneCharacterView {
 export interface IWowKeystoneRecordView {
   charId: string;
   charName: string;
+  charJob: string;
   server: string;
   keystoneScore: number;
   scoreFirstStep: number;
@@ -125,6 +128,7 @@ export interface IWowKeystoneDungeonRecord {
 export interface IWowMythicDungeonRecordParams {
   realm: string;
   charName: string;
+  charJob: string;
   seasonNo: number;
   dungeonList: IWowDungeon[];
 }
@@ -170,6 +174,7 @@ export interface IWowCharacterSeasonRecordResponse {
 export interface IWowCharacterMythicRecord {
   charId: string;
   charName: string;
+  charJob: string;
   charRealm: string;
   mythicRating: number;
   currRuns: IWowCharacterMythicRun[];

@@ -31,14 +31,14 @@ export const useWowMythicDungeonRecordQuery = (accessToken?: string, params?: IW
       },
     });
 
-    return convertResponseData(response.data, seasonResp.data, params?.dungeonList);
+    return convertResponseData(response.data, seasonResp.data, params?.charJob, params?.dungeonList);
   }, {
     enabled: !!accessToken,
     refetchOnWindowFocus: false, // 화면 포커스 시 다시 가져오지 않음
   });
 }
 
-const convertResponseData = (res?: IWowCharacterMythicRecordResponse, seasonRes?: IWowCharacterSeasonRecordResponse, dungeonList?: IWowDungeon[]) => {
+const convertResponseData = (res?: IWowCharacterMythicRecordResponse, seasonRes?: IWowCharacterSeasonRecordResponse, charJob?: string, dungeonList?: IWowDungeon[]) => {
 
   const seasonRecords = dungeonList?.map((dungeon) => {
     const seasonRec = seasonRes?.best_runs?.filter((run) => run.dungeon.id === dungeon.blizzardId)
@@ -61,6 +61,7 @@ const convertResponseData = (res?: IWowCharacterMythicRecordResponse, seasonRes?
   return {
     charId: res?.character.name,
     charName: res?.character.name,
+    charJob: charJob,
     charRealm: res?.character.realm.slug,
     mythicRating: Math.round(res?.current_mythic_rating.rating ?? 0),
     currRuns: res?.current_period.best_runs?.map((run) => ({

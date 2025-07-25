@@ -46,6 +46,7 @@ const WeeklyKeystoneTable: React.FC = () => {
       queryClient.invalidateQueries(generateQueryKey({
         realm: char?.server ?? '',
         charName: char?.name ?? '',
+        charJob: char?.job ?? '',
         seasonNo: CURR_SEASON_NO,
         dungeonList,
       }));

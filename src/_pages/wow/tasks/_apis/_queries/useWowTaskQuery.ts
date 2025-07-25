@@ -25,7 +25,14 @@ export const useWowTaskQuery = (params?: IWowTaskParams) => {
 }
 
 const covertResponseData = (res: IWowTaskResponse[] | undefined, params?: IWowTaskParams) => {
-  return res?.filter((data) => !(params?.ignoreDelete) || data.isDeleted === ECommonYN.N) as IWowTask[];
+  return res?.filter((data) => !(params?.ignoreDelete) || data.isDeleted === ECommonYN.N).map((data) => {
+    const charData = params?.characterList.find((char) => char.id === data.charId);
+    return {
+      ...data,
+      charName: charData?.name,
+      charJob: charData?.job,
+    };
+  }) as IWowTask[];
 }
 
 export const generateQueryKey = (params?: IWowTaskParams) => {

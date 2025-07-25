@@ -21,6 +21,8 @@ const useWowTaskCreate = async (payload: IWowTaskCreatePayload): Promise<IUpdate
     "normal",
     data.category,
     data.idOrName,
+    data.description,
+    data.reference,
     ECommonYN.N,
   ]];
 

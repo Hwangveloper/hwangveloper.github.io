@@ -13,6 +13,8 @@ export enum IWowTaskSaveRequestFields {
   frequency = 'frequency',
   type = 'type',
   idOrName = 'idOrName',
+  description = "description",
+  reference = "reference",
 }
 
 export const taskCategoryOptions = [

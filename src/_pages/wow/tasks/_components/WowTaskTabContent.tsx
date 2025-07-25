@@ -14,6 +14,7 @@ import { IWowTask } from "../_apis/_models/wowTask";
 import useWowMountQuery from "../_apis/_queries/useWowMountQuery";
 import useWowPetQuery from "../_apis/_queries/useWowPetQuery";
 import useWowToyQuery from "../_apis/_queries/useWowToyQuery";
+import useWowStore from "../../_stores/useWowStore";
 
 interface WowTaskTabContentProps {
 }
@@ -26,6 +27,12 @@ const WowTaskTabContent: React.FC<WowTaskTabContentProps> = () => {
     }))
   );
 
+  const { characterList } = useWowStore(
+    useShallow((state) => ({
+      characterList: state.characterList,
+    }))
+  );
+
   const { data: achievements, isFetched: isAchievementsFetched, isFetching: isAchievementsFetching } = useWowAchievementQuery(accessToken, {
     realm: "azshara",
     charName: "기분탓이죠",
@@ -33,7 +40,7 @@ const WowTaskTabContent: React.FC<WowTaskTabContentProps> = () => {
   const { data: mounts, isFetched: isMountsFetched, isFetching: isMountsFetching } = useWowMountQuery(accessToken);
   const { data: pets, isFetched: isPetsFetched, isFetching: isPetsFetching } = useWowPetQuery(accessToken);
   const { data: toys, isFetched: isToysFetched, isFetching: isToysFetching } = useWowToyQuery(accessToken);
-  const { data: wowTasks, isFetched, isFetching, refetch: refetchTasks } = useWowTaskQuery({ignoreDelete: true});
+  const { data: wowTasks, isFetched, isFetching, refetch: refetchTasks } = useWowTaskQuery({ignoreDelete: true, characterList});
   const { mutateAsync: deleteTask } = useWowTaskDeleteMutation();
 
   useEffect(() => {

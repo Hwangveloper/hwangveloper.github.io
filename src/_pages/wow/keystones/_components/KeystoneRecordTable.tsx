@@ -61,6 +61,7 @@ const KeystoneRecordTable: React.FC<KeystoneRecordTableProps> = ({ refetch }) =>
           recordMap.set(char.id, {
             charId: char.id,
             charName: char.name,
+            charJob: char.job,
             server: char.server,
             keystoneScore: scoreData?.mythicRating ?? 0,
             scoreFirstStep: scoreMaster?.firstStep ?? 0,

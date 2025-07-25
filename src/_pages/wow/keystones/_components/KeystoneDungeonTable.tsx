@@ -53,6 +53,7 @@ const KeystoneDungeonTable: React.FC<KeystoneDungeonTableProps> = ({ charId }) =
         const dungeonRecordList = keystoneRecordList.map((keystone) => ({
           charId: keystone.charId,
           charName: keystone.charName,
+          charJob: keystone.charJob,
           score: keystone.mythicRating,
           records: keystone.seasonRecords.find((record) => record.dungeonId === dungeon.id),
         }));
@@ -68,6 +69,7 @@ const KeystoneDungeonTable: React.FC<KeystoneDungeonTableProps> = ({ charId }) =
           levelLastStep: completeMaster?.lastStep ?? 0,
           dungeonName: dungeon.name ?? '',
           charName: recordData?.charName ?? '',
+          charJob: recordData?.charJob ?? '',
           keystoneScore: recordData.score ?? 0,
           scoreFirstStep: scoreMaster?.firstStep ?? 0,
           scoreLastStep: scoreMaster?.lastStep ?? 0,
@@ -75,6 +77,39 @@ const KeystoneDungeonTable: React.FC<KeystoneDungeonTableProps> = ({ charId }) =
       }).sort((left, right) => left.clearLevel - right.clearLevel));
     }
   }, [charId, keystoneRecordList, dungeonList, masterList]);
+
+  const getClassColor = (className?: string): string => {
+    switch (className) {
+      case "수도사":
+        return "#00ff98";
+      case "기원사":
+        return "#33937f";
+      case "마법사":
+        return "#3fc7eb";
+      case "성기사":
+        return "#f48cba";
+      case "드루이드":
+        return "#ff7c0a";
+      case "사냥꾼":
+        return "#aad372";
+      case "사제":
+        return "#ffffff";
+      case "전사":
+        return "#c69b6d";
+      case "악마사냥꾼":
+        return "#a330c9";
+      case "주술사":
+        return "#0070dd";
+      case "흑마법사":
+        return "#8788ee";
+      case "죽음의 기사":
+        return "#c41e3a";
+      case "도적":
+        return "#fff468";
+    }
+
+    return "#000000";
+  }
 
   return (
     <TableContainer>
@@ -104,7 +139,16 @@ const KeystoneDungeonTable: React.FC<KeystoneDungeonTableProps> = ({ charId }) =
                 </Box>
                 {`(${row.clearLevel})`}
               </TableCell>
-              <TableCell sx={{textAlign: "center"}}>{row.charName}</TableCell>
+              <TableCell key={row.charName}
+                sx={{
+                  textAlign: "center",
+                  fontWeight: "700",
+                  color: `${getClassColor(row.charJob)}`,
+                  textShadow: (row.charJob === "사제" || row.charJob === "도적") ? "1px 1px 4px black" : "1px 1px 0 black",
+                }}
+              >
+                {row.charName}
+              </TableCell>
               <TableCell sx={{textAlign: "center", color: getRenderColor(row.keystoneScore, row.scoreFirstStep, row.scoreLastStep)}}>
                 {row.keystoneScore}
               </TableCell>

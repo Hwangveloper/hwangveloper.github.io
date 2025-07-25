@@ -29,6 +29,8 @@ const AddWowTask: React.FC<AddWowTaskProps> = ({ refetch }) => {
     frequency: '',
     type: '',
     idOrName: '',
+    description: '',
+    reference: '',
   };
 
   const {
@@ -55,7 +57,7 @@ const AddWowTask: React.FC<AddWowTaskProps> = ({ refetch }) => {
 
   const { mutateAsync: createTask } = useWowTaskCreateMutation();
 
-  const { charId, category, idOrName } = getValues();
+  const { charId, category, idOrName, reference, description } = getValues();
 
   const [charOptions, setCharOptions] = useState<ICommonOption[]>([]);
 
@@ -147,6 +149,29 @@ const AddWowTask: React.FC<AddWowTaskProps> = ({ refetch }) => {
             error={!!errors.idOrName}
             helperText={errors.idOrName?.message}
             onChange={(value) => setValue(IWowTaskSaveRequestFields.idOrName, value)}
+          />
+          <TextInputField
+            label="참고 링크"
+            name={IWowTaskSaveRequestFields.reference}
+            control={control}
+            defaultValue={reference}
+            minLength={1}
+            error={!!errors.reference}
+            helperText={errors.reference?.message}
+            onChange={(value) => setValue(IWowTaskSaveRequestFields.reference, value)}
+          />
+          
+        </Box>
+        <Box display="flex" flexDirection="row" gap="12px">
+          <TextInputField
+            label="추가 설명"
+            name={IWowTaskSaveRequestFields.description}
+            control={control}
+            defaultValue={description}
+            minLength={1}
+            error={!!errors.description}
+            helperText={errors.description?.message}
+            onChange={(value) => setValue(IWowTaskSaveRequestFields.description, value)}
           />
           <Button type="submit" form="newWowTask" onClick={onSubmit} color="primary" variant="contained" sx={{width: '100px', margin: '12px 0'}}>
             저장

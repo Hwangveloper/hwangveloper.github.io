@@ -40,7 +40,8 @@ const WowTaskTable: React.FC<WowTaskTableProps> = ({ onDelete }) => {
             <HeaderTableCell width={40}>분류</HeaderTableCell>
             <HeaderTableCell width={70}>제목</HeaderTableCell>
             <HeaderTableCell width={140}>내용</HeaderTableCell>
-            <HeaderTableCell width={140}>진행도</HeaderTableCell>
+            <HeaderTableCell width={140}>진행</HeaderTableCell>
+            <HeaderTableCell width={70}>참고</HeaderTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

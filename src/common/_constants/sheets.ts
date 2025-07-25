@@ -23,9 +23,9 @@ export const WOW_CHAR_ITEM_SHEET_UPDATE_START_ROW = 2;
 export const WOW_CHAR_TIER_TRANSMOG_SHEET_RANGE = 'Wow_CharTierTransmog!A:K';
 export const WOW_CHAR_TIER_TRANSMOG_SHEET_UPDATE_RANGE = 'Wow_CharTierTransmog!C##:K##';
 export const WOW_CHAR_TIER_TRANSMOG_SHEET_UPDATE_START_ROW = 2;
-export const WOW_TASK_SHEET_RANGE = 'Wow_Tasks!A:G';
-export const WOW_TASK_SHEET_UPDATE_RANGE = 'Wow_Tasks!A##:G##';
-export const WOW_TASK_SHEET_DELETE_RANGE = 'Wow_Tasks!G##';
+export const WOW_TASK_SHEET_RANGE = 'Wow_Tasks!A:I';
+export const WOW_TASK_SHEET_UPDATE_RANGE = 'Wow_Tasks!A##:I##';
+export const WOW_TASK_SHEET_DELETE_RANGE = 'Wow_Tasks!I##';
 export const WOW_TASK_SHEET_UPDATE_START_ROW = 2;
 export const WOW_TASK_SHEET_DEFAULT_ID = 'WOW_TASK';
 
