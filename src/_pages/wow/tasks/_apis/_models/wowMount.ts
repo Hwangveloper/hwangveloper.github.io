@@ -16,7 +16,7 @@ export interface IWowMountInfoResponse {
   id: number;
   name: string;
   description: string;
-  source: {
+  source?: {
     name: string;
   }
 }

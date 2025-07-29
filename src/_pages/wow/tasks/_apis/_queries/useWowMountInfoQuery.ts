@@ -29,7 +29,7 @@ const convertResponseData = (res?: IWowMountInfoResponse) => {
     id: res?.id,
     name: res?.name,
     description: res?.description,
-    source: res?.source.name,
+    source: res?.source?.name ?? '',
   } as IWowMountInfo;
 }
 
