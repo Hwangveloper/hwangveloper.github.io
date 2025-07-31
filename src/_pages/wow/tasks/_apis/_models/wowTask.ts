@@ -10,6 +10,7 @@ export interface IWowTaskParams {
 export interface IWowTaskResponse {
   rowIndex: number;
   id: string;
+  order: string;
   charId: string;
   frequency: string;
   type: string;
@@ -23,6 +24,7 @@ export interface IWowTaskResponse {
 export interface IWowTask {
   rowIndex: number;
   id: string;
+  order: number;
   
   charId: string;
   charName: string;
@@ -40,6 +42,7 @@ export interface IWowTask {
 export interface IWowTaskSaveRequest {
   rowIndex?: number;
   id?: string;
+  order: number;
   charId: string;
   category: string;
   frequency: string;
@@ -47,4 +50,9 @@ export interface IWowTaskSaveRequest {
   idOrName?: string;
   description: string;
   reference: string;
+}
+
+export interface IWowTaskOrderUpdateRequest {
+  rowIndex: number;
+  order: number;
 }

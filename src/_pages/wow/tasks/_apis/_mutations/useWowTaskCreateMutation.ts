@@ -16,6 +16,7 @@ const useWowTaskCreate = async (payload: IWowTaskCreatePayload): Promise<IUpdate
   const rowIndex = data.rowIndex ?? 0;
   const updateValues = [[
     data.id,
+    data.order,
     data.charId,
     "none",
     "normal",

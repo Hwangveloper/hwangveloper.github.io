@@ -7,13 +7,16 @@ import useWowAchievementInfoQuery from "../../_apis/_queries/useWowAchievementIn
 import useWowTaskStore from "../../stores/useWowTaskStore";
 import { IWowAchievement, IWowAchievementCriteria } from "../../_apis/_models/wowAchievement";
 import useConfirmDialog from "../../../../../common/_stores/useConfirmDialog";
+import { DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
 
 interface WowAchievementTaskTableRowProps {
   row?: IWowTask;
   onDelete: (task?: IWowTask) => void;
+  draggableProvided: DraggableProvided;
+  draggableStateSnapshot: DraggableStateSnapshot;
 }
 
-const WowAchievementTaskTableRow: React.FC<WowAchievementTaskTableRowProps> = ({ row, onDelete }) => {
+const WowAchievementTaskTableRow: React.FC<WowAchievementTaskTableRowProps> = ({ row, onDelete, draggableProvided, draggableStateSnapshot }) => {
 
   const { accessToken } = useBattleNetApiStore(
     useShallow((state) => ({
@@ -47,7 +50,7 @@ const WowAchievementTaskTableRow: React.FC<WowAchievementTaskTableRowProps> = ({
 
   const renderCriteria = (criteriaStatus?: IWowAchievementCriteria, criteriaInfo?: IWowAchievementCriteria) => {
     return (
-      <Box sx={{color: criteriaStatus?.isCompleted ? "black" : (criteriaStatus?.amount ?? 0) > 0 ? "blue" : "red"}}>
+      <Box sx={{color: criteriaStatus?.isCompleted ? "black" : (criteriaStatus?.amount ?? 0) > 0 ? "blue" : "red", minWidth: "200px"}}>
         {`${criteriaInfo?.description ? `${criteriaInfo?.description} - ` : ''}${(criteriaStatus?.amount ?? 0) > (criteriaInfo?.amount ?? 0) ? criteriaInfo?.amount : (criteriaStatus?.amount ?? 0)}/${criteriaInfo?.amount}`}
       </Box>
     );
@@ -87,7 +90,16 @@ const WowAchievementTaskTableRow: React.FC<WowAchievementTaskTableRowProps> = ({
   }
 
   return (
-    <TableRow key={`${row?.charId}${row?.term}`} sx={{backgroundColor: "#fff2cc"}}>
+    <TableRow
+      key={`${row?.charId}${row?.term}`}
+      ref={draggableProvided.innerRef}
+      {...draggableProvided.draggableProps}
+      {...draggableProvided.dragHandleProps}
+      style={{
+        background: draggableStateSnapshot.isDragging ? "#f0f0f0" : "#fff2cc",
+        ...draggableProvided.draggableProps.style,
+      }}
+    >
       <TableCell key={row?.charId}
         sx={{
           textAlign: "center",

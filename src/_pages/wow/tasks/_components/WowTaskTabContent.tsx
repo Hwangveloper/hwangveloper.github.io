@@ -126,7 +126,7 @@ const WowTaskTabContent: React.FC<WowTaskTabContentProps> = () => {
       <Typography variant="h4" align="center" gutterBottom>
         와우 할 일 리스트
       </Typography>
-      <WowTaskTable onDelete={(task) => deleteItem(task)}/>
+      <WowTaskTable onDelete={(task) => deleteItem(task)} refetch={refetchTasks} />
     </Paper>
   );
 };

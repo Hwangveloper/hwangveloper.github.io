@@ -7,13 +7,16 @@ import useConfirmDialog from "../../../../../common/_stores/useConfirmDialog";
 import { IWowPet } from "../../_apis/_models/wowPet";
 import useBattleNetApiStore from "../../../../../common/_stores/useBattleNetApiStore";
 import useWowPetInfoQuery from "../../_apis/_queries/useWowPetInfoQuery";
+import { DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
 
 interface WowPetTaskTableRowProps {
   row?: IWowTask;
   onDelete: (task?: IWowTask) => void;
+  draggableProvided: DraggableProvided;
+  draggableStateSnapshot: DraggableStateSnapshot;
 }
 
-const WowPetTaskTableRow: React.FC<WowPetTaskTableRowProps> = ({ row, onDelete }) => {
+const WowPetTaskTableRow: React.FC<WowPetTaskTableRowProps> = ({ row, onDelete, draggableProvided, draggableStateSnapshot }) => {
 
   const { accessToken } = useBattleNetApiStore(
     useShallow((state) => ({
@@ -91,7 +94,16 @@ const WowPetTaskTableRow: React.FC<WowPetTaskTableRowProps> = ({ row, onDelete }
   }
 
   return (
-    <TableRow key={`${row?.charId}${row?.term}`} sx={{backgroundColor: "#d9ead3"}}>
+    <TableRow
+      key={`${row?.charId}${row?.term}`}
+      ref={draggableProvided.innerRef}
+      {...draggableProvided.draggableProps}
+      {...draggableProvided.dragHandleProps}
+      style={{
+        background: draggableStateSnapshot.isDragging ? "#f0f0f0" : "#d9ead3",
+        ...draggableProvided.draggableProps.style,
+      }}
+    >
       <TableCell key={row?.charId}
         sx={{
           textAlign: "center",

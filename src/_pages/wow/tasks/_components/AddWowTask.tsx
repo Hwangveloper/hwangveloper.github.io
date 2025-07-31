@@ -75,6 +75,7 @@ const AddWowTask: React.FC<AddWowTaskProps> = ({ refetch }) => {
         item: {
           ...getValues(),
           rowIndex,
+          order: rowIndex,
           id: `${WOW_TASK_SHEET_DEFAULT_ID}${rowIndex}`,
         },
       },

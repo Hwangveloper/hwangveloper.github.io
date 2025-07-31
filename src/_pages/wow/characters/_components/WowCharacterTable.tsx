@@ -36,7 +36,7 @@ const WowCharacterTable: React.FC<WowCharacterTableProps> = ({ refetch }) => {
     if (source.index === destination.index) return;
 
     const sourceOrder = characterList[source.index].order;
-    const destOrder = characterList[destination.index].order
+    const destOrder = characterList[destination.index].order;
 
     var updatedCharList: IWowCharacter[] = [];
     if (sourceOrder < destOrder) {

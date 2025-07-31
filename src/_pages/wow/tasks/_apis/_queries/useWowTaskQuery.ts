@@ -29,10 +29,11 @@ const covertResponseData = (res: IWowTaskResponse[] | undefined, params?: IWowTa
     const charData = params?.characterList.find((char) => char.id === data.charId);
     return {
       ...data,
+      order: Number(data.order),
       charName: charData?.name,
       charJob: charData?.job,
     };
-  }) as IWowTask[];
+  }).sort((left, right) => left.order - right.order) as IWowTask[];
 }
 
 export const generateQueryKey = (params?: IWowTaskParams) => {

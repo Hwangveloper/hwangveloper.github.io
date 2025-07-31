@@ -7,13 +7,16 @@ import useConfirmDialog from "../../../../../common/_stores/useConfirmDialog";
 import { IWowMount } from "../../_apis/_models/wowMount";
 import useWowMountInfoQuery from "../../_apis/_queries/useWowMountInfoQuery";
 import useBattleNetApiStore from "../../../../../common/_stores/useBattleNetApiStore";
+import { DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
 
 interface WowMountTaskTableRowProps {
   row?: IWowTask;
   onDelete: (task?: IWowTask) => void;
+  draggableProvided: DraggableProvided;
+  draggableStateSnapshot: DraggableStateSnapshot;
 }
 
-const WowMountTaskTableRow: React.FC<WowMountTaskTableRowProps> = ({ row, onDelete }) => {
+const WowMountTaskTableRow: React.FC<WowMountTaskTableRowProps> = ({ row, onDelete, draggableProvided, draggableStateSnapshot }) => {
 
   const { accessToken } = useBattleNetApiStore(
     useShallow((state) => ({
@@ -91,7 +94,16 @@ const WowMountTaskTableRow: React.FC<WowMountTaskTableRowProps> = ({ row, onDele
   }
 
   return (
-    <TableRow key={`${row?.charId}${row?.term}`} sx={{backgroundColor: "#f4cccc"}}>
+    <TableRow
+      key={`${row?.charId}${row?.term}`}
+      ref={draggableProvided.innerRef}
+      {...draggableProvided.draggableProps}
+      {...draggableProvided.dragHandleProps}
+      style={{
+        background: draggableStateSnapshot.isDragging ? "#f0f0f0" : "#f4cccc",
+        ...draggableProvided.draggableProps.style,
+      }}
+    >
       <TableCell key={row?.charId}
         sx={{
           textAlign: "center",
