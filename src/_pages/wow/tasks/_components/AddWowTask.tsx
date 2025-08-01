@@ -98,9 +98,10 @@ const AddWowTask: React.FC<AddWowTaskProps> = ({ refetch }) => {
   useEffect(() => {
     if (characterList && characterList.length > 0) {
       setValue(IWowTaskSaveRequestFields.charId, characterList[0]?.id ?? '');
-      setCharOptions(characterList.filter((char) => char.isMain === ECommonYN.Y).map((char) => ({
+      setCharOptions(characterList.map((char) => ({
         label: char.name,
         value: char.id,
+        color: char.isMain === ECommonYN.Y ? "white" : "#dddddd",
       })));
     }
   }, [characterList, setValue]);

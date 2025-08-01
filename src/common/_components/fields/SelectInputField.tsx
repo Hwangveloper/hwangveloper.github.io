@@ -6,13 +6,14 @@ import {
   Select,
 } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
+import { ICommonOption } from "../../_models/common";
 
 interface SelectInputFieldProps {
   label: string;
   name: string;
   control: Control<any>;
   defaultValue?: string;
-  options: { label: string, value: string }[];
+  options: ICommonOption[];
   disabled?: boolean;
   error?: boolean;
   helperText?: string;
@@ -42,7 +43,7 @@ const SelectInputField: React.FC<SelectInputFieldProps> = ({ label, name, contro
             disabled={disabled}
           >
             {options.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
+              <MenuItem key={option.value} value={option.value} sx={{backgroundColor: option.color ?? "white"}}>
                 {option.label}
               </MenuItem>
             ))}

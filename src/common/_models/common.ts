@@ -8,4 +8,5 @@ export interface ICommonPeriod {
 export interface ICommonOption {
   label: string;
   value: string;
+  color?: string;
 }
