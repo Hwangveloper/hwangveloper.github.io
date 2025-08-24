@@ -121,7 +121,7 @@ const KeystoneRecordTable: React.FC<KeystoneRecordTableProps> = ({ refetch }) =>
             </TableHead>
             <TableBody>
               {characterList.filter((char) => char.isMain === ECommonYN.Y).map((char) => (
-                <KeystoneRecordTableRow row={keystoneRecordMap.get(char.id)} refetch={refetch}/>
+                <KeystoneRecordTableRow key={char.id} row={keystoneRecordMap.get(char.id)} refetch={refetch}/>
               ))}
             </TableBody>
           </Table>

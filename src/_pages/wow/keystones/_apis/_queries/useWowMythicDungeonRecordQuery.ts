@@ -63,7 +63,7 @@ const convertResponseData = (res?: IWowCharacterMythicRecordResponse, seasonRes?
     charName: res?.character.name,
     charJob: charJob,
     charRealm: res?.character.realm.slug,
-    mythicRating: Math.round(res?.current_mythic_rating.rating ?? 0),
+    mythicRating: Math.round(res?.current_mythic_rating?.rating ?? 0),
     currRuns: res?.current_period.best_runs?.map((run) => ({
       dungeonName: run.dungeon.name,
       isClear: run.is_completed_within_time,

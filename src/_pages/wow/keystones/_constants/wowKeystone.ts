@@ -14,4 +14,4 @@ export enum IWowKeystoneSaveRequestFields {
   score = 'score',
 }
 
-export const CURR_SEASON_NO = 14;
+export const CURR_SEASON_NO = 15;

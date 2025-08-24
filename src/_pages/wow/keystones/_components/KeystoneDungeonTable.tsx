@@ -70,7 +70,7 @@ const KeystoneDungeonTable: React.FC<KeystoneDungeonTableProps> = ({ charId }) =
           dungeonName: dungeon.name ?? '',
           charName: recordData?.charName ?? '',
           charJob: recordData?.charJob ?? '',
-          keystoneScore: recordData.score ?? 0,
+          keystoneScore: recordData?.score ?? 0,
           scoreFirstStep: scoreMaster?.firstStep ?? 0,
           scoreLastStep: scoreMaster?.lastStep ?? 0,
         };

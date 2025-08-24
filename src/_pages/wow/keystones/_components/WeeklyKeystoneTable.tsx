@@ -134,7 +134,7 @@ const WeeklyKeystoneTable: React.FC = () => {
           </TableHead>
           <TableBody>
             <TableRow key="WOW0">
-              <TableCell key={"-"}>{"횟수"}</TableCell>
+              <TableCell key={"title"}>{"횟수"}</TableCell>
               {characterList.filter((char) => char.isMain === ECommonYN.Y).map((char) => {
                 const record = keystoneRecordList.find((rec) => rec.charName === char.name);
                 return (
@@ -143,7 +143,7 @@ const WeeklyKeystoneTable: React.FC = () => {
               })}
             </TableRow>
             <TableRow key="WOW1">
-              <TableCell key={"-"}>{"단수"}</TableCell>
+              <TableCell key={"title"}>{"단수"}</TableCell>
               {characterList.filter((char) => char.isMain === ECommonYN.Y).map((char) => {
                 const record = keystoneRecordList.find((rec) => rec.charName === char.name);
                 const recordLevels = getRecordLevels(record?.currRuns ?? []);
