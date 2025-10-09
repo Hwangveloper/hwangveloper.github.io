@@ -29,9 +29,9 @@ const useWowStore = create<WowState>((set, get) => ({
       case EWowItemType.CHAMPION:
         return itemLevelList.slice(4, 12);
       case EWowItemType.HERO:
-        return itemLevelList.slice(8, 14);
+        return itemLevelList.slice(8, 16);
       case EWowItemType.MYTHIC:
-        return itemLevelList.slice(12, 18);
+        return itemLevelList.slice(12, 20);
       default:
         return [];
     }

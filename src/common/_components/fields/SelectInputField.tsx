@@ -43,7 +43,7 @@ const SelectInputField: React.FC<SelectInputFieldProps> = ({ label, name, contro
             disabled={disabled}
           >
             {options.map((option) => (
-              <MenuItem key={option.value} value={option.value} sx={{backgroundColor: option.color ?? "white"}}>
+              <MenuItem key={option.value} value={option.value} sx={{color: option.color ?? "black"}}>
                 {option.label}
               </MenuItem>
             ))}
