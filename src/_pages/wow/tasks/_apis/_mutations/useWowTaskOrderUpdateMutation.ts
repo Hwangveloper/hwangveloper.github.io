@@ -1,5 +1,5 @@
 import { gapi } from "gapi-script";
-import { useMutation, UseMutationResult } from "react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { ESheetValueInputOption, WOW_TASK_SHEET_ORDER_UPDATE_RANGE, WOW_TASK_SHEET_UPDATE_START_ROW } from "../../../../../common/_constants/sheets";
 import { IUpdateListResponse } from "../../../../../common/_models/sheets";
 import { IWowTaskOrderUpdateRequest } from "../_models/wowTask";
@@ -39,7 +39,9 @@ export const useWowTaskOrderUpdateMutation = (): UseMutationResult<
   Error,
   IWowTaskOrderUpdatePayload
 > => {
-  return useMutation(wowTaskOrderUpdate);
+  return useMutation({
+    mutationFn: wowTaskOrderUpdate,
+  });
 }
 
 export default useWowTaskOrderUpdateMutation;

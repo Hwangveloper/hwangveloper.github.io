@@ -1,5 +1,5 @@
 import { gapi } from "gapi-script";
-import { useMutation, UseMutationResult } from "react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { IUpdateResponse } from "../../../../../common/_models/sheets";
 import { ESheetValueInputOption, WOW_CHAR_TIER_TRANSMOG_SHEET_UPDATE_RANGE, WOW_CHAR_TIER_TRANSMOG_SHEET_UPDATE_START_ROW } from "../../../../../common/_constants/sheets";
 import { IWowTierTransmogUpdateRequest } from "../_models/wowTierTransmog";
@@ -51,7 +51,9 @@ export const useWowTierTransmogUpdateMutation = (): UseMutationResult<
   Error,
   IWowTierTransmogUpdatePayload
 > => {
-  return useMutation(wowTierTransmogUpdate);
+  return useMutation({
+    mutationFn: wowTierTransmogUpdate,
+  });
 }
 
 export default useWowTierTransmogUpdateMutation;

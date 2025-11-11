@@ -1,5 +1,5 @@
 import { gapi } from "gapi-script";
-import { useMutation, UseMutationResult } from "react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { ESheetValueInputOption, WOW_TASK_SHEET_UPDATE_RANGE, WOW_TASK_SHEET_UPDATE_START_ROW } from "../../../../../common/_constants/sheets";
 import { ECommonYN } from "../../../../../common/_constants/common";
 import { IUpdateListResponse } from "../../../../../common/_models/sheets";
@@ -48,7 +48,9 @@ export const useWowTaskCreateMutation = (): UseMutationResult<
   Error,
   IWowTaskCreatePayload
 > => {
-  return useMutation(useWowTaskCreate);
+  return useMutation({
+    mutationFn: useWowTaskCreate,
+  });
 }
 
 export default useWowTaskCreateMutation;

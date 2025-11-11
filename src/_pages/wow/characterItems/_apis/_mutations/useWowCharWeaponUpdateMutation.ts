@@ -1,5 +1,5 @@
 import { gapi } from "gapi-script";
-import { useMutation, UseMutationResult } from "react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { IUpdateResponse } from "../../../../../common/_models/sheets";
 import { IWowCharWeaponUpdateRequest } from "../_models/wowCharacterItem";
 import { ESheetValueInputOption, WOW_CHAR_ITEM_SHEET_UPDATE_RANGE, WOW_CHAR_ITEM_SHEET_UPDATE_START_ROW } from "../../../../../common/_constants/sheets";
@@ -112,7 +112,9 @@ export const useWowCharWeaponUpdateMutation = (): UseMutationResult<
   Error,
   IWowCharWeaponUpdatePayload
 > => {
-  return useMutation(wowCharWeaponUpdate);
+  return useMutation({
+    mutationFn: wowCharWeaponUpdate,
+  });
 }
 
 export default useWowCharWeaponUpdateMutation;

@@ -1,25 +1,27 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { IWowAchievement, IWowAchievementCriteria, IWowAchievementCriteriaResponse, IWowAchievementParams, IWowAchievementResponse } from "../_models/wowAchievement";
 
 
 export const useWowAchievementQuery = (accessToken?: string, params?: IWowAchievementParams) => {
-  return useQuery<IWowAchievement[]>(generateQueryKey(params), async () => {
+  return useQuery<IWowAchievement[]>({
+    queryKey: generateQueryKey(params),
+    queryFn: async () => {
 
-    const url = `https://kr.api.blizzard.com/profile/wow/character/${params?.realm}/${params?.charName}/achievements`;
+      const url = `https://kr.api.blizzard.com/profile/wow/character/${params?.realm}/${params?.charName}/achievements`;
 
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        namespace: "profile-kr",
-        locale: "ko_KR",
-      },
-    });
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          namespace: "profile-kr",
+          locale: "ko_KR",
+        },
+      });
 
-    return convertResponseData(response.data.achievements);
-  }, {
+      return convertResponseData(response.data.achievements);
+    },
     enabled: !!accessToken,
     refetchOnWindowFocus: false, // 화면 포커스 시 다시 가져오지 않음
   });

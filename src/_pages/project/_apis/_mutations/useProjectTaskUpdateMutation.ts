@@ -1,5 +1,5 @@
 import { gapi } from "gapi-script";
-import { useMutation, UseMutationResult } from "react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { ESheetValueInputOption, PROJECT_TASK_SHEET_UPDATE_RANGE, PROJECT_TASK_SHEET_UPDATE_START_ROW } from "../../../../common/_constants/sheets";
 import { IUpdateResponse } from "../../../../common/_models/sheets";
 import { IProjectTaskUpdateRequest } from "../_models/projectTask";
@@ -52,7 +52,9 @@ export const useProjectTaskUpdateMutation = (): UseMutationResult<
   Error,
   IProjectTaskUpdatePayload
 > => {
-  return useMutation(projectTaskUpdate);
+  return useMutation({
+    mutationFn: projectTaskUpdate,
+  });
 }
 
 export default useProjectTaskUpdateMutation;

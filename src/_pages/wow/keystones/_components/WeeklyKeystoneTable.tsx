@@ -9,7 +9,7 @@ import { IWowCharacterMythicRun, IWowKeystone } from "../_apis/_models/wowKeysto
 import { ECommonYN } from "../../../../common/_constants/common";
 import WeeklyKeystoneHeaderTableCell from "./_table/WeeklyKeystoneHeaderTableCell";
 import { generateQueryKey } from "../_apis/_queries/useWowMythicDungeonRecordQuery";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { CURR_SEASON_NO } from "../_constants/wowKeystone";
 
 const HeaderTableCell = styled(TableCell)`
@@ -43,13 +43,15 @@ const WeeklyKeystoneTable: React.FC = () => {
 
   const handleRefresh = () => {
     characterList.forEach((char) => {
-      queryClient.invalidateQueries(generateQueryKey({
-        realm: char?.server ?? '',
-        charName: char?.name ?? '',
-        charJob: char?.job ?? '',
-        seasonNo: CURR_SEASON_NO,
-        dungeonList,
-      }));
+      queryClient.invalidateQueries({
+        queryKey: generateQueryKey({
+          realm: char?.server ?? '',
+          charName: char?.name ?? '',
+          charJob: char?.job ?? '',
+          seasonNo: CURR_SEASON_NO,
+          dungeonList,
+        }),
+      });
     });
   }
 

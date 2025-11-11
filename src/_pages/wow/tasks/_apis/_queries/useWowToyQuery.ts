@@ -1,35 +1,37 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { IWowCharToyResponse, IWowToy, IWowToyResponse } from "../_models/wowToy";
 
 
 export const useWowToyQuery = (accessToken?: string) => {
-  return useQuery<IWowToy[]>(generateQueryKey(), async () => {
+  return useQuery<IWowToy[]>({
+    queryKey: generateQueryKey(),
+    queryFn: async () => {
 
-    // 장난감 전체 목록
-    const response = await axios.get("https://kr.api.blizzard.com/data/wow/toy/index", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        namespace: "static-kr",
-        locale: "ko_KR",
-      },
-    });
+      // 장난감 전체 목록
+      const response = await axios.get("https://kr.api.blizzard.com/data/wow/toy/index", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          namespace: "static-kr",
+          locale: "ko_KR",
+        },
+      });
 
-    // 수집한 장난감 목록
-    const collectResp = await axios.get("https://kr.api.blizzard.com/profile/user/wow/collections/toys", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        namespace: "profile-kr",
-        locale: "ko_KR",
-      },
-    });
-    
-    return convertResponseData(response.data, collectResp.data);
-  }, {
+      // 수집한 장난감 목록
+      const collectResp = await axios.get("https://kr.api.blizzard.com/profile/user/wow/collections/toys", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          namespace: "profile-kr",
+          locale: "ko_KR",
+        },
+      });
+      
+      return convertResponseData(response.data, collectResp.data);
+    },
     enabled: !!accessToken,
     refetchOnWindowFocus: false, // 화면 포커스 시 다시 가져오지 않음
   });

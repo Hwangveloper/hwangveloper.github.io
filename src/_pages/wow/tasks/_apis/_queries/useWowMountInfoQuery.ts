@@ -1,24 +1,26 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { IWowMountInfo, IWowMountInfoParams, IWowMountInfoResponse } from "../_models/wowMount";
 
 
 export const useWowMountInfoQuery = (accessToken?: string, params?: IWowMountInfoParams) => {
-  return useQuery<IWowMountInfo>(generateQueryKey(params), async () => {
+  return useQuery<IWowMountInfo>({
+    queryKey: generateQueryKey(params),
+    queryFn: async () => {
 
-    // 특정 탈것 정보
-    const response = await axios.get(`https://kr.api.blizzard.com/data/wow/mount/${params?.mountId}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        namespace: "static-kr",
-        locale: "ko_KR",
-      },
-    });
+      // 특정 탈것 정보
+      const response = await axios.get(`https://kr.api.blizzard.com/data/wow/mount/${params?.mountId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          namespace: "static-kr",
+          locale: "ko_KR",
+        },
+      });
 
-    return convertResponseData(response.data);
-  }, {
+      return convertResponseData(response.data);
+    },
     enabled: !!accessToken && !!params,
     refetchOnWindowFocus: false, // 화면 포커스 시 다시 가져오지 않음
   });

@@ -1,5 +1,5 @@
 import { gapi } from "gapi-script";
-import { useMutation, UseMutationResult } from "react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { ESheetValueInputOption, WOW_KEYSTONE_SHEET_UPDATE_DATETIME_RANGE, WOW_KEYSTONE_SHEET_UPDATE_RANGE, WOW_KEYSTONE_SHEET_UPDATE_START_COLUMN, WOW_KEYSTONE_SHEET_UPDATE_START_ROW } from "../../../../../common/_constants/sheets";
 import { DATETIME_FORMAT } from "../../../../../common/_constants/common";
 import { IWowKeystone } from "../_models/wowKeystone";
@@ -50,7 +50,9 @@ export const useWowKeystoneFavoriteUpdateMutation = (): UseMutationResult<
   Error,
   IWowKeystoneFavoriteUpdatePayload
 > => {
-  return useMutation(wowKeystoneFavoriteUpdate);
+  return useMutation({
+    mutationFn: wowKeystoneFavoriteUpdate,
+  });
 }
 
 export default useWowKeystoneFavoriteUpdateMutation;

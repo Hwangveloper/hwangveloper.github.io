@@ -1,35 +1,37 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { IWowCharPetResponse, IWowPet, IWowPetResponse } from "../_models/wowPet";
 
 
 export const useWowPetQuery = (accessToken?: string) => {
-  return useQuery<IWowPet[]>(generateQueryKey(), async () => {
+  return useQuery<IWowPet[]>({
+    queryKey: generateQueryKey(),
+    queryFn: async () => {
 
-    // 펫 전체 목록
-    const response = await axios.get("https://kr.api.blizzard.com/data/wow/pet/index", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        namespace: "static-kr",
-        locale: "ko_KR",
-      },
-    });
+      // 펫 전체 목록
+      const response = await axios.get("https://kr.api.blizzard.com/data/wow/pet/index", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          namespace: "static-kr",
+          locale: "ko_KR",
+        },
+      });
 
-    // 수집한 펫 목록
-    const collectResp = await axios.get("https://kr.api.blizzard.com/profile/user/wow/collections/pets", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        namespace: "profile-kr",
-        locale: "ko_KR",
-      },
-    });
+      // 수집한 펫 목록
+      const collectResp = await axios.get("https://kr.api.blizzard.com/profile/user/wow/collections/pets", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          namespace: "profile-kr",
+          locale: "ko_KR",
+        },
+      });
 
-    return convertResponseData(response.data, collectResp.data);
-  }, {
+      return convertResponseData(response.data, collectResp.data);
+    },
     enabled: !!accessToken,
     refetchOnWindowFocus: false, // 화면 포커스 시 다시 가져오지 않음
   });

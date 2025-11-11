@@ -1,35 +1,37 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { IWowMount, IWowCharMountResponse, IWowMountResponse } from "../_models/wowMount";
 
 
 export const useWowMountQuery = (accessToken?: string) => {
-  return useQuery<IWowMount[]>(generateQueryKey(), async () => {
+  return useQuery<IWowMount[]>({
+    queryKey: generateQueryKey(),
+    queryFn: async () => {
 
-    // 탈것 전체 목록
-    const response = await axios.get("https://kr.api.blizzard.com/data/wow/mount/index", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        namespace: "static-kr",
-        locale: "ko_KR",
-      },
-    });
+      // 탈것 전체 목록
+      const response = await axios.get("https://kr.api.blizzard.com/data/wow/mount/index", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          namespace: "static-kr",
+          locale: "ko_KR",
+        },
+      });
 
-    // 수집한 탈것 목록
-    const collectResp = await axios.get("https://kr.api.blizzard.com/profile/user/wow/collections/mounts", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        namespace: "profile-kr",
-        locale: "ko_KR",
-      },
-    });
+      // 수집한 탈것 목록
+      const collectResp = await axios.get("https://kr.api.blizzard.com/profile/user/wow/collections/mounts", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          namespace: "profile-kr",
+          locale: "ko_KR",
+        },
+      });
 
-    return convertResponseData(response.data, collectResp.data);
-  }, {
+      return convertResponseData(response.data, collectResp.data);
+    },
     enabled: !!accessToken,
     refetchOnWindowFocus: false, // 화면 포커스 시 다시 가져오지 않음
   });

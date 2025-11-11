@@ -1,5 +1,5 @@
 import { gapi } from "gapi-script";
-import { useMutation, UseMutationResult } from "react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { ESheetValueInputOption, WOW_KEYSTONE_SHEET_REFRESH_RANGE, WOW_KEYSTONE_SHEET_UPDATE_START_ROW } from "../../../../../common/_constants/sheets";
 import { DATETIME_FORMAT } from "../../../../../common/_constants/common";
 import { IWowKeystoneInitResponse } from "../_models/wowKeystone";
@@ -41,7 +41,9 @@ export const useWowKeystoneRefreshMutation = (): UseMutationResult<
   Error,
   IWowKeystoneRefreshPayload
 > => {
-  return useMutation(wowKeystoneRefresh);
+  return useMutation({
+    mutationFn: wowKeystoneRefresh,
+  });
 }
 
 export default useWowKeystoneRefreshMutation;

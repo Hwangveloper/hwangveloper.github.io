@@ -1,5 +1,5 @@
 import { gapi } from "gapi-script";
-import { useMutation, UseMutationResult } from "react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { IHomeOutlineUpdateRequest } from "../_models/home";
 import { ESheetValueInputOption, OUTLINE_SHEET_UPDATE_RANGE, OUTLINE_SHEET_UPDATE_START_ROW } from "../../../../common/_constants/sheets";
 import { DATETIME_FORMAT, ECommonTimeUnit, ECommonYN } from "../../../../common/_constants/common";
@@ -48,7 +48,9 @@ export const useHomeOutlineUpdateMutation = (): UseMutationResult<
   Error,
   IHomeOutlineUpdatePayload
 > => {
-  return useMutation(outlineUpdate);
+  return useMutation({
+    mutationFn: outlineUpdate,
+  });
 }
 
 export default useHomeOutlineUpdateMutation;

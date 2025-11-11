@@ -1,5 +1,5 @@
 import { gapi } from "gapi-script";
-import { useMutation, UseMutationResult } from "react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { IHomeOutlineCheckUpdateRequest } from "../_models/home";
 import { ESheetValueInputOption, OUTLINE_SHEET_CHECK_UPDATE_RANGE, OUTLINE_SHEET_UPDATE_START_ROW } from "../../../../common/_constants/sheets";
 import dayjs from "dayjs";
@@ -41,7 +41,9 @@ export const useHomeOutlineCheckUpdateMutation = (): UseMutationResult<
   Error,
   IHomeOutlineCheckUpdatePayload
 > => {
-  return useMutation(outlineCheckUpdate);
+  return useMutation({
+    mutationFn: outlineCheckUpdate,
+  });
 }
 
 export default useHomeOutlineCheckUpdateMutation;

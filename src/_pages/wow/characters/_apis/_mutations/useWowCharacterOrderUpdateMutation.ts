@@ -1,5 +1,5 @@
 import { gapi } from "gapi-script";
-import { useMutation, UseMutationResult } from "react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { ESheetValueInputOption, WOW_CHARACTER_SHEET_ORDER_UPDATE_RANGE, WOW_CHARACTER_SHEET_UPDATE_START_ROW } from "../../../../../common/_constants/sheets";
 import { IUpdateListResponse } from "../../../../../common/_models/sheets";
 import { IWowCharacterOrderUpdateRequest } from "../_models/wowCharacter";
@@ -39,7 +39,9 @@ export const useWowCharacterOrderUpdateMutation = (): UseMutationResult<
   Error,
   IWowCharacterOrderUpdatePayload
 > => {
-  return useMutation(wowCharacterOrderUpdate);
+  return useMutation({
+    mutationFn: wowCharacterOrderUpdate,
+  });
 }
 
 export default useWowCharacterOrderUpdateMutation;

@@ -1,38 +1,40 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { IWowCharacterMythicRecord, IWowCharacterMythicRecordResponse, IWowCharacterSeasonRecord, IWowCharacterSeasonRecordResponse, IWowMythicDungeonRecordParams } from "../_models/wowKeystone";
 import { IWowDungeon } from "../_models/wowDungeon";
 
 
 export const useWowMythicDungeonRecordQuery = (accessToken?: string, params?: IWowMythicDungeonRecordParams) => {
-  return useQuery<IWowCharacterMythicRecord>(generateQueryKey(params), async () => {
+  return useQuery<IWowCharacterMythicRecord>({
+    queryKey: generateQueryKey(params),
+    queryFn: async () => {
 
-    const url = `https://kr.api.blizzard.com/profile/wow/character/${params?.realm}/${params?.charName}/mythic-keystone-profile`;
+      const url = `https://kr.api.blizzard.com/profile/wow/character/${params?.realm}/${params?.charName}/mythic-keystone-profile`;
 
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        namespace: "profile-kr",
-        locale: "ko_KR",
-      },
-    });
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          namespace: "profile-kr",
+          locale: "ko_KR",
+        },
+      });
 
-    const seasonUrl = `https://kr.api.blizzard.com/profile/wow/character/${params?.realm}/${params?.charName}/mythic-keystone-profile/season/${params?.seasonNo}`;
+      const seasonUrl = `https://kr.api.blizzard.com/profile/wow/character/${params?.realm}/${params?.charName}/mythic-keystone-profile/season/${params?.seasonNo}`;
 
-    const seasonResp = await axios.get(seasonUrl, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        namespace: "profile-kr",
-        locale: "ko_KR",
-      },
-    });
+      const seasonResp = await axios.get(seasonUrl, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          namespace: "profile-kr",
+          locale: "ko_KR",
+        },
+      });
 
-    return convertResponseData(response.data, seasonResp.data, params?.charJob, params?.dungeonList);
-  }, {
+      return convertResponseData(response.data, seasonResp.data, params?.charJob, params?.dungeonList);
+    },
     enabled: !!accessToken,
     refetchOnWindowFocus: false, // 화면 포커스 시 다시 가져오지 않음
   });

@@ -1,5 +1,5 @@
 import { gapi } from "gapi-script";
-import { useMutation, UseMutationResult } from "react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { IHomeOutline } from "../_models/home";
 import { ESheetValueInputOption, OUTLINE_SHEET_DELETE_RANGE, OUTLINE_SHEET_UPDATE_START_ROW } from "../../../../common/_constants/sheets";
 import { ECommonYN } from "../../../../common/_constants/common";
@@ -38,7 +38,9 @@ export const useHomeOutlineDeleteMutation = (): UseMutationResult<
   Error,
   IHomeOutlineDeletePayload
 > => {
-  return useMutation(outlineDelete);
+  return useMutation({
+    mutationFn: outlineDelete,
+  });
 }
 
 export default useHomeOutlineDeleteMutation;
