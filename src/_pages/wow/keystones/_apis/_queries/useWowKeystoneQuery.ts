@@ -24,7 +24,6 @@ export const useWowKeystoneQuery = (params?: IWowKeystoneParams) => {
       }
     },
     enabled: !!params,
-    refetchOnWindowFocus: false, // 화면 포커스 시 다시 가져오지 않음
   });
 }
 

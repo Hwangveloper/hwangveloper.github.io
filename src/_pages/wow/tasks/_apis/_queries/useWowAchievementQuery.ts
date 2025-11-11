@@ -23,7 +23,6 @@ export const useWowAchievementQuery = (accessToken?: string, params?: IWowAchiev
       return convertResponseData(response.data.achievements);
     },
     enabled: !!accessToken,
-    refetchOnWindowFocus: false, // 화면 포커스 시 다시 가져오지 않음
   });
 }
 

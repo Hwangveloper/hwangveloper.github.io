@@ -2,12 +2,11 @@ import React from 'react';
 import './App.css';
 import ErrorBoundary from './common/_components/ErrorBoundary';
 import Router from './_router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import Loader from './common/_components/Loader';
 import SimpleDialog from './common/_components/SimpleDialog';
 import ConfirmDialog from './common/_components/ConfirmDialog';
-
-const queryClient = new QueryClient();
+import { queryClient } from './common/_libs/queryClient/queryClient';
 
 function App() {
   return (

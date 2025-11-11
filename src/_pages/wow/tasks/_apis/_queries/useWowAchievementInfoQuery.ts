@@ -21,7 +21,6 @@ export const useWowAchievementInfoQuery = (accessToken?: string, params?: IWowAc
       return convertResponseData(response.data);
     },
     enabled: !!accessToken && !!params,
-    refetchOnWindowFocus: false, // 화면 포커스 시 다시 가져오지 않음
   });
 }
 
