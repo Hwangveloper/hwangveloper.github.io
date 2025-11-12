@@ -1,7 +1,11 @@
 import React from "react";
 import { Typography, IconButton, Box, Paper } from "@mui/material";
 import RefreshIcon from '@mui/icons-material/Refresh';
+import SaveIcon from '@mui/icons-material/Save';
 import WowCharacterTable from "./WowCharacterTable";
+import useWowStore from "../../_stores/useWowStore";
+import { useShallow } from "zustand/shallow";
+import useWowCharacterMemoUpdateMutation from "../_apis/_mutations/useWowCharacterMemoUpdateMutation";
 
 interface WowCharacterTabContentProps {
   refetch: () => void;
@@ -9,8 +13,32 @@ interface WowCharacterTabContentProps {
 
 const WowCharacterTabContent: React.FC<WowCharacterTabContentProps> = ({ refetch }) => {
 
+  const { characterList } = useWowStore(
+    useShallow((state) => ({
+      characterList: state.characterList,
+    }))
+  );
+
+  const { mutateAsync: updateCharacterMemo } = useWowCharacterMemoUpdateMutation();
+
   const handleRefresh = () => {
     refetch();
+  }
+
+  const handleSave = () => {
+    updateCharacterMemo(
+      {
+        list: characterList.filter((char) => !!char.modifiedMemo).map((char) => ({
+          rowIndex: char.rowIndex,
+          memo: char.modifiedMemo ?? '',
+        })),
+      },
+      {
+        onSuccess: (res) => {
+          refetch();
+        }
+      }
+    );
   }
 
   return (
@@ -30,6 +58,15 @@ const WowCharacterTabContent: React.FC<WowCharacterTabContentProps> = ({ refetch
         >
           <RefreshIcon />
         </IconButton>
+        {characterList.reduce((prev, curr) => !!curr.modifiedMemo || prev, false) ? (
+          <IconButton 
+            color="primary" 
+            onClick={handleSave} 
+            aria-label="save"
+          >
+            <SaveIcon />
+          </IconButton>
+        ) : <></>}
       </Box>
       <Typography variant="h4" align="center" gutterBottom>
         캐릭터 목록

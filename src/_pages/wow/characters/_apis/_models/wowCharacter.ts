@@ -32,6 +32,7 @@ export interface IWowCharacterResponse {
   id: string;
   order: string;
   isMain: string;
+  memo: string;
   name: string;
   job: string;
   tribe: string;
@@ -45,6 +46,8 @@ export interface IWowCharacter {
   id: string;
   order: number;
   isMain: ECommonYN;
+  memo: string;
+  modifiedMemo?: string;
 
   blizzardId: number;
   name: string;
@@ -56,4 +59,9 @@ export interface IWowCharacter {
 export interface IWowCharacterOrderUpdateRequest {
   rowIndex: number;
   order: number;
+}
+
+export interface IWowCharacterMemoUpdateRequest {
+  rowIndex: number;
+  memo: string;
 }

@@ -6,6 +6,8 @@ import useWowStore from "../../_stores/useWowStore";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 import useWowCharacterOrderUpdateMutation from "../_apis/_mutations/useWowCharacterOrderUpdateMutation";
 import { IWowCharacter } from "../_apis/_models/wowCharacter";
+import TextInputField from "../../../../common/_components/fields/TextInputField";
+import { useForm } from "react-hook-form";
 
 
 const HeaderTableCell = styled(TableCell)`
@@ -22,11 +24,16 @@ interface WowCharacterTableProps {
 
 const WowCharacterTable: React.FC<WowCharacterTableProps> = ({ refetch }) => {
 
-  const { characterList } = useWowStore(
+  const { characterList, modifyMemo } = useWowStore(
     useShallow((state) => ({
       characterList: state.characterList,
+      modifyMemo: state.modifyMemo,
     }))
   );
+
+  const {
+    control,
+  } = useForm<any>();
 
   const { mutateAsync: updateCharacterOrder } = useWowCharacterOrderUpdateMutation();
 
@@ -111,10 +118,8 @@ const WowCharacterTable: React.FC<WowCharacterTableProps> = ({ refetch }) => {
               <HeaderTableCell width={60}>순서</HeaderTableCell>
               <HeaderTableCell>메인</HeaderTableCell>
               <HeaderTableCell>이름</HeaderTableCell>
-              <HeaderTableCell>직업</HeaderTableCell>
-              <HeaderTableCell>종족</HeaderTableCell>
-              <HeaderTableCell>서버</HeaderTableCell>
-              <HeaderTableCell>링크</HeaderTableCell>
+              <HeaderTableCell>서버/종족</HeaderTableCell>
+              <HeaderTableCell>메모</HeaderTableCell>
             </TableRow>
           </TableHead>
           <Droppable droppableId="CharacterTable">
@@ -135,21 +140,30 @@ const WowCharacterTable: React.FC<WowCharacterTableProps> = ({ refetch }) => {
                       >
                         <TableCell sx={{textAlign: "center"}}>{row.order}</TableCell>
                         <TableCell sx={{textAlign: "center"}}>{row.isMain}</TableCell>
-                        <TableCell sx={{
-                          textAlign: "center",
-                          fontWeight: "700",
-                          color: `${getClassColor(row.job)}`,
-                          textShadow: (row.job === "사제" || row.job === "도적") ? "1px 1px 4px black" : "1px 1px 0 black",
-                        }}>{row.name}</TableCell>
-                        <TableCell sx={{
-                          textAlign: "center",
-                          fontWeight: "700",
-                          color: `${getClassColor(row.job)}`,
-                          textShadow: (row.job === "사제" || row.job === "도적") ? "1px 1px 4px black" : "1px 1px 0 black",
-                        }}>{row.job}</TableCell>
-                        <TableCell sx={{textAlign: "center"}}>{row.tribe}</TableCell>
-                        <TableCell sx={{textAlign: "center"}}>{row.server}</TableCell>
-                        <TableCell sx={{textAlign: "center"}}><Link href={getCharUrl(row.server, row.name)} target="_blank">링크</Link></TableCell>
+                        <TableCell sx={{textAlign: "center",}}>
+                          <Link
+                            href={getCharUrl(row.server, row.name)}
+                            target="_blank"
+                            sx={{
+                              fontWeight: "700",
+                              color: `${getClassColor(row.job)}`,
+                              textShadow: (row.job === "사제" || row.job === "도적") ? "1px 1px 4px black" : "1px 1px 0 black",
+                              textDecoration: "none",
+                            }}
+                          >
+                            {row.name}
+                          </Link>
+                        </TableCell>
+                        <TableCell sx={{textAlign: "center"}}>{`${row.server}/${row.tribe}`}</TableCell>
+                        <TableCell>
+                          <TextInputField
+                            name={`${row.id}_memo`}
+                            control={control}
+                            defaultValue={row.memo}
+                            minLength={3}
+                            onChange={(value) => modifyMemo(row.id, value)}
+                          />
+                        </TableCell>
                       </TableRow>
                     )}
                   </Draggable>

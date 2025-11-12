@@ -6,7 +6,7 @@ import {
 import { Control, Controller } from "react-hook-form";
 
 interface TextInputFieldProps {
-  label: string;
+  label?: string;
   name: string;
   control: Control<any>;
   defaultValue?: string;

@@ -11,6 +11,7 @@ interface WowState {
   dungeonList: IWowDungeon[];
   itemLevelList: IWowItemLevel[];
   getItemLevelsOfType: (type?: EWowItemType) => IWowItemLevel[];
+  modifyMemo: (charId: string, newMemo: string) => void;
 }
 
 const useWowStore = create<WowState>((set, get) => ({
@@ -35,6 +36,22 @@ const useWowStore = create<WowState>((set, get) => ({
       default:
         return [];
     }
+  },
+
+  modifyMemo: (charId: string, modifiedMemo: string) => {
+    const { characterList } = get();
+    set({
+      characterList: characterList.map((char) => {
+        if (char.id === charId) {
+          return {
+            ...char,
+            modifiedMemo: char.memo === modifiedMemo ? undefined : modifiedMemo,
+          };
+        } else {
+          return char;
+        }
+      })
+    });
   },
 }));
 
