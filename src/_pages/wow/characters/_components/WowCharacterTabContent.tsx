@@ -29,7 +29,7 @@ const WowCharacterTabContent: React.FC<WowCharacterTabContentProps> = ({ refetch
   const handleSave = () => {
     updateCharacterMemo(
       {
-        list: characterList.filter((char) => !!char.modifiedMemo).map((char) => ({
+        list: characterList.filter((char) => char.memo !== char.modifiedMemo).map((char) => ({
           rowIndex: char.rowIndex,
           memo: char.modifiedMemo ?? '',
         })),

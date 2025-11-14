@@ -50,14 +50,8 @@ const UpdateCharMemoModal: React.FC = () => {
 
   // 항목 추가
   const onSubmit = () => {
-
-    const { memo } = getValues();
-
-    onConfirm({
-      rowIndex: char?.rowIndex ?? -1,
-      id: char?.id,
-      memo,
-    });
+    
+    onConfirm(getValues());
 
     handleCloseModal();
   };
@@ -65,6 +59,7 @@ const UpdateCharMemoModal: React.FC = () => {
   useEffect(() => {
       if (char) {
         reset({
+          rowIndex: char.rowIndex,
           id: char.id,
           memo: char.modifiedMemo,
         });
