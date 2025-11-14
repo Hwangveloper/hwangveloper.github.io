@@ -60,6 +60,7 @@ const convertResponseData = (res: IWowCharacterResponse[] | undefined, infoRes?:
       job: info?.playable_class.name ?? '',
       tribe: info?.playable_race.name ?? '',
       server: info?.realm.slug ?? '',
+      modifiedMemo: data.memo,
     }
   }).sort((left, right) => left.order - right.order) as IWowCharacter[];
 }

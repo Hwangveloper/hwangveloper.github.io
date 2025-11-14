@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { IWowMaster } from '../_apis/_models/wowMaster';
-import { IWowCharacter } from '../characters/_apis/_models/wowCharacter';
+import { IWowCharacter, IWowCharacterMemoUpdateRequest } from '../characters/_apis/_models/wowCharacter';
 import { IWowDungeon } from '../keystones/_apis/_models/wowDungeon';
 import { IWowItemLevel } from '../characterItems/_apis/_models/wowCharacterItem';
 import { EWowItemType } from '../characterItems/_constants/wowCharacterItem';
@@ -11,7 +11,7 @@ interface WowState {
   dungeonList: IWowDungeon[];
   itemLevelList: IWowItemLevel[];
   getItemLevelsOfType: (type?: EWowItemType) => IWowItemLevel[];
-  modifyMemo: (charId: string, newMemo: string) => void;
+  modifyMemo: (modified: IWowCharacterMemoUpdateRequest) => void;
 }
 
 const useWowStore = create<WowState>((set, get) => ({
@@ -38,14 +38,14 @@ const useWowStore = create<WowState>((set, get) => ({
     }
   },
 
-  modifyMemo: (charId: string, modifiedMemo: string) => {
+  modifyMemo: (modified: IWowCharacterMemoUpdateRequest) => {
     const { characterList } = get();
     set({
       characterList: characterList.map((char) => {
-        if (char.id === charId) {
+        if (char.id === modified.id) {
           return {
             ...char,
-            modifiedMemo: char.memo === modifiedMemo ? undefined : modifiedMemo,
+            modifiedMemo: modified.memo,
           };
         } else {
           return char;

@@ -15,7 +15,7 @@ const wowCharacterMemoUpdate = async (payload: IWowCharacterMemoUpdatePayload): 
   const updateRows = payload.list;
 
   const updateValues = updateRows.map((data) => ({
-    range: range.replaceAll("##", `${WOW_CHARACTER_SHEET_UPDATE_START_ROW + data.rowIndex}`),
+    range: range.replaceAll("##", `${WOW_CHARACTER_SHEET_UPDATE_START_ROW}${data.rowIndex}`),
     values: [[ data.memo ]],
   }));
 

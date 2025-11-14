@@ -6,6 +6,7 @@ import WowCharacterTable from "./WowCharacterTable";
 import useWowStore from "../../_stores/useWowStore";
 import { useShallow } from "zustand/shallow";
 import useWowCharacterMemoUpdateMutation from "../_apis/_mutations/useWowCharacterMemoUpdateMutation";
+import UpdateCharMemoModal from "./UpdateCharMemoModal";
 
 interface WowCharacterTabContentProps {
   refetch: () => void;
@@ -58,7 +59,7 @@ const WowCharacterTabContent: React.FC<WowCharacterTabContentProps> = ({ refetch
         >
           <RefreshIcon />
         </IconButton>
-        {characterList.reduce((prev, curr) => !!curr.modifiedMemo || prev, false) ? (
+        {characterList.reduce((prev, curr) => curr.modifiedMemo !== curr.memo || prev, false) ? (
           <IconButton 
             color="primary" 
             onClick={handleSave} 
@@ -72,6 +73,7 @@ const WowCharacterTabContent: React.FC<WowCharacterTabContentProps> = ({ refetch
         캐릭터 목록
       </Typography>
       <WowCharacterTable refetch={refetch} />
+      <UpdateCharMemoModal />
     </Paper>
   );
 };

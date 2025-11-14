@@ -1,13 +1,11 @@
 import React from "react";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Link } from "@mui/material";
 import styled from "styled-components";
-import { useShallow } from "zustand/shallow";
 import useWowStore from "../../_stores/useWowStore";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 import useWowCharacterOrderUpdateMutation from "../_apis/_mutations/useWowCharacterOrderUpdateMutation";
 import { IWowCharacter } from "../_apis/_models/wowCharacter";
-import TextInputField from "../../../../common/_components/fields/TextInputField";
-import { useForm } from "react-hook-form";
+import useWowCharMemoModalStore from "../_stores/useWowCharMemoModalStore";
 
 
 const HeaderTableCell = styled(TableCell)`
@@ -24,16 +22,7 @@ interface WowCharacterTableProps {
 
 const WowCharacterTable: React.FC<WowCharacterTableProps> = ({ refetch }) => {
 
-  const { characterList, modifyMemo } = useWowStore(
-    useShallow((state) => ({
-      characterList: state.characterList,
-      modifyMemo: state.modifyMemo,
-    }))
-  );
-
-  const {
-    control,
-  } = useForm<any>();
+  const { characterList, modifyMemo } = useWowStore();
 
   const { mutateAsync: updateCharacterOrder } = useWowCharacterOrderUpdateMutation();
 
@@ -109,6 +98,15 @@ const WowCharacterTable: React.FC<WowCharacterTableProps> = ({ refetch }) => {
     return "#000000";
   }
 
+  const handleClickCharacterMemoCell = (char: IWowCharacter) => {
+    useWowCharMemoModalStore.getState().open({
+      char,
+      onConfirm: (request) => {
+        modifyMemo(request);
+      }
+    });
+  }
+
   return (
     <TableContainer>
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -140,7 +138,7 @@ const WowCharacterTable: React.FC<WowCharacterTableProps> = ({ refetch }) => {
                       >
                         <TableCell sx={{textAlign: "center"}}>{row.order}</TableCell>
                         <TableCell sx={{textAlign: "center"}}>{row.isMain}</TableCell>
-                        <TableCell sx={{textAlign: "center",}}>
+                        <TableCell sx={{textAlign: "center"}}>
                           <Link
                             href={getCharUrl(row.server, row.name)}
                             target="_blank"
@@ -155,15 +153,7 @@ const WowCharacterTable: React.FC<WowCharacterTableProps> = ({ refetch }) => {
                           </Link>
                         </TableCell>
                         <TableCell sx={{textAlign: "center"}}>{`${row.server}/${row.tribe}`}</TableCell>
-                        <TableCell>
-                          <TextInputField
-                            name={`${row.id}_memo`}
-                            control={control}
-                            defaultValue={row.memo}
-                            minLength={3}
-                            onChange={(value) => modifyMemo(row.id, value)}
-                          />
-                        </TableCell>
+                        <TableCell onClick={() => handleClickCharacterMemoCell(row)}>{row.modifiedMemo}</TableCell>
                       </TableRow>
                     )}
                   </Draggable>
