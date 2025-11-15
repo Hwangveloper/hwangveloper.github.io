@@ -51,7 +51,7 @@ const covertResponseData = (res: IProjectTaskResponse[] | undefined, params?: IP
     sprintList: sprintList
       .filter((sprint) => sprint.startDate && sprint.endDate)
       .filter((sprint, idx, self) => idx === self.findIndex((s) => s.startDate.isSame(sprint.startDate, 'day') && s.endDate.isSame(sprint.endDate, 'day')))
-      .sort((lSprint, rSprint) => lSprint.startDate.isBefore(rSprint.startDate) ? -1 : 0),
+      .sort((lSprint, rSprint) => lSprint.startDate.isAfter(rSprint.startDate) ? -1 : 0),
     taskList,
   } as IProjectSprintTask;
 }
