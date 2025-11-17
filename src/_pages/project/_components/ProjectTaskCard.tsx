@@ -73,9 +73,14 @@ const ProjectTaskCard: React.FC<ProjectTaskCardProps> = ({ task, index, onUpdate
           <Typography variant="body1" component="div" fontWeight="bold" display="flex" flexDirection="row" justifyContent="center">
             {`[${task.projectTitle}]`}
           </Typography>
-          {task.prevTaskId && <Typography variant="body2" component="div" align="right">
-            {` - ${task.prevTaskId}`}
-          </Typography>}
+          <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Typography variant="body2" component="div" display="flex" flexDirection="row" justifyContent="left">
+              {(task.sprintStartDate && task.sprintEndDate) ? `${task.sprintStartDate?.format(DATE_FORMAT)}~${task.sprintEndDate?.format(DATE_FORMAT)}` : ''}
+            </Typography>
+            {task.prevTaskId && <Typography variant="body2" component="div" align="right">
+              {` - ${task.prevTaskId}`}
+            </Typography>}
+          </Box>
           <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" borderTop="1px solid black">
             <Typography variant="subtitle1" component="div" color={getTypeColor(task.type)}>
               {`[${task.id}] ${task.title}`}
@@ -114,10 +119,10 @@ const ProjectTaskCard: React.FC<ProjectTaskCardProps> = ({ task, index, onUpdate
               </Box>
               <Box display="flex" flexDirection="column" alignItems="end">
                 {(task.startDatetime && task.startDatetime.isValid()) && <Typography variant="caption" color="text.secondary">
-                  Start: {task.startDatetime?.format(DATE_FORMAT)}
+                  시작일자: {task.startDatetime?.format(DATE_FORMAT)}
                 </Typography>}
                 {(task.endDatetime && task.endDatetime.isValid()) && <Typography variant="caption" color="text.secondary">
-                  End: {task.endDatetime?.format(DATE_FORMAT)}
+                  종료일자: {task.endDatetime?.format(DATE_FORMAT)}
                 </Typography>}
               </Box>
             </Box>

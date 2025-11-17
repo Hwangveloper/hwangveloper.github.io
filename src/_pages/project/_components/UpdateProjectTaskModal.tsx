@@ -124,6 +124,11 @@ const UpdateProjectTaskModal: React.FC = () => {
     initSprint();
   };
 
+  const handleRemoveSprint = () => {
+    setValue(EProjectTaskSaveRequestFields.sprintStartDate, undefined);
+    setValue(EProjectTaskSaveRequestFields.sprintEndDate, undefined);
+  };
+
   const initSprint = useCallback(() => {
     setValue(EProjectTaskSaveRequestFields.sprintStartDate, dayjs().startOf('day').subtract(4, 'day').startOf('week').add(4, 'day'));
     setValue(EProjectTaskSaveRequestFields.sprintEndDate, dayjs().startOf('day').subtract(4, 'day').startOf('week').add(10, 'day'));
@@ -188,6 +193,9 @@ const UpdateProjectTaskModal: React.FC = () => {
             <Button variant="outlined" onClick={handleIncreaseSprint}>
               +
             </Button>
+            {(sprintStartDate && sprintEndDate) && <Button variant="outlined" sx={{marginLeft: 0}} onClick={handleRemoveSprint}>
+              스프린트 제거
+            </Button>}
           </Box>
           <SelectInputField
             label="프로젝트"

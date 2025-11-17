@@ -20,7 +20,11 @@ const useProjectTaskStore = create<ProjectTaskState>((set, get) => ({
     if (sprint && sprint !== ECommonText.ALL && state !== EProjectTaskStatus.BACKLOG && state !== EProjectTaskStatus.TODO) {
       const sprintStartDate = dayjs(sprint?.substring(0, sprint.indexOf('&')), DATE_FORMAT);
       const sprintEndDate = dayjs(sprint?.substring(sprint.indexOf('&')), DATE_FORMAT);
-      return get().taskList.filter((row) => row.state === state && sprintStartDate.isSame(row.sprintStartDate) && sprintEndDate.isSame(row.sprintEndDate));
+      if (state === EProjectTaskStatus.DONE) {
+        return get().taskList.filter((row) => row.state === state && sprintStartDate.isSame(row.sprintStartDate) && sprintEndDate.isSame(row.sprintEndDate));
+      } else {
+        return get().taskList.filter((row) => row.state === state && ((sprintStartDate.isSame(row.sprintStartDate) && sprintEndDate.isSame(row.sprintEndDate)) || (!row.sprintStartDate || !row.sprintEndDate)));
+      }
     } else {
       return get().taskList.filter((row) => row.state === state);
     }
@@ -31,6 +35,13 @@ const useProjectTaskStore = create<ProjectTaskState>((set, get) => ({
     const list = getList(state, sprint);
 
     return list.sort((left, right) => {
+
+      // 스프린트 포함여부 내림차순
+      if ((left.sprintStartDate && left.sprintEndDate) && (!right.sprintStartDate || !right.sprintEndDate)) {
+        return -1;
+      } else if ((!left.sprintStartDate || !left.sprintEndDate) && (right.sprintStartDate && right.sprintEndDate)) {
+        return 1;
+      }
 
       // 태스크 분량 내림차순
       if (left.weight !== right.weight) {
