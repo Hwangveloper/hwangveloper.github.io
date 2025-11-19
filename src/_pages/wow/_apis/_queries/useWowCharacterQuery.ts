@@ -3,10 +3,10 @@ import { gapi } from 'gapi-script';
 import { WOW_CHARACTER_SHEET_RANGE } from "../../../../common/_constants/sheets";
 import { fnConvertTableData } from "../../../../common/_utils/sheets";
 import { IWowCharacter, IWowCharacterParams, IWowCharacterResponse, IWowUserInfoCharacterResponse, IWowUserInfoResponse } from "../../characters/_apis/_models/wowCharacter";
-import axios from "axios";
+import battleNetClient from "../../../../common/_libs/axios/battleNetClient";
 
 
-export const useWowCharacterQuery = (accessToken?: string, params?: IWowCharacterParams) => {
+export const useWowCharacterQuery = (params?: IWowCharacterParams) => {
   return useQuery<IWowCharacter[] | undefined>({
     queryKey: generateQueryKey(params),
     queryFn: async () => {
@@ -18,24 +18,16 @@ export const useWowCharacterQuery = (accessToken?: string, params?: IWowCharacte
 
         const res = fnConvertTableData<IWowCharacterResponse>(response.result.values);
         
-        const infoUrl = `https://kr.api.blizzard.com/profile/user/wow`;
+        const infoUrl = `/profile/user/wow`;
 
-        const charInfoResp = await axios.get(infoUrl, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          params: {
-            namespace: "profile-kr",
-            locale: "ko_KR",
-          },
-        });
+        const charInfoResp = await battleNetClient.get(infoUrl);
 
         return convertResponseData(res, charInfoResp.data)
       } else {
         return undefined;
       }
     },
-    enabled: !!accessToken && !!params,
+    enabled: !!params,
   });
 }
 

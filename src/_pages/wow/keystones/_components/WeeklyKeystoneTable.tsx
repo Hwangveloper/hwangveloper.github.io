@@ -140,7 +140,7 @@ const WeeklyKeystoneTable: React.FC = () => {
               {characterList.filter((char) => char.isMain === ECommonYN.Y).map((char) => {
                 const record = keystoneRecordList.find((rec) => rec.charName === char.name);
                 return (
-                  <TableCell key={record?.charName} sx={{textAlign: "center", color: getRenderColor(record?.currRuns.length ?? 0, weeklyClear?.firstStep ?? 0, weeklyClear?.lastStep ?? 0)}}>{record?.currRuns.length}</TableCell>
+                  <TableCell key={char.id} sx={{textAlign: "center", color: getRenderColor(record?.currRuns.length ?? 0, weeklyClear?.firstStep ?? 0, weeklyClear?.lastStep ?? 0)}}>{record?.currRuns.length}</TableCell>
                 );
               })}
             </TableRow>
@@ -150,7 +150,7 @@ const WeeklyKeystoneTable: React.FC = () => {
                 const record = keystoneRecordList.find((rec) => rec.charName === char.name);
                 const recordLevels = getRecordLevels(record?.currRuns ?? []);
                 return (
-                  <TableCell key={record?.charName} sx={{textAlign: "center", color: getRenderColor(recordLevels, weeklyLevel?.firstStep ?? 0, weeklyLevel?.lastStep ?? 0)}}>{recordLevels}</TableCell>
+                  <TableCell key={char.id} sx={{textAlign: "center", color: getRenderColor(recordLevels, weeklyLevel?.firstStep ?? 0, weeklyLevel?.lastStep ?? 0)}}>{recordLevels}</TableCell>
                 );
               })}
             </TableRow>

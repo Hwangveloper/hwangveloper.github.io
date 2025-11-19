@@ -18,6 +18,7 @@ import useBattleNetApiStore from "../../common/_stores/useBattleNetApiStore";
 import useWowAccountProfileQuery from "./_apis/_queries/useWowAccountProfileQuery";
 import WowTierStatusTabContent from "./tierStatus/_components/WowTierStatusTabContent";
 import WowTaskTabContent from "./tasks/_components/WowTaskTabContent";
+import { getAuthURL } from "../../common/_libs/axios/battleNetClient";
 
 // 속성을 위한 유틸리티 함수
 const tabProps = (index: number) => ({
@@ -43,10 +44,10 @@ const WowPage: React.FC = () => {
   const [tabValue, setTabValue] = useState<number>(0);
 
   const { data, isFetched, isFetching } = useWowMasterQuery(authStatus ? { ignoreDelete: true } : undefined);
-  const { data: charData, isFetched: isCharFetched, isFetching: isCharFetching, refetch: refetchChar } = useWowCharacterQuery(accessToken, authStatus ? { ignoreDelete: true } : undefined);
+  const { data: accountProfile, isFetched: isAccountFetched, isFetching: isAccountFetching } = useWowAccountProfileQuery();
+  const { data: charData, isFetched: isCharFetched, isFetching: isCharFetching, refetch: refetchChar } = useWowCharacterQuery(authStatus ? { ignoreDelete: true } : undefined);
   const { data: dungeonData, isFetched: isDungeonFetched, isFetching: isDungeonFetching } = useWowDungeonQuery(authStatus ? { ignoreDelete: true } : undefined);
   const { data: itemLevels, isFetched: isItemLevelFetched, isFetching: isItemLevelFetching } = useWowItemLevelQuery(authStatus ? { } : undefined);
-  const { data: accountProfile, isFetched: isAccountFetched, isFetching: isAccountFetching } = useWowAccountProfileQuery(accessToken);
 
   useEffect(() => {
     initBattleNetToken();
@@ -99,7 +100,7 @@ const WowPage: React.FC = () => {
   useEffect(() => {
     useLoader.setState({ isLoading: isFetching });
   }, [isFetching]);
-  const bnetApiURL = useBattleNetApiStore().getAuthURL();
+  const bnetApiURL = getAuthURL();
 
   return (
     <Box

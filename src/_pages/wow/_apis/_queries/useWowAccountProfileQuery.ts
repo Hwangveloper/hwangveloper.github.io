@@ -1,25 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import battleNetClient from "../../../../common/_libs/axios/battleNetClient";
 
 
-export const useWowAccountProfileQuery = (accessToken?: string) => {
+export const useWowAccountProfileQuery = () => {
   return useQuery<any>({
     queryKey: generateQueryKey(),
     queryFn: async () => {
 
-      const url = "https://kr.api.blizzard.com/profile/user/wow";
+      const url = "/profile/user/wow";
 
-      return await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        params: {
-          namespace: "profile-kr",
-          locale: "ko_KR",
-        },
-      });
+      return await battleNetClient.get(url);
     },
-    enabled: !!accessToken,
+    enabled: true,
   });
 }
 
