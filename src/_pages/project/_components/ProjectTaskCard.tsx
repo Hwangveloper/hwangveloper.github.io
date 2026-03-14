@@ -5,7 +5,7 @@ import { IProjectTask, IProjectTaskColumn } from '../_apis/_models/projectTask';
 import { Draggable } from 'react-beautiful-dnd';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { DATE_FORMAT } from '../../../common/_constants/common';
+import { DATE_FORMAT, ECommonText } from '../../../common/_constants/common';
 import { EProjectTaskType, projectTaskTypeOptions, taskWeightOptions } from '../_constants/projectTask';
 import useProjectTaskStore from '../_stores/useProjectTaskStore';
 import { useShallow } from 'zustand/shallow';
@@ -67,7 +67,7 @@ const ProjectTaskCard: React.FC<ProjectTaskCardProps> = ({ task, index, onUpdate
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          sx={{backgroundColor: currSprint !== getSprintId() ? "#DDDDDD" : undefined}}
+          sx={{backgroundColor: (currSprint !== getSprintId() && currSprint !== ECommonText.ALL) ? "#DDDDDD" : undefined}}
           elevation={2}
         >
           <Typography variant="body1" component="div" fontWeight="bold" display="flex" flexDirection="row" justifyContent="center">

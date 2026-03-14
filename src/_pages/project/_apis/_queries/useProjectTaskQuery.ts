@@ -4,7 +4,7 @@ import { PROJECT_TASK_SHEET_RANGE } from "../../../../common/_constants/sheets";
 import { fnConvertTableData } from "../../../../common/_utils/sheets";
 import dayjs from "dayjs";
 import { IProjectSprint, IProjectSprintTask, IProjectTask, IProjectTaskParams, IProjectTaskResponse } from "../_models/projectTask";
-import { ECommonYN } from "../../../../common/_constants/common";
+import { DATE_FORMAT, ECommonText, ECommonYN } from "../../../../common/_constants/common";
 
 
 export const useProjectTaskQuery = (params?: IProjectTaskParams) => {
@@ -42,16 +42,26 @@ const covertResponseData = (res: IProjectTaskResponse[] | undefined, params?: IP
     taskList = taskList.filter((data) => data.isDelete !== ECommonYN.Y);
   }
 
-  const sprintList = taskList.map((task) => ({
+  const sprintList = (taskList.map((task) => ({
     startDate: task.sprintStartDate,
     endDate: task.sprintEndDate,
-  })) as IProjectSprint[];
+  })) as IProjectSprint[]).filter((sprint) =>
+    sprint.startDate && sprint.endDate
+  ).filter((sprint, idx, self) =>
+    idx === self.findIndex((s) => s.startDate.isSame(sprint.startDate, 'day') && s.endDate.isSame(sprint.endDate, 'day'))
+  ).sort((lSprint, rSprint) =>
+    lSprint.startDate.isAfter(rSprint.startDate) ? -1 : 0
+  );
+
+  const currSprint = sprintList.filter((sprint) => {
+    const startDate = dayjs().startOf('day').subtract(4, 'day').startOf('week').add(4, 'day');
+    const endDate = dayjs().startOf('day').subtract(4, 'day').startOf('week').add(10, 'day');
+    return (sprint.startDate.isSame(startDate, 'day') && sprint.endDate.isSame(endDate, 'day'));
+  }).length > 0 ? `${dayjs().startOf('day').subtract(4, 'day').startOf('week').add(4, 'day').format(DATE_FORMAT)}&${dayjs().startOf('day').subtract(4, 'day').startOf('week').add(10, 'day').format(DATE_FORMAT)}` : ECommonText.ALL;
 
   return {
-    sprintList: sprintList
-      .filter((sprint) => sprint.startDate && sprint.endDate)
-      .filter((sprint, idx, self) => idx === self.findIndex((s) => s.startDate.isSame(sprint.startDate, 'day') && s.endDate.isSame(sprint.endDate, 'day')))
-      .sort((lSprint, rSprint) => lSprint.startDate.isAfter(rSprint.startDate) ? -1 : 0),
+    currSprint,
+    sprintList,
     taskList,
   } as IProjectSprintTask;
 }

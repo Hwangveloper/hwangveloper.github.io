@@ -52,6 +52,7 @@ export interface IProjectSprint {
 }
 
 export interface IProjectSprintTask {
+  currSprint: string;
   sprintList: IProjectSprint[];
   taskList: IProjectTask[];
 }

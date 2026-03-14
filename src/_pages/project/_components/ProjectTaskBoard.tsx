@@ -63,11 +63,12 @@ const ProjectTaskBoard: React.FC = () => {
   useEffect(() => {
     if (data && isFetched && !isFetching) {
       useProjectTaskStore.setState({
+        currSprint: !currSprint ? data.currSprint : currSprint,
         taskList: data.taskList,
         sprintList: data.sprintList,
       });
     }
-  }, [data, isFetched, isFetching]);
+  }, [data, currSprint, isFetched, isFetching]);
 
   useEffect(() => {
     useLoader.setState({ isLoading: isFetching });

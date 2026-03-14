@@ -15,7 +15,7 @@ interface ProjectTaskState {
 const useProjectTaskStore = create<ProjectTaskState>((set, get) => ({
   taskList: [],
   sprintList: [],
-  currSprint: `${dayjs().startOf('day').subtract(4, 'day').startOf('week').add(4, 'day').format(DATE_FORMAT)}&${dayjs().startOf('day').subtract(4, 'day').startOf('week').add(10, 'day').format(DATE_FORMAT)}`,
+  currSprint: '',
   getList: (state: EProjectTaskStatus, sprint?: string) => {
     if (sprint && sprint !== ECommonText.ALL && state !== EProjectTaskStatus.BACKLOG && state !== EProjectTaskStatus.TODO) {
       const sprintStartDate = dayjs(sprint?.substring(0, sprint.indexOf('&')), DATE_FORMAT);
