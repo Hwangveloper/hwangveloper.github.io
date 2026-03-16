@@ -14,6 +14,7 @@ import useWowCharItemModalStore from "../_stores/useWowCharItemModalStore";
 import SelectInputField from "../../../../common/_components/fields/SelectInputField";
 import { ICommonOption } from "../../../../common/_models/common";
 import useWowStore from "../../_stores/useWowStore";
+import TextInputField from "../../../../common/_components/fields/TextInputField";
 
 const UpdateCharItemModal: React.FC = () => {
 
@@ -123,16 +124,29 @@ const UpdateCharItemModal: React.FC = () => {
       <DialogContent>
         <form name="updateCharItemForm" onSubmit={handleSubmit(onSubmit)}>
           {/* 입력 필드 */}
-          <SelectInputField
-            label="아이템 레벨"
-            name={EWowCharItemUpdateRequestFields.level}
-            options={itemLevelOptions}
-            control={control}
-            defaultValue={level}
-            error={!!errors.level}
-            helperText={errors.level?.message}
-            onChange={(value) => setValue(EWowCharItemUpdateRequestFields.level, value)}
-          />
+          {type !== EWowItemType.ETC ? (
+            <SelectInputField
+              label="아이템 레벨"
+              name={EWowCharItemUpdateRequestFields.level}
+              options={itemLevelOptions}
+              control={control}
+              defaultValue={level}
+              error={!!errors.level}
+              helperText={errors.level?.message}
+              onChange={(value) => setValue(EWowCharItemUpdateRequestFields.level, value)}
+            />
+          ) : (
+            <TextInputField
+              label="아이템 레벨"
+              name={EWowCharItemUpdateRequestFields.level}
+              control={control}
+              defaultValue={level}
+              minLength={1}
+              error={!!errors.level}
+              helperText={errors.level?.message}
+              onChange={(value) => setValue(EWowCharItemUpdateRequestFields.level, value)}
+            />
+          )}
           <SelectInputField
             label="아이템 타입"
             name={EWowCharItemUpdateRequestFields.type}

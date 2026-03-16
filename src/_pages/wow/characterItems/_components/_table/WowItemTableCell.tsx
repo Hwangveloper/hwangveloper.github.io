@@ -13,9 +13,8 @@ interface WowItemTableCellProps {
 
 const WowItemTableCell: React.FC<WowItemTableCellProps> = ({ items, partType, onClickItemCell }) => {
 
-  const { itemLevelList, getItemLevelsOfType } = useWowStore(
+  const { getItemLevelsOfType } = useWowStore(
     useShallow((state) => ({
-      itemLevelList: state.itemLevelList,
       getItemLevelsOfType: state.getItemLevelsOfType,
     }))
   );
@@ -42,36 +41,37 @@ const WowItemTableCell: React.FC<WowItemTableCellProps> = ({ items, partType, on
       return "white";
     } else {
       switch (item?.type) {
+        case EWowItemType.ADVENTURER:
+          return "#fce5cd";
         case EWowItemType.STAGER:
-          return "#d9ead3";
-        case EWowItemType.CHAMPION:
           return "#f4cccc";
-        case EWowItemType.HERO:
+        case EWowItemType.CHAMPION:
           return "#cfe2f3";
-        case EWowItemType.MYTHIC:
+        case EWowItemType.HERO:
           return "#d9d2e9";
+        case EWowItemType.MYTHIC:
+          return "#cccccc";
         default:
           return "white";
       }
     }
   }
 
-  const getItemLevelColor = (itemLevel?: string) => {
-    const iLevel = itemLevelList.find((iLevel) => iLevel.itemLevel === itemLevel);
-    const lvl = iLevel?.level ?? 0;
+  const getItemLevelColor = () => {
 
-    if (lvl < 4) {
-      return "#00ff00";
-    } else if (lvl < 8) {
-      return "#ff9900";
-    } else if (lvl < 12) {
-      return "#ff0000";
-    } else if (lvl < 16) {
-      return "#0000ff";
-    } else if (lvl < 19) {
-      return "#9900ff";
-    } else {
-      return "black";
+    switch (item?.type) {
+      case EWowItemType.ADVENTURER:
+        return "#ff9900";
+      case EWowItemType.STAGER:
+        return "#ff0000";
+      case EWowItemType.CHAMPION:
+        return "#0000ff";
+      case EWowItemType.HERO:
+        return "#9900ff";
+      case EWowItemType.MYTHIC:
+        return "black";
+      default:
+        return "#00ff00";
     }
   }
 
@@ -80,7 +80,7 @@ const WowItemTableCell: React.FC<WowItemTableCellProps> = ({ items, partType, on
   }
 
   return (
-    <TableCell onClick={() => handleClickItemCell()} sx={{textAlign: "center", fontWeight: "600", backgroundColor: getItemUpgradeColor(item?.level), color: getItemLevelColor(item?.level)}}>
+    <TableCell onClick={() => handleClickItemCell()} sx={{textAlign: "center", fontWeight: "600", backgroundColor: getItemUpgradeColor(item?.level), color: getItemLevelColor()}}>
       {item?.level}
     </TableCell>
   );

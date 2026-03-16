@@ -25,14 +25,16 @@ const useWowStore = create<WowState>((set, get) => ({
     const { itemLevelList } = get();
 
     switch (type) {
+      case EWowItemType.ADVENTURER:
+        return itemLevelList.slice(0, 6);
       case EWowItemType.STAGER:
-        return itemLevelList.slice(0, 8);
+        return itemLevelList.slice(4, 10);
       case EWowItemType.CHAMPION:
-        return itemLevelList.slice(4, 12);
+        return itemLevelList.slice(8, 14);
       case EWowItemType.HERO:
-        return itemLevelList.slice(8, 16);
+        return itemLevelList.slice(12, 18);
       case EWowItemType.MYTHIC:
-        return itemLevelList.slice(12, 20);
+        return itemLevelList.slice(16, 22);
       default:
         return [];
     }

@@ -12,9 +12,8 @@ interface WowWeaponTableCellProps {
 
 const WowWeaponTableCell: React.FC<WowWeaponTableCellProps> = ({ items, onClickWeaponCell }) => {
 
-  const { itemLevelList, getItemLevelsOfType } = useWowStore(
+  const { getItemLevelsOfType } = useWowStore(
     useShallow((state) => ({
-      itemLevelList: state.itemLevelList,
       getItemLevelsOfType: state.getItemLevelsOfType,
     }))
   );
@@ -66,14 +65,16 @@ const WowWeaponTableCell: React.FC<WowWeaponTableCellProps> = ({ items, onClickW
       return "white";
     } else {
       switch (item?.type) {
+        case EWowItemType.ADVENTURER:
+          return "#fce5cd";
         case EWowItemType.STAGER:
-          return "#d9ead3";
-        case EWowItemType.CHAMPION:
           return "#f4cccc";
-        case EWowItemType.HERO:
+        case EWowItemType.CHAMPION:
           return "#cfe2f3";
-        case EWowItemType.MYTHIC:
+        case EWowItemType.HERO:
           return "#d9d2e9";
+        case EWowItemType.MYTHIC:
+          return "#cccccc";
         default:
           return "white";
       }
@@ -81,21 +82,20 @@ const WowWeaponTableCell: React.FC<WowWeaponTableCellProps> = ({ items, onClickW
   }
 
   const getItemLevelColor = (item?: IWowItem) => {
-    const iLevel = itemLevelList.find((iLevel) => iLevel.itemLevel === item?.level);
-    const lvl = iLevel?.level ?? 0;
 
-    if (lvl < 4) {
-      return "#00ff00";
-    } else if (lvl < 8) {
-      return "#ff9900";
-    } else if (lvl < 12) {
-      return "#ff0000";
-    } else if (lvl < 16) {
-      return "#0000ff";
-    } else if (lvl < 19) {
-      return "#9900ff";
-    } else {
-      return "black";
+    switch (item?.type) {
+      case EWowItemType.ADVENTURER:
+        return "#ff9900";
+      case EWowItemType.STAGER:
+        return "#ff0000";
+      case EWowItemType.CHAMPION:
+        return "#0000ff";
+      case EWowItemType.HERO:
+        return "#9900ff";
+      case EWowItemType.MYTHIC:
+        return "black";
+      default:
+        return "#00ff00";
     }
   }
 

@@ -4,6 +4,7 @@ export enum EWowCharItemDataType {
 }
 
 export enum EWowItemType {
+  ADVENTURER = '모험가',
   STAGER = '노련가',
   CHAMPION = '챔피언',
   HERO = '영웅',
@@ -59,6 +60,10 @@ export enum EWowCharWeaponUpdateRequestFields {
 }
 
 export const itemTypeOptions = [
+  {
+    label: "모험가",
+    value: EWowItemType.ADVENTURER,
+  },
   {
     label: "노련가",
     value: EWowItemType.STAGER,

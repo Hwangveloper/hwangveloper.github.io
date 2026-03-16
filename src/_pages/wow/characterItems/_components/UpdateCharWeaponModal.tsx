@@ -17,6 +17,7 @@ import SelectInputField from "../../../../common/_components/fields/SelectInputF
 import { ICommonOption } from "../../../../common/_models/common";
 import useWowStore from "../../_stores/useWowStore";
 import useWowCharWeaponModalStore from "../_stores/useWowCharWeaponModalStore";
+import TextInputField from "../../../../common/_components/fields/TextInputField";
 
 const UpdateCharWeaponModal: React.FC = () => {
 
@@ -275,6 +276,8 @@ const UpdateCharWeaponModal: React.FC = () => {
       case "악마사냥꾼": {
         if (partType === EWowItemPartType.ONE_HAND_WEAPON1
           || partType === EWowItemPartType.ONE_HAND_WEAPON2
+          || partType === EWowItemPartType.ONE_HAND_WEAPON3
+          || partType === EWowItemPartType.ONE_HAND_WEAPON4
         ) {
           return true;
         }
@@ -302,6 +305,8 @@ const UpdateCharWeaponModal: React.FC = () => {
       case "사냥꾼": {
         if (partType === EWowItemPartType.TWO_HAND_WEAPON1
           || partType === EWowItemPartType.TWO_HAND_WEAPON2
+          || partType === EWowItemPartType.ONE_HAND_WEAPON1
+          || partType === EWowItemPartType.ONE_HAND_WEAPON2
         ) {
           return true;
         }
@@ -379,16 +384,29 @@ const UpdateCharWeaponModal: React.FC = () => {
           {/* 입력 필드 */}
           {isActiveJobWeaponType(items, EWowItemPartType.TWO_HAND_WEAPON1) && <Box display="flex" flexDirection="row" gap="8px">
             <Typography width={"200px"} alignContent="center">{getItemPartTypeName(EWowItemPartType.TWO_HAND_WEAPON1)}</Typography>
-            <SelectInputField
-              label="아이템 레벨"
-              name={EWowCharWeaponUpdateRequestFields.thWeapon1Level}
-              options={thWeapon1LevelOptions}
-              control={control}
-              defaultValue={thWeapon1Level}
-              error={!!errors.thWeapon1Level}
-              helperText={errors.thWeapon1Level?.message}
-              onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.thWeapon1Level, value)}
-            />
+            {thWeapon1Type !== EWowItemType.ETC ? (
+              <SelectInputField
+                label="아이템 레벨"
+                name={EWowCharWeaponUpdateRequestFields.thWeapon1Level}
+                options={thWeapon1LevelOptions}
+                control={control}
+                defaultValue={thWeapon1Level}
+                error={!!errors.thWeapon1Level}
+                helperText={errors.thWeapon1Level?.message}
+                onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.thWeapon1Level, value)}
+              />
+            ) : (
+              <TextInputField
+                label="아이템 레벨"
+                name={EWowCharWeaponUpdateRequestFields.thWeapon1Level}
+                control={control}
+                defaultValue={thWeapon1Level}
+                minLength={1}
+                error={!!errors.thWeapon1Level}
+                helperText={errors.thWeapon1Level?.message}
+                onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.thWeapon1Level, value)}
+              />
+            )}
             <SelectInputField
               label="아이템 타입"
               name={EWowCharWeaponUpdateRequestFields.thWeapon1Type}
@@ -404,16 +422,29 @@ const UpdateCharWeaponModal: React.FC = () => {
             <Divider sx={{ my: "4px" }} />
             <Box display="flex" flexDirection="row" gap="8px">
               <Typography width={"200px"} alignContent="center">{getItemPartTypeName(EWowItemPartType.TWO_HAND_WEAPON2)}</Typography>
-              <SelectInputField
-                label="아이템 레벨"
-                name={EWowCharWeaponUpdateRequestFields.thWeapon2Level}
-                options={thWeapon2LevelOptions}
-                control={control}
-                defaultValue={thWeapon2Level}
-                error={!!errors.thWeapon2Level}
-                helperText={errors.thWeapon2Level?.message}
-                onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.thWeapon2Level, value)}
-              />
+              {thWeapon2Type !== EWowItemType.ETC ? (
+                <SelectInputField
+                  label="아이템 레벨"
+                  name={EWowCharWeaponUpdateRequestFields.thWeapon2Level}
+                  options={thWeapon2LevelOptions}
+                  control={control}
+                  defaultValue={thWeapon2Level}
+                  error={!!errors.thWeapon2Level}
+                  helperText={errors.thWeapon2Level?.message}
+                  onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.thWeapon2Level, value)}
+                />
+              ) : (
+                <TextInputField
+                  label="아이템 레벨"
+                  name={EWowCharWeaponUpdateRequestFields.thWeapon2Level}
+                  control={control}
+                  defaultValue={thWeapon2Level}
+                  minLength={1}
+                  error={!!errors.thWeapon2Level}
+                  helperText={errors.thWeapon2Level?.message}
+                  onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.thWeapon2Level, value)}
+                />
+              )}
               <SelectInputField
                 label="아이템 타입"
                 name={EWowCharWeaponUpdateRequestFields.thWeapon2Type}
@@ -430,16 +461,29 @@ const UpdateCharWeaponModal: React.FC = () => {
             <Divider sx={{ my: "4px" }} />
             <Box display="flex" flexDirection="row" gap="8px">
               <Typography width={"200px"} alignContent="center">{getItemPartTypeName(EWowItemPartType.ONE_HAND_WEAPON1)}</Typography>
-              <SelectInputField
-                label="아이템 레벨"
-                name={EWowCharWeaponUpdateRequestFields.ohWeapon1Level}
-                options={ohWeapon1LevelOptions}
-                control={control}
-                defaultValue={ohWeapon1Level}
-                error={!!errors.ohWeapon1Level}
-                helperText={errors.ohWeapon1Level?.message}
-                onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.ohWeapon1Level, value)}
-              />
+              {ohWeapon1Type !== EWowItemType.ETC ? (
+                <SelectInputField
+                  label="아이템 레벨"
+                  name={EWowCharWeaponUpdateRequestFields.ohWeapon1Level}
+                  options={ohWeapon1LevelOptions}
+                  control={control}
+                  defaultValue={ohWeapon1Level}
+                  error={!!errors.ohWeapon1Level}
+                  helperText={errors.ohWeapon1Level?.message}
+                  onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.ohWeapon1Level, value)}
+                />
+              ) : (
+                <TextInputField
+                  label="아이템 레벨"
+                  name={EWowCharWeaponUpdateRequestFields.ohWeapon1Level}
+                  control={control}
+                  defaultValue={ohWeapon1Level}
+                  minLength={1}
+                  error={!!errors.ohWeapon1Level}
+                  helperText={errors.ohWeapon1Level?.message}
+                  onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.ohWeapon1Level, value)}
+                />
+              )}
               <SelectInputField
                 label="아이템 타입"
                 name={EWowCharWeaponUpdateRequestFields.ohWeapon1Type}
@@ -453,16 +497,29 @@ const UpdateCharWeaponModal: React.FC = () => {
             </Box>
             <Box display="flex" flexDirection="row" gap="8px">
               <Typography width={"200px"} alignContent="center">{getItemPartTypeName(EWowItemPartType.ONE_HAND_WEAPON2)}</Typography>
-              <SelectInputField
-                label="아이템 레벨"
-                name={EWowCharWeaponUpdateRequestFields.ohWeapon2Level}
-                options={ohWeapon2LevelOptions}
-                control={control}
-                defaultValue={ohWeapon2Level}
-                error={!!errors.ohWeapon2Level}
-                helperText={errors.ohWeapon2Level?.message}
-                onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.ohWeapon2Level, value)}
-              />
+              {ohWeapon2Type !== EWowItemType.ETC ? (
+                <SelectInputField
+                  label="아이템 레벨"
+                  name={EWowCharWeaponUpdateRequestFields.ohWeapon2Level}
+                  options={ohWeapon2LevelOptions}
+                  control={control}
+                  defaultValue={ohWeapon2Level}
+                  error={!!errors.ohWeapon2Level}
+                  helperText={errors.ohWeapon2Level?.message}
+                  onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.ohWeapon2Level, value)}
+                />
+              ) : (
+                <TextInputField
+                  label="아이템 레벨"
+                  name={EWowCharWeaponUpdateRequestFields.ohWeapon2Level}
+                  control={control}
+                  defaultValue={ohWeapon2Level}
+                  minLength={1}
+                  error={!!errors.ohWeapon2Level}
+                  helperText={errors.ohWeapon2Level?.message}
+                  onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.ohWeapon2Level, value)}
+                />
+              )}
               <SelectInputField
                 label="아이템 타입"
                 name={EWowCharWeaponUpdateRequestFields.ohWeapon2Type}
@@ -479,16 +536,29 @@ const UpdateCharWeaponModal: React.FC = () => {
             <Divider sx={{ my: "4px" }} />
             <Box display="flex" flexDirection="row" gap="8px">
               <Typography width={"200px"} alignContent="center">{getItemPartTypeName(EWowItemPartType.ONE_HAND_WEAPON3)}</Typography>
-              <SelectInputField
-                label="아이템 레벨"
-                name={EWowCharWeaponUpdateRequestFields.ohWeapon3Level}
-                options={ohWeapon3LevelOptions}
-                control={control}
-                defaultValue={ohWeapon3Level}
-                error={!!errors.ohWeapon3Level}
-                helperText={errors.ohWeapon3Level?.message}
-                onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.ohWeapon3Level, value)}
-              />
+              {ohWeapon3Type !== EWowItemType.ETC ? (
+                <SelectInputField
+                  label="아이템 레벨"
+                  name={EWowCharWeaponUpdateRequestFields.ohWeapon3Level}
+                  options={ohWeapon3LevelOptions}
+                  control={control}
+                  defaultValue={ohWeapon3Level}
+                  error={!!errors.ohWeapon3Level}
+                  helperText={errors.ohWeapon3Level?.message}
+                  onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.ohWeapon3Level, value)}
+                />
+              ) : (
+                <TextInputField
+                  label="아이템 레벨"
+                  name={EWowCharWeaponUpdateRequestFields.ohWeapon3Level}
+                  control={control}
+                  defaultValue={ohWeapon3Level}
+                  minLength={1}
+                  error={!!errors.ohWeapon3Level}
+                  helperText={errors.ohWeapon3Level?.message}
+                  onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.ohWeapon3Level, value)}
+                />
+              )}
               <SelectInputField
                 label="아이템 타입"
                 name={EWowCharWeaponUpdateRequestFields.ohWeapon3Type}
@@ -502,16 +572,29 @@ const UpdateCharWeaponModal: React.FC = () => {
             </Box>
             <Box display="flex" flexDirection="row" gap="8px">
               <Typography width={"200px"} alignContent="center">{getItemPartTypeName(EWowItemPartType.ONE_HAND_WEAPON4)}</Typography>
-              <SelectInputField
-                label="아이템 레벨"
-                name={EWowCharWeaponUpdateRequestFields.ohWeapon4Level}
-                options={ohWeapon4LevelOptions}
-                control={control}
-                defaultValue={ohWeapon4Level}
-                error={!!errors.ohWeapon4Level}
-                helperText={errors.ohWeapon4Level?.message}
-                onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.ohWeapon4Level, value)}
-              />
+              {ohWeapon4Type !== EWowItemType.ETC ? (
+                <SelectInputField
+                  label="아이템 레벨"
+                  name={EWowCharWeaponUpdateRequestFields.ohWeapon4Level}
+                  options={ohWeapon4LevelOptions}
+                  control={control}
+                  defaultValue={ohWeapon4Level}
+                  error={!!errors.ohWeapon4Level}
+                  helperText={errors.ohWeapon4Level?.message}
+                  onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.ohWeapon4Level, value)}
+                />
+              ) : (
+                <TextInputField
+                  label="아이템 레벨"
+                  name={EWowCharWeaponUpdateRequestFields.ohWeapon4Level}
+                  control={control}
+                  defaultValue={ohWeapon4Level}
+                  minLength={1}
+                  error={!!errors.ohWeapon4Level}
+                  helperText={errors.ohWeapon4Level?.message}
+                  onChange={(value) => setValue(EWowCharWeaponUpdateRequestFields.ohWeapon4Level, value)}
+                />
+              )}
               <SelectInputField
                 label="아이템 타입"
                 name={EWowCharWeaponUpdateRequestFields.ohWeapon4Type}
