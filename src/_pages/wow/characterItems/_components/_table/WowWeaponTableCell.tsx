@@ -25,6 +25,7 @@ const WowWeaponTableCell: React.FC<WowWeaponTableCellProps> = ({ items, onClickW
   useEffect(() => {
     if (items) {
       let currLevel = items.thWeapon1.level !== '' ? Number(items.thWeapon1.level) : 0;
+      let maxLevel = currLevel;
       if (currLevel > 0) {
         setWeapon1(items.thWeapon1);
         setIsTwoHandWeapon(true);
@@ -32,6 +33,7 @@ const WowWeaponTableCell: React.FC<WowWeaponTableCellProps> = ({ items, onClickW
       if (items.thWeapon2.level !== '') {
         if (currLevel < Number(items.thWeapon2.level)) {
           currLevel = Number(items.thWeapon2.level);
+          maxLevel = currLevel;
           setWeapon1(items.thWeapon2);
           setIsTwoHandWeapon(true);
         }
@@ -40,6 +42,7 @@ const WowWeaponTableCell: React.FC<WowWeaponTableCellProps> = ({ items, onClickW
         const ohWeapon12Level = Number(items.ohWeapon1.level) <= Number(items.ohWeapon2.level) ? Number(items.ohWeapon1.level) : Number(items.ohWeapon2.level);
         if (currLevel < ohWeapon12Level) {
           currLevel = ohWeapon12Level;
+          maxLevel = Number(items.ohWeapon1.level) > Number(items.ohWeapon2.level) ? Number(items.ohWeapon1.level) : Number(items.ohWeapon2.level);
           setWeapon1(items.ohWeapon1);
           setWeapon2(items.ohWeapon2);
           setIsTwoHandWeapon(false);
@@ -47,8 +50,10 @@ const WowWeaponTableCell: React.FC<WowWeaponTableCellProps> = ({ items, onClickW
       }
       if (items.ohWeapon3.level !== '' && items.ohWeapon4.level !== '') {
         const ohWeapon34Level = Number(items.ohWeapon3.level) <= Number(items.ohWeapon4.level) ? Number(items.ohWeapon3.level) : Number(items.ohWeapon4.level);
-        if (currLevel < ohWeapon34Level) {
+        const ohWeapon34MaxLevel = Number(items.ohWeapon3.level) > Number(items.ohWeapon4.level) ? Number(items.ohWeapon3.level) : Number(items.ohWeapon4.level);
+        if (currLevel < ohWeapon34Level || (currLevel === ohWeapon34Level && maxLevel < ohWeapon34MaxLevel)) {
           currLevel = ohWeapon34Level;
+          maxLevel = ohWeapon34MaxLevel;
           setWeapon1(items.ohWeapon3);
           setWeapon2(items.ohWeapon4);
           setIsTwoHandWeapon(false);
