@@ -5,12 +5,14 @@ import { useShallow } from "zustand/shallow";
 import useWowStore from "../../_stores/useWowStore";
 import styled from "styled-components";
 import useWowKeystoneStore from "../_stores/useWowKeystoneStore";
-import { IWowCharacterMythicRun, IWowKeystone } from "../_apis/_models/wowKeystone";
+import { IWowCharacterMythicRun, IWowKeystone, IWowKeystoneSeasonRequest } from "../_apis/_models/wowKeystone";
 import { ECommonYN } from "../../../../common/_constants/common";
 import WeeklyKeystoneHeaderTableCell from "./_table/WeeklyKeystoneHeaderTableCell";
 import { generateQueryKey } from "../_apis/_queries/useWowMythicDungeonRecordQuery";
 import { useQueryClient } from "@tanstack/react-query";
-import { CURR_SEASON_NO } from "../_constants/wowKeystone";
+import { IWowKeystoneRefreshFields } from "../_constants/wowKeystone";
+import TextInputField from "../../../../common/_components/fields/TextInputField";
+import { useForm } from "react-hook-form";
 
 const HeaderTableCell = styled(TableCell)`
   && {
@@ -31,12 +33,29 @@ const WeeklyKeystoneTable: React.FC = () => {
     }))
   );
 
-  const { keystoneTaskList, keystoneRecordList } = useWowKeystoneStore(
+  const { currSeasonNo, setCurrSeasonNo, keystoneTaskList, keystoneRecordList } = useWowKeystoneStore(
     useShallow((state) => ({
+      currSeasonNo: state.currSeasonNo,
+      setCurrSeasonNo: state.setCurrSeasonNo,
       keystoneTaskList: state.keystoneTaskList,
       keystoneRecordList: state.keystoneRecordList,
     }))
   );
+
+  const defaultValues = {
+    seasonNo: currSeasonNo,
+  };
+
+  const {
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<IWowKeystoneSeasonRequest>({
+    defaultValues, 
+  });
+
+  const seasonNo = watch(IWowKeystoneRefreshFields.seasonNo);
 
   const [weeklyClear, setWeeklyClear] = useState<IWowKeystone>();
   const [weeklyLevel, setWeeklyLevel] = useState<IWowKeystone>();
@@ -48,7 +67,7 @@ const WeeklyKeystoneTable: React.FC = () => {
           realm: char?.server ?? '',
           charName: char?.name ?? '',
           charJob: char?.job ?? '',
-          seasonNo: CURR_SEASON_NO,
+          seasonNo,
           dungeonList,
         }),
       });
@@ -113,13 +132,29 @@ const WeeklyKeystoneTable: React.FC = () => {
       }}
     >
       <Box display="flex" flexDirection="row-reverse">
-        <IconButton 
-          color="primary" 
-          onClick={handleRefresh} 
+        <IconButton
+          color="primary"
+          onClick={handleRefresh}
           aria-label="refresh"
         >
           <RefreshIcon />
         </IconButton>
+        <Box width="80px" marginRight="8px">
+          <TextInputField
+            label="시즌ID"
+            name={IWowKeystoneRefreshFields.seasonNo}
+            control={control}
+            defaultValue={String(seasonNo)}
+            minLength={1}
+            error={!!errors.seasonNo}
+            helperText={errors.seasonNo?.message}
+            onChange={(value) => {
+              const sNo = Number(value);
+              setValue(IWowKeystoneRefreshFields.seasonNo, sNo);
+              setCurrSeasonNo(sNo);
+            }}
+          />
+        </Box>
       </Box>
       <Typography variant="h5" align="center" gutterBottom>
         주간 쐐기 주차

@@ -60,6 +60,10 @@ export interface IWowKeystoneInitResponse {
   lastRefreshDatetime: Dayjs;
 }
 
+export interface IWowKeystoneSeasonRequest {
+  seasonNo: number;
+}
+
 export interface IWowKeystoneCharacterRequest {
   dungeonId: string;
 }
