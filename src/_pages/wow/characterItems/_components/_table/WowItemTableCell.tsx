@@ -13,8 +13,9 @@ interface WowItemTableCellProps {
 
 const WowItemTableCell: React.FC<WowItemTableCellProps> = ({ items, partType, onClickItemCell }) => {
 
-  const { getItemLevelsOfType } = useWowStore(
+  const { getItemLevelsOfType, itemLevelList } = useWowStore(
     useShallow((state) => ({
+      itemLevelList: state.itemLevelList,
       getItemLevelsOfType: state.getItemLevelsOfType,
     }))
   );
@@ -71,6 +72,28 @@ const WowItemTableCell: React.FC<WowItemTableCellProps> = ({ items, partType, on
       case EWowItemType.MYTHIC:
         return "black";
       default:
+        if (itemLevelList && itemLevelList.length > 0) {
+          const itemLevel = itemLevelList.reduce((prev, curr) => {
+            if ((item?.level ?? 0) >= curr.itemLevel) {
+              return curr;
+            } else {
+              return prev;
+            }
+          }, itemLevelList[0]);
+          if (itemLevel.level <= 0) {
+            return "#00ff00";
+          } else if (itemLevel.level <= 4) {
+            return "#ff9900";
+          } else if (itemLevel.level <= 8) {
+            return "#ff0000";
+          } else if (itemLevel.level <= 12) {
+            return "#0000ff";
+          } else if (itemLevel.level <= 16) {
+            return "#9900ff";
+          } else {
+            return "black";
+          }
+        }
         return "#00ff00";
     }
   }
