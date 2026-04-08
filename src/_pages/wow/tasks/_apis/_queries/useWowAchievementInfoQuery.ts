@@ -13,7 +13,7 @@ export const useWowAchievementInfoQuery = (accessToken?: string, params?: IWowAc
           Authorization: `Bearer ${accessToken}`,
         },
         params: {
-          namespace: "static-11.1.7_61131-kr",
+          namespace: "static-kr",
           locale: "ko_KR",
         },
       });
