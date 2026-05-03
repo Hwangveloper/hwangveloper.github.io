@@ -88,17 +88,32 @@ const WowWeaponTableCell: React.FC<WowWeaponTableCellProps> = ({ items, onClickW
   }
 
   const getItemLevelColor = (item?: IWowItem) => {
+    const typeItemLevels = getItemLevelsOfType(item?.type ?? EWowItemType.ETC);
+    const itemLevel = item?.level ?? 0;
+    const idx = typeItemLevels.findIndex((iLevel) => iLevel.itemLevel === itemLevel);
 
     switch (item?.type) {
       case EWowItemType.ADVENTURER:
         return "#ff9900";
       case EWowItemType.STAGER:
+        if (idx === 0) {
+          return "#ff9900";
+        }
         return "#ff0000";
       case EWowItemType.CHAMPION:
+        if (idx === 0) {
+          return "#ff0000";
+        }
         return "#0000ff";
       case EWowItemType.HERO:
+        if (idx === 0) {
+          return "#0000ff";
+        }
         return "#9900ff";
       case EWowItemType.MYTHIC:
+        if (idx === 0) {
+          return "#9900ff";
+        }
         return "black";
       default:
         if (itemLevelList && itemLevelList.length > 0) {
